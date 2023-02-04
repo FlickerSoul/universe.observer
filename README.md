@@ -18,6 +18,12 @@ want to feel alive again.
 ### Dev 
 
 ```zsh 
-pnpm install  # install dependencies
-pnpm dev      # start dev server
+pnpm install   # install dependencies
+pnpm dev       # start dev server
+```
+### Lint 
+
+```zsh
+pnpm lint      # lint code
+pnpm lint:fix  # fix lint errors
 ```
