@@ -1,2 +1,49 @@
+$dark-gb-color: #050505
+$dark-text-color: #bbb
+$dark-a-color: #ececec
+$dark-scroll-bar-color: #fff
+$dark-scroll-bar-hover-color: #fff
+
+$light-gb-color: #fff
+$light-text-color: #555
+$light-a-color: #000
+$light-scroll-bar-color: #fff
+$light-scroll-bar-hover-color: #fff
+
 main
-  text-align: center
+  div
+    // center body text
+    max-width: 70ch
+    margin: auto
+  hr
+    // change line
+    width: 50px
+    margin: 2em auto
+
+
+html.dark
+  background: $dark-gb-color
+  color: $dark-text-color
+  a:visited
+    color: $dark-a-color
+  a:link
+    color: $dark-a-color
+
+html
+  background: $light-gb-color
+  color: $light-text-color
+  font-weight: 400
+  a
+    text-decoration: none
+    transition: border 0.3s ease-in-out
+    border-bottom: 1px solid rgba(125, 125, 125, 0.3)
+  a:hover
+      border-bottom: 1px solid rgba(125, 125, 125, 0.9)
+  a:visited
+    color: $light-a-color
+  a:link
+    color: $light-a-color
+  font-family: Inter, sans-serif
+
+.nav-icon
+  scale: 1.1

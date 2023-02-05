@@ -10,7 +10,7 @@ import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
 import unocss from 'unocss/vite'
-import { presetAttributify, presetIcons, presetUno } from 'unocss'
+import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocss'
 import components from 'unplugin-vue-components/vite'
 
 // https://vitejs.dev/config/
@@ -34,7 +34,19 @@ export default defineConfig({
       reactivityTransform: true,
     }),
 
-    unocss({ presets: [presetIcons(), presetAttributify(), presetUno()] }),
+    unocss({
+      presets: [
+        presetIcons(),
+        presetAttributify(),
+        presetUno(),
+        presetWebFonts({
+          fonts: {
+            sans: ['Inter:400,600,800', 'system-ui', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+        }),
+      ],
+    }),
     pages({
       extensions: ['vue', 'md'],
       dirs: ['pages'],
@@ -52,7 +64,7 @@ export default defineConfig({
     }),
     markdown({
       wrapperComponent: 'Post',
-      // TODO: add wrapper class names
+      wrapperClasses: 'm-auto',
       headEnabled: true,
       markdownItOptions: {
         quotes: '""\'\'',

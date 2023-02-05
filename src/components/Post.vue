@@ -14,20 +14,20 @@ const route = useRoute()
 </script>
 
 <template>
-  <div v-show="frontmatter.title">
-    <h1 class="">
+  <div v-show="frontmatter.title" class="post-wrapper">
+    <h1 class="post-meta title">
       {{ frontmatter.title }}
     </h1>
-    <p class="">
+    <div v-if="frontmatter.subtitle" class="post-meta">
       {{ frontmatter.subtitle }}
-    </p>
-    <p class="">
+    </div>
+    <div v-if="frontmatter.createdAt || frontmatter.updatedAt" class="post-meta">
       {{ frontmatter.createdAt }} - {{ frontmatter.updatedAt }}
-    </p>
-    <p class="">
+    </div>
+    <div v-if="frontmatter.tags" class="post-meta">
       {{ frontmatter.tags }}
-    </p>
-    <article ref="content">
+    </div>
+    <article ref="content" class="post-content">
       <slot />
     </article>
 
@@ -41,3 +41,9 @@ const route = useRoute()
     </div>
   </div>
 </template>
+
+<style scoped lang="sass">
+.post-wrapper
+  .post-meta
+    text-align: center
+</style>
