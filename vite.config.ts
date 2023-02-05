@@ -9,6 +9,9 @@ import shiki from 'markdown-it-shiki'
 import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
+import unocss from 'unocss/vite'
+import { presetAttributify, presetIcons, presetUno } from 'unocss'
+import components from 'unplugin-vue-components/vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -30,6 +33,8 @@ export default defineConfig({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
     }),
+
+    unocss({ presets: [presetIcons(), presetAttributify(), presetUno()] }),
     pages({
       extensions: ['vue', 'md'],
       dirs: ['pages'],
@@ -39,14 +44,14 @@ export default defineConfig({
         if (!path.includes('home.md')) {
           const md = fs.readFileSync(path, 'utf-8')
           const data = matter(md)
-          route.meta = Object.assign(route.meta || {}, { header: data.data })
+          route.meta = Object.assign(route.meta || {}, { frontmatter: data.data })
         }
 
         return route
       },
     }),
     markdown({
-      wrapperComponent: 'post',
+      wrapperComponent: 'Post',
       // TODO: add wrapper class names
       headEnabled: true,
       markdownItOptions: {
@@ -80,6 +85,10 @@ export default defineConfig({
         })
       },
     }),
+    components({
+      extensions: ['vue', 'md'],
+      dts: true,
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+    }),
   ],
-
 })

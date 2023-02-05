@@ -1,8 +1,9 @@
-import './style.css'
+import './styles/global.sass'
 import autoRoutes from 'virtual:generated-pages'
 import { ViteSSG } from 'vite-ssg'
-// import NProgress from 'nprogress'
+import NProgress from 'nprogress'
 import App from './App.vue'
+import 'uno.css'
 
 const routes = autoRoutes.map((i) => {
   return {
@@ -17,7 +18,14 @@ export const createApp = ViteSSG(
   App,
   { routes },
   ({ router, isClient }) => {
-
+    if (isClient) {
+      router.beforeEach(() => {
+        NProgress.start()
+      })
+      router.afterEach(() => {
+        NProgress.done()
+      })
+    }
   })
 
 // createApp(App).mount('#app')
