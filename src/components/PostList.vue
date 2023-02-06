@@ -4,7 +4,7 @@ import type { IListedPostData } from './types'
 
 const router = useRouter()
 const posts: IListedPostData[] = router.getRoutes()
-  .filter(route => route.path.startsWith('/posts/') && route.path.endsWith('.html'))
+  .filter(route => route.path.startsWith('/posts/') && !route.path.endsWith('.html'))
   .sort((a, b) => +new Date(a.meta.frontmatter.createdAt) - +new Date(b.meta.frontmatter.createdAt))
   .map((route) => {
     return {

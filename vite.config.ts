@@ -14,6 +14,8 @@ import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocs
 import components from 'unplugin-vue-components/vite'
 import katex from '@uniob/markdown-it-katex/dist'
 
+import { slugify } from './scripts/slug'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -29,12 +31,14 @@ export default defineConfig({
   //   formatting: 'minify',
   //   format: 'cjs',
   // },
+  base: './',
   plugins: [
+    // vue
     vue({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
     }),
-
+    // unocss styling
     unocss({
       presets: [
         presetIcons(),
@@ -42,12 +46,13 @@ export default defineConfig({
         presetUno(),
         presetWebFonts({
           fonts: {
-            sans: ['Inter:400,600,800', 'system-ui', 'sans-serif'],
+            sans: [{ name: 'Inter', weights: [400, 600, 800], italic: true }],
             mono: ['JetBrains Mono', 'monospace'],
           },
         }),
       ],
     }),
+    // handling markdown and vue pages routing
     pages({
       extensions: ['vue', 'md'],
       dirs: ['pages'],
@@ -75,7 +80,7 @@ export default defineConfig({
           },
         })
         md.use(anchor, {
-          // TODO: add slug translator
+          slugify,
           permalink: anchor.permalink.linkInsideHeader({
             symbol: '#',
             renderAttrs: () => ({ 'aria-hidden': 'true' }),
@@ -89,8 +94,8 @@ export default defineConfig({
           },
         })
         md.use(toc, {
-          // TODO: add slug translator
-          includeLevel: [1, 2, 3],
+          slugify,
+          includeLevel: [1, 2, 3, 4],
         })
         md.use(katex)
       },

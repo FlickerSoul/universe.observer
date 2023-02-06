@@ -1,12 +1,18 @@
 html
+  div.shiki-container
+    min-width: 100%
+  pre.shiki
+    border-radius: 1rem
+    padding: 1.2rem 1rem
+    code
+      font-family: "JetBrains Mono", monospace
+
+html:not(.dark)
+  pre.shiki
+    background-color: #f1f1f1 !important
   .shiki-dark
-    visibility: hidden
-    height: 0
+    display: none
 
 html.dark
   .shiki-light
-    visibility: hidden
-    height: 0
-  .shiki-dark
-    visibility: visible
-    height: auto
+    display: none
