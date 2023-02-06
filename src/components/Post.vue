@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import { useRoute } from 'vue-router'
 import type { PropType } from 'vue'
 import type { IPostData } from './types'

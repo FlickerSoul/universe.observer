@@ -4,4 +4,12 @@ export interface IPostData {
   createdAt?: string
   updatedAt?: string
   tags?: string[]
+  lang?: string
+}
+
+export interface IListedPostData {
+  path: string
+  title: string
+  createdAt: string
+  lang: string
 }

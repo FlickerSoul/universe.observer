@@ -1,4 +1,6 @@
 import './styles/global.sass'
+import './styles/md.sass'
+import 'katex/dist/katex.min.css'
 import autoRoutes from 'virtual:generated-pages'
 import { ViteSSG } from 'vite-ssg'
 import NProgress from 'nprogress'
