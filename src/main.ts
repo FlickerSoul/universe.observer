@@ -2,8 +2,10 @@ import './styles/global.sass'
 import './styles/md.sass'
 import 'katex/dist/katex.min.css'
 import autoRoutes from 'virtual:generated-pages'
-import { ViteSSG } from 'vite-ssg'
-import NProgress from 'nprogress'
+// import { ViteSSG } from 'vite-ssg'
+// import NProgress from 'nprogress'
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import 'uno.css'
 
@@ -23,18 +25,24 @@ const scrollBehavior = (to: any, from: any, savedPosition: any) => {
     return { top: 0 }
 }
 
-export const createApp = ViteSSG(
-  App,
-  { routes, scrollBehavior },
-  ({ router, isClient }) => {
-    if (isClient) {
-      router.beforeEach(() => {
-        NProgress.start()
-      })
-      router.afterEach(() => {
-        NProgress.done()
-      })
-    }
-  })
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior,
+})
 
-// createApp(App).mount('#app')
+// export const createApp = ViteSSG(
+//   App,
+//   { routes, scrollBehavior },
+//   ({ router, isClient }) => {
+//     if (isClient) {
+//       router.beforeEach(() => {
+//         NProgress.start()
+//       })
+//       router.afterEach(() => {
+//         NProgress.done()
+//       })
+//     }
+//   })
+
+createApp(App).use(router).mount('#app')
