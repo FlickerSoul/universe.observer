@@ -1,35 +1,45 @@
 $dark-gb-color: #050505
 $dark-text-color: #bbb
-$dark-a-color: #ececec
+$dark-a-color: #f0f0f0
+$dark-header-color: #fafafa
 $dark-scroll-bar-color: #fff
 $dark-scroll-bar-hover-color: #fff
 
 $light-gb-color: #fff
 $light-text-color: #555
-$light-a-color: #000
+$light-a-color: #101010
+$light-header-color: #000
 $light-scroll-bar-color: #fff
 $light-scroll-bar-hover-color: #fff
 
 $div-content-width: 70ch
 
 main
-  div
+  &>div
     // center body text
     max-width: $div-content-width
     margin: auto
+    // unocss directives
+    --at-apply: "lt-md:mx-6"
   hr
     // change line
     width: 50px
     margin: 2em auto
-
+  .post-md-content
+    // for the post.vue and generated markdown wrapper
+    margin-left: 0
+    margin-right: 0
 
 html.dark
   background: $dark-gb-color
   color: $dark-text-color
-  a:visited
-    color: $dark-a-color
-  a:link
-    color: $dark-a-color
+  a
+    &:visited
+      color: $dark-a-color
+    &:link
+      color: $dark-a-color
+  h1,h2,h3,h4,h5,h6
+    color: $dark-header-color
 
 html
   background: $light-gb-color
@@ -39,12 +49,14 @@ html
     text-decoration: none
     transition: border 0.3s ease-in-out
     border-bottom: 1px solid rgba(125, 125, 125, 0.3)
-  a:hover
+    &:hover
       border-bottom: 1px solid rgba(125, 125, 125, 0.9)
-  a:visited
-    color: $light-a-color
-  a:link
-    color: $light-a-color
+    &:visited
+      color: $light-a-color
+    &:link
+      color: $light-a-color
+  h1,h2,h3,h4,h5,h6
+    color: $light-header-color
   font-family: Inter, sans-serif
 
 .nav-icon
@@ -55,7 +67,7 @@ html
 
 #nprogress .bar
   background: #248ede
-  opacity: 0.75
+  opacity: 0.7
   position: fixed
   z-index: 1031
   top: 0

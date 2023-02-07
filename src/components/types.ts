@@ -11,5 +11,6 @@ export interface IListedPostData {
   path: string
   title: string
   createdAt: string
+  updatedAt: string
   lang: string
 }

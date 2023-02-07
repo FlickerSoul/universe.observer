@@ -14,7 +14,7 @@ import unocss from 'unocss/vite'
 import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocss'
 import components from 'unplugin-vue-components/vite'
 import katex from '@uniob/markdown-it-katex/dist'
-
+import transformerDirectives from '@unocss/transformer-directives'
 import { slugify } from './scripts/slug'
 
 // https://vitejs.dev/config/
@@ -52,6 +52,7 @@ export default defineConfig({
           },
         }),
       ],
+      transformers: [transformerDirectives()],
     }),
     imports({
       imports: [
@@ -76,7 +77,7 @@ export default defineConfig({
     }),
     markdown({
       wrapperComponent: 'Post',
-      wrapperClasses: 'm-auto',
+      wrapperClasses: 'post-md-content',
       headEnabled: true,
       markdownItOptions: {
         quotes: '""\'\'',

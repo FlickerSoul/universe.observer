@@ -4,6 +4,7 @@ import type { PropType } from 'vue'
 import { onMounted, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { IPostData } from './types'
+import PostDate from './PostDate.vue'
 
 const { frontmatter } = defineProps({
   frontmatter: {
@@ -68,8 +69,8 @@ onMounted(() => {
     <div v-if="frontmatter.subtitle" class="post-meta">
       {{ frontmatter.subtitle }}
     </div>
-    <div v-if="frontmatter.createdAt || frontmatter.updatedAt" class="post-meta">
-      {{ frontmatter.createdAt }} - {{ frontmatter.updatedAt }}
+    <div class="post-meta post-date-wrapper">
+      <PostDate v-bind="frontmatter" class="ma" />
     </div>
     <div v-if="frontmatter.tags" class="post-meta">
       {{ frontmatter.tags }}
