@@ -3,8 +3,8 @@
   "buildCommand": "pnpm build",
   "rewrites": [
     {
-      "source": "/(.*)",
-        "destination": "/"
+      "source": "/:slug[\\/]?^[.html]",
+      "destination": "/:slug.html"
     }
   ]
 }
