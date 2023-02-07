@@ -3,6 +3,7 @@ import * as fs from 'fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
+import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
 import markdown from 'vite-plugin-vue-markdown'
 import shiki from 'markdown-it-shiki'
@@ -32,6 +33,7 @@ export default defineConfig({
   //   format: 'cjs',
   // },
   base: './',
+  appType: 'spa',
   plugins: [
     // vue
     vue({
@@ -50,6 +52,14 @@ export default defineConfig({
             mono: ['JetBrains Mono', 'monospace'],
           },
         }),
+      ],
+    }),
+    imports({
+      imports: [
+        'vue',
+        'vue-router',
+        '@vueuse/core',
+        '@vueuse/head',
       ],
     }),
     // handling markdown and vue pages routing
