@@ -32,7 +32,6 @@ export default defineConfig({
   //   formatting: 'minify',
   //   format: 'cjs',
   // },
-  base: './',
   appType: 'spa',
   plugins: [
     // vue
@@ -116,4 +115,13 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        entryFileNames: 'assets/[name].js',
+        chunkFileNames: 'assets/[name].js',
+        assetFileNames: 'assets/[name].[ext]',
+      },
+    },
+  },
 })
