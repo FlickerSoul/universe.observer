@@ -5,6 +5,7 @@ export interface IPostData {
   updatedAt?: string
   tags?: string[]
   lang?: string
+  display?: boolean
 }
 
 export interface IListedPostData {
