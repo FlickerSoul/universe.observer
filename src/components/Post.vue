@@ -62,7 +62,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-show="frontmatter.title" class="post-wrapper">
+  <div v-show="frontmatter.title || frontmatter.display" class="post-wrapper">
     <h1 class="post-meta title">
       {{ frontmatter.title }}
     </h1>

@@ -3,7 +3,7 @@ import DarkToggle from './DarkToggle.vue'
 </script>
 
 <template>
-  <header class="header">
+  <header class="header font-mono">
     <router-link class="" to="/">
       <div class="logo">
         <img src="/vite.svg" alt="site log">
@@ -15,16 +15,19 @@ import DarkToggle from './DarkToggle.vue'
         <router-link to="/">
           <span>Home</span>
         </router-link>
+        <div />
         <router-link to="/posts">
           <span>Posts</span>
         </router-link>
+        <div />
         <router-link to="/portfolio">
           <span>Portfolio</span>
         </router-link>
+        <div />
         <a href="https://github.com/FlickerSoul" target="_blank" title="GitHub" class="nav-icon">
           <div class="i-uil-github-alt" />
         </a>
-        <DarkToggle />
+        <DarkToggle class="nav-icon" />
       </div>
     </nav>
   </header>
@@ -48,5 +51,7 @@ import DarkToggle from './DarkToggle.vue'
   .links
     display: grid
     grid-auto-flow: column
-    grid-gap: 1.2rem
+    grid-gap: 0.6rem
+    &>div
+      display: inline-block
 </style>

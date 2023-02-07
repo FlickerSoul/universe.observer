@@ -6,13 +6,8 @@ function toggleDark() {
 </script>
 
 <template>
-  <a class="nav-icon" title="Toggle Dark Theme" @click="toggleDark">
+  <a title="Toggle Dark Theme" style="cursor: pointer" @click="toggleDark">
     <div v-show="isDark" class="i-system-uicons-sun" />
     <div v-show="!isDark" class="i-system-uicons-moon" />
   </a>
 </template>
-
-<style scoped lang="sass">
-.nav-icon:hover
-  cursor: pointer
-</style>
