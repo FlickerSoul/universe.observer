@@ -54,9 +54,5 @@ ul.post-list
 
 html
   .lang-indicator
-    --at-apply: "text-xs border border-solid rounded px-1 md:ml--10.5 mr2"
-    border-color: g.$light-a-color
-html.dark
-  .lang-indicator
-    border-color: g.$dark-a-color
+    --at-apply: "text-xs border border-current border-solid rounded px-1 md:ml--10.5 mr2"
 </style>

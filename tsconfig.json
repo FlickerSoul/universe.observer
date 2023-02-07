@@ -12,7 +12,7 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client", "vite-plugin-pages/client"],
+    "types": ["vite/client", "vite-plugin-pages/client", "@akiravoid/markdown-it-sup"],
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }],

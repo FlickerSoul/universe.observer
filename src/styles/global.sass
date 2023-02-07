@@ -4,6 +4,7 @@ $dark-a-color: #f0f0f0
 $dark-header-color: #fafafa
 $dark-scroll-bar-color: #fff
 $dark-scroll-bar-hover-color: #fff
+$dark-code-bg-color: #262626
 
 $light-gb-color: #fff
 $light-text-color: #555
@@ -11,8 +12,10 @@ $light-a-color: #101010
 $light-header-color: #000
 $light-scroll-bar-color: #fff
 $light-scroll-bar-hover-color: #fff
+$light-code-bg-color: #f5f5f5
 
 $div-content-width: 70ch
+$code-fg-color: #ec4899
 
 main
   &>div
@@ -40,6 +43,8 @@ html.dark
       color: $dark-a-color
   h1,h2,h3,h4,h5,h6
     color: $dark-header-color
+  code:not([class^="language-"])
+    background-color: $dark-code-bg-color
 
 html
   background: $light-gb-color
@@ -58,6 +63,15 @@ html
   h1,h2,h3,h4,h5,h6
     color: $light-header-color
   font-family: Inter, sans-serif
+  code:not([class^="language-"])
+    color: $code-fg-color
+    font-weight: 600
+    font-size: .875em
+    background-color: $light-code-bg-color
+    padding: 2px 4px
+    border-radius: .25rem
+  div.shiki-container code
+    background-color: inherit !important
 
 .nav-icon
   scale: 1.1

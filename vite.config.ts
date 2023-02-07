@@ -15,6 +15,8 @@ import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocs
 import components from 'unplugin-vue-components/vite'
 import katex from '@uniob/markdown-it-katex/dist'
 import transformerDirectives from '@unocss/transformer-directives'
+import sup from 'markdown-it-sup'
+import sub from 'markdown-it-sub'
 import { slugify } from './scripts/slug'
 
 // https://vitejs.dev/config/
@@ -85,8 +87,8 @@ export default defineConfig({
       markdownItSetup(md) {
         md.use(shiki, {
           theme: {
-            dark: 'github-dark',
-            light: 'github-light',
+            dark: 'nord',
+            light: 'rose-pine-dawn',
           },
         })
         md.use(anchor, {
@@ -108,6 +110,8 @@ export default defineConfig({
           includeLevel: [1, 2, 3, 4],
         })
         md.use(katex)
+        md.use(sup)
+        md.use(sub)
       },
     }),
     components({
