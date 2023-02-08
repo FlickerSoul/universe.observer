@@ -2,6 +2,10 @@
 title: Test Markdown
 createdAt: 2023-02-05
 lang: en
+tags: 
+ - A
+ - B
+ - C
 ---
 
 [[toc]]
