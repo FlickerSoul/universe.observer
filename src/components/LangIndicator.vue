@@ -2,7 +2,7 @@
 import { computed } from 'vue'
 
 const { lang } = defineProps({
-  lang: { type: String, required: true },
+  lang: { type: String },
 })
 
 const langDisplay = computed(() => {
