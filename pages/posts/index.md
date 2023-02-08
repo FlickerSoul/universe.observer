@@ -6,4 +6,6 @@ title: Blog Posts
 <TagFilter />
 </Suspense>
 
+<hr >
+
 <PostList />

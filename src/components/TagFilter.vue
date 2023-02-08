@@ -37,7 +37,6 @@ function toggleTags() {
         <TagSelector v-for="tag in comm.tags" :key="tag" :tag-name="tag" class="tag-check-box case-upper" />
       </div>
     </div>
-    <hr>
   </div>
 </template>
 
