@@ -34,7 +34,7 @@ function toggleTags() {
     </span>
     <div class="tags-check-boxes" :class="{ 'tags-check-boxes-closed': !tagToggleFlag }">
       <div class="grid px-3 mt-4 grid-cols-3 lt-md:grid-cols-2">
-        <TagSelector v-for="tag in comm.tags" :key="tag" :tag-name="tag" class="tag-check-box" />
+        <TagSelector v-for="tag in comm.tags" :key="tag" :tag-name="tag" class="tag-check-box case-upper" />
       </div>
     </div>
     <hr>

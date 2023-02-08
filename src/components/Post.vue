@@ -5,6 +5,7 @@ import { onMounted, ref } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
+import PostTag from './PostTag.vue'
 
 const { frontmatter } = defineProps({
   frontmatter: {
@@ -72,14 +73,19 @@ onMounted(() => {
     <div class="post-meta post-date-wrapper">
       <PostDate v-bind="frontmatter" class="ma" />
     </div>
-    <div v-if="frontmatter.tags" class="post-meta">
-      {{ frontmatter.tags }}
-    </div>
+
     <article ref="content" class="post-content">
       <slot />
     </article>
 
-    <div v-if="route.path !== '/'" class="mt-7">
+    <hr>
+
+    <div v-if="frontmatter.tags" class="post-meta flex flex-wrap font-mono items-center py2 mt8">
+      <span class="mr2">Tags: </span>
+      <PostTag v-for="tag in frontmatter.tags" :key="tag" :tag="tag" class="mr-4 post-tag" />
+    </div>
+
+    <div v-if="route.path !== '/'" class="mt-5">
       <router-link
         :to="route.path.split('/').slice(0, -1).join('/') || '/'"
         class="font-mono no-underline opacity-50 hover:opacity-75"
@@ -91,7 +97,16 @@ onMounted(() => {
 </template>
 
 <style scoped lang="sass">
+@use 'src/styles/variables' as v
+
 .post-wrapper
   .post-meta
     text-align: center
+  .post-tag
+    color: v.$post-tag-color
+    border-bottom-width: 1.5px
+    border-bottom-style: solid
+    border-color: v.$post-tag-color
+    cursor: pointer
+    font-size: 0.875rem
 </style>

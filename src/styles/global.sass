@@ -1,26 +1,9 @@
-$dark-gb-color: #050505
-$dark-text-color: #c5c5c5
-$dark-a-color: #f0f0f0
-$dark-header-color: #fafafa
-$dark-scroll-bar-color: #fff
-$dark-scroll-bar-hover-color: #fff
-$dark-code-bg-color: #262626
-
-$light-gb-color: #fff
-$light-text-color: #464646
-$light-a-color: #101010
-$light-header-color: #000
-$light-scroll-bar-color: #fff
-$light-scroll-bar-hover-color: #fff
-$light-code-bg-color: #f5f5f5
-
-$div-content-width: 70ch
-$code-fg-color: #ec4899
+@use 'variables' as v
 
 main
   &>div
     // center body text
-    max-width: $div-content-width
+    max-width: v.$div-content-width
     margin: auto
     // unocss directives
     --at-apply: "lt-md:mx-8"
@@ -34,21 +17,21 @@ main
     margin-right: 0
 
 html.dark
-  background: $dark-gb-color
-  color: $dark-text-color
+  background: v.$dark-gb-color
+  color: v.$dark-text-color
   a
     &:visited
-      color: $dark-a-color
+      color: v.$dark-a-color
     &:link
-      color: $dark-a-color
+      color: v.$dark-a-color
   h1,h2,h3,h4,h5,h6
-    color: $dark-header-color
+    color: v.$dark-header-color
   code:not([class^="language-"])
-    background-color: $dark-code-bg-color
+    background-color: v.$dark-code-bg-color
 
 html
-  background: $light-gb-color
-  color: $light-text-color
+  background: v.$light-gb-color
+  color: v.$light-text-color
   font-weight: 400
   font-family: Inter, sans-serif
   a
@@ -58,16 +41,16 @@ html
     &:hover
       border-bottom: 1px solid rgba(125, 125, 125, 0.9)
     &:visited
-      color: $light-a-color
+      color: v.$light-a-color
     &:link
-      color: $light-a-color
+      color: v.$light-a-color
   h1,h2,h3,h4,h5,h6
-    color: $light-header-color
+    color: v.$light-header-color
   code:not([class^="language-"])
-    color: $code-fg-color
+    color: v.$code-fg-color
     font-weight: 600
     font-size: .875em
-    background-color: $light-code-bg-color
+    background-color: v.$light-code-bg-color
     padding: 2px 4px
     border-radius: .25rem
   div.shiki-container code
