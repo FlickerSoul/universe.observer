@@ -3,8 +3,7 @@ import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useCommStore } from '../store'
 import type { IListedPostData } from './types'
-import PostDate from './PostDate.vue'
-import LangIndicator from './LangIndicator.vue'
+import PostItem from './PostItem.vue'
 
 const router = useRouter()
 const posts: IListedPostData[] = router.getRoutes()
@@ -15,6 +14,7 @@ const posts: IListedPostData[] = router.getRoutes()
       path: route.path,
       createdAt: route.meta.frontmatter.createdAt,
       updatedAt: route.meta.frontmatter.updatedAt,
+      abstract: route.meta.frontmatter.abstract,
       title: route.meta.frontmatter.title,
       lang: route.meta.frontmatter.lang,
       tags: route.meta.frontmatter.tags,
@@ -40,17 +40,7 @@ const displayedPosts = computed(() => {
       </div>
     </template>
     <template v-for="post in displayedPosts" :key="post.path">
-      <router-link :to="post.path" class="post-item font-mono no-underline opacity-50 hover:opacity-75">
-        <li class="pb-4">
-          <div>
-            <LangIndicator v-bind="post" class="lang-indicator align-middle" />
-            <span class="align-middle">
-              {{ post.title }}
-            </span>
-            <PostDate v-bind="post" class="post-dates" />
-          </div>
-        </li>
-      </router-link>
+      <PostItem :post="post" class="mt-6" />
     </template>
   </TransitionGroup>
 </template>
@@ -59,14 +49,6 @@ const displayedPosts = computed(() => {
 @use 'src/styles/global' as g
 ul.post-list
   list-style: none
-  .post-dates
-    display: block
-    font-size: 0.8em
-    margin-top: 0.4em
-
-html
-  .lang-indicator
-    --at-apply: "text-xs border border-current border-solid rounded px-1 md:ml--10.5 mr2"
 
 .list-enter-active,
 .list-leave-active

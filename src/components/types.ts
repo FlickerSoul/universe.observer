@@ -1,6 +1,7 @@
 export interface IPostData {
   title?: string
   subtitle?: string
+  abstract?: string
   createdAt?: string
   updatedAt?: string
   tags?: string[]
@@ -8,11 +9,4 @@ export interface IPostData {
   display?: boolean
 }
 
-export interface IListedPostData {
-  path: string
-  title: string
-  createdAt?: string
-  updatedAt?: string
-  lang?: string
-  tags?: string[]
-}
+export type IListedPostData = Omit<IPostData, 'display'> & { path: string; title: string }
