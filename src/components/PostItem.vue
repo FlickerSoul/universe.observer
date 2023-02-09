@@ -31,7 +31,6 @@ const { post } = defineProps<{ post: IListedPostData }>()
   width: 80%
 .post-dates
   margin-top: 0.4em
-  display: block
   font-size: 0.8em
 .post-meta
   margin-left: 0.6em
