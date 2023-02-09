@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { isDark } from '../logics'
 import DarkToggle from './DarkToggle.vue'
 </script>
 
@@ -6,7 +7,8 @@ import DarkToggle from './DarkToggle.vue'
   <header class="header font-mono">
     <router-link class="" to="/">
       <div class="logo">
-        <img src="/vite.svg" alt="site log">
+        <img v-show="!isDark" src="/logo-black-lower.svg" alt="site logo">
+        <img v-show="isDark" src="/logo-white-lower.svg" alt="site logo">
       </div>
     </router-link>
     <nav class="nav">
@@ -40,6 +42,8 @@ import DarkToggle from './DarkToggle.vue'
   position: absolute
   left: 1.5rem
   top: 1.5rem
+  &>img
+    width: 64px
 
 .nav
   padding: 2rem
