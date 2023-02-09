@@ -15,7 +15,7 @@ const { post } = defineProps<{ post: IListedPostData }>()
         <span class="align-middle title-text ml-0.4em">
           {{ post.title }}
         </span>
-        <PostAbstract :abstract="post.abstract" class="post-abstract post-meta" />
+        <PostAbstract v-if="post.abstract" :abstract="post.abstract" class="post-abstract post-meta" />
         <PostDate v-bind="post" class="post-dates post-meta" />
       </div>
     </router-link>

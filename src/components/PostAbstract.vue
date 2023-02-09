@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-
-const { abstract } = defineProps<{ abstract: string }>()
-const abstractContent = computed(() => abstract === undefined ? '' : abstract)
+const { abstract } = defineProps({ abstract: { type: String, default: 'No Abstract...' } })
 </script>
 
 <template>
   <div>
-    {{ abstractContent }}
+    {{ abstract }}
   </div>
 </template>
