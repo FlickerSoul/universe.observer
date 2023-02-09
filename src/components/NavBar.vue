@@ -11,21 +11,20 @@ import DarkToggle from './DarkToggle.vue'
     </router-link>
     <nav class="nav">
       <div class="spacer" />
-      <div class="links">
+      <div class="flex flex-row flex-nowrap gap-7 items-center">
         <router-link to="/">
-          <span>Home</span>
+          <span class="lt-md:hidden">Home</span>
         </router-link>
-        <div />
         <router-link to="/posts">
-          <span>Posts</span>
+          <span class="lt-md:hidden">Posts</span>
+          <div class="md:hidden i-mdi-book-settings-outline nav-icon " />
         </router-link>
-        <div />
         <router-link to="/portfolio">
-          <span>Portfolio</span>
+          <span class="lt-md:hidden">Portfolio</span>
+          <div class="md:hidden i-mdi-briefcase-outline nav-icon" />
         </router-link>
-        <div />
         <a href="https://github.com/FlickerSoul" target="_blank" title="GitHub" class="nav-icon">
-          <div class="i-uil-github-alt" />
+          <div class="i-mdi-github-box" />
         </a>
         <DarkToggle class="nav-icon" />
       </div>
@@ -48,10 +47,6 @@ import DarkToggle from './DarkToggle.vue'
   display: grid
   grid-template-columns: auto max-content
   box-sizing: border-box
-  .links
-    display: grid
-    grid-auto-flow: column
-    grid-gap: 0.6rem
-    &>div
-      display: inline-block
+  .nav-icon
+    scale: 1.4
 </style>
