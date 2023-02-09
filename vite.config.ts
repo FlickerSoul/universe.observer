@@ -49,7 +49,7 @@ export default defineConfig({
         presetUno(),
         presetWebFonts({
           fonts: {
-            sans: [{ name: 'Inter', weights: [400, 600, 800], italic: true }],
+            sans: [{ name: 'Inter', weights: [400, 500, 600], italic: true }],
             mono: ['JetBrains Mono', 'monospace'],
           },
         }),

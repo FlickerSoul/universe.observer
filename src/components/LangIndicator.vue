@@ -18,7 +18,7 @@ const langDisplay = computed(() => {
 </script>
 
 <template>
-  <span>
+  <span style="min-width: 25px;" class="inline-block text-center">
     {{ langDisplay }}
   </span>
 </template>
