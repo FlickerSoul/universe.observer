@@ -88,7 +88,7 @@ onMounted(() => {
     <div v-if="route.path !== '/'" class="mt-5">
       <router-link
         :to="route.path.split('/').slice(0, -1).join('/') || '/'"
-        class="font-mono no-underline opacity-50 hover:opacity-75"
+        class="font-mono no-underline opacity-50 hover:opacity-90"
       >
         cd ..
       </router-link>
