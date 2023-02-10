@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-7 mb-10 ">
+  <div class="mt-7 mb-15 post-center">
     <a target="_blank" class="text-sm  opacity-50 hover:opacity-90" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
       CC BY-NC-SA 4.0
     </a>

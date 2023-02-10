@@ -33,7 +33,7 @@ const displayedPosts = computed(() => {
 </script>
 
 <template>
-  <TransitionGroup name="list" tag="ul" class="post-list">
+  <TransitionGroup name="list" tag="ul" class="post-list lt-md:ps">
     <template v-if="posts.length === 0">
       <div>
         no posts yet, coming soon ...

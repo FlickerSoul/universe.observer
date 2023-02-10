@@ -63,7 +63,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-show="frontmatter.title || frontmatter.display" class="post-wrapper">
+  <div v-show="frontmatter.title || frontmatter.display" class="post-wrapper post-center">
     <h1 class="post-meta title">
       {{ frontmatter.title }}
     </h1>
@@ -85,7 +85,7 @@ onMounted(() => {
       <PostTag v-for="tag in frontmatter.tags" :key="tag" :tag="tag" class="mr-4 post-tag" />
     </div>
 
-    <div v-if="route.path !== '/'" class="mt-5">
+    <div v-if="route.path !== '/'" class="my-8">
       <router-link
         :to="route.path.split('/').slice(0, -1).join('/') || '/'"
         class="font-mono no-underline opacity-50 hover:opacity-90"
