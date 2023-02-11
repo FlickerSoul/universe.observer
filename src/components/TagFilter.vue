@@ -25,7 +25,7 @@ function toggleTags() {
 </script>
 
 <template>
-  <div class="tags mt-2 w-90% py-2 px-7 font-mono lt-md:pl-4">
+  <div class="tags w-90% py-2 px-7 font-mono lt-md:pl-4">
     <div class="align-middle inline-block border border-style-solid border-current rounded text-xs py-0.5 px-1 md:ml--7.5 mr2" @click="toggleTags">
       <div class="i-mdi-chevron-down cursor-pointer tags-arrow" :class="{ 'rotate-arrow': tagToggleFlag }" />
     </div>
