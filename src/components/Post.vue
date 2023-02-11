@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router'
 import type { PropType } from 'vue'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
