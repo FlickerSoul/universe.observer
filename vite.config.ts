@@ -17,6 +17,7 @@ import katex from '@uniob/markdown-it-katex/dist'
 import transformerDirectives from '@unocss/transformer-directives'
 import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
+import mark from 'markdown-it-mark'
 import { slugify } from './scripts/slug'
 
 // https://vitejs.dev/config/
@@ -114,6 +115,7 @@ export default defineConfig({
         md.use(katex)
         md.use(sup)
         md.use(sub)
+        md.use(mark)
       },
     }),
     components({

@@ -22,6 +22,7 @@ specifiers:
   markdown-it: ^13.0.1
   markdown-it-anchor: ^8.6.6
   markdown-it-link-attributes: ^4.0.1
+  markdown-it-mark: ^3.0.1
   markdown-it-shiki: ^0.7.2
   markdown-it-sub: ^1.0.0
   markdown-it-sup: ^1.0.0
@@ -71,6 +72,7 @@ devDependencies:
   markdown-it: 13.0.1
   markdown-it-anchor: 8.6.6_ea7kj7wzjkld5jo2noyjqxi764
   markdown-it-link-attributes: 4.0.1
+  markdown-it-mark: 3.0.1
   markdown-it-shiki: 0.7.2
   markdown-it-sub: 1.0.0
   markdown-it-sup: 1.0.0
@@ -3568,6 +3570,10 @@ packages:
 
   /markdown-it-link-attributes/4.0.1:
     resolution: {integrity: sha512-pg5OK0jPLg62H4k7M9mRJLT61gUp9nvG0XveKYHMOOluASo9OEF13WlXrpAp2aj35LbedAy3QOCgQCw0tkLKAQ==}
+    dev: true
+
+  /markdown-it-mark/3.0.1:
+    resolution: {integrity: sha512-HyxjAu6BRsdt6Xcv6TKVQnkz/E70TdGXEFHRYBGLncRE9lBFwDNLVtFojKxjJWgJ+5XxUwLaHXy+2sGBbDn+4A==}
     dev: true
 
   /markdown-it-shiki/0.7.2:
