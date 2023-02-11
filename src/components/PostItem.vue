@@ -11,7 +11,10 @@ const { post } = defineProps<{ post: IListedPostData }>()
   <li>
     <router-link :to="post.path" class="post-item font-mono no-underline opacity-50 hover:opacity-75">
       <div>
-        <LangIndicator v-bind="post" class="align-middle text-xs border border-current border-solid rounded px-1 md:ml--10.5 mr2" />
+        <LangIndicator
+          v-bind="post"
+          class="align-middle text-xs border border-current border-solid rounded px-1 md:ml--10.5 mr2"
+        />
         <span class="align-middle title-text ml-0.4em">
           {{ post.title }}
         </span>

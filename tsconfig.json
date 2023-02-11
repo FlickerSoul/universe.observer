@@ -21,7 +21,7 @@
     "src/**/*.vue",
     "components.d.ts",
     "auto-imports.d.ts",
-    "shims-vue.d.ts",
+    "shims-vue.d.ts"
   ],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["dist", "node_modules"]

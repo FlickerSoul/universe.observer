@@ -1,6 +1,7 @@
 {
   "extends": "@antfu",
   "rules": {
-    "@typescript-eslint/brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+    "@typescript-eslint/brace-style": ["error", "1tbs", { "allowSingleLine": true }],
+    "vue/max-len": ["error", { "code": 120 }]
   }
 }

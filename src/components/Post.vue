@@ -102,9 +102,17 @@ onMounted(() => {
     <div class="mb-12" />
 
     <article ref="content" class="post-content">
-      <div v-if="TOC" class="border border-solid border-current rounded box-content pa-1 cursor-pointer" style="width: max-content" @click="isTOCToggled = !isTOCToggled">
+      <div
+        v-if="TOC"
+        class="border border-solid border-current rounded box-content pa-1 cursor-pointer"
+        style="width: max-content"
+        @click="isTOCToggled = !isTOCToggled"
+      >
         TOC
-        <div class="inline-block i-mdi-arrow-down-right align-middle toc-icon" :class="{ 'toc-icon-up': isTOCToggled }" />
+        <div
+          class="inline-block i-mdi-arrow-down-right align-middle toc-icon"
+          :class="{ 'toc-icon-up': isTOCToggled }"
+        />
       </div>
       <slot />
     </article>
