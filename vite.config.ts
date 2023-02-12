@@ -19,6 +19,7 @@ import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import { slugify } from './scripts/slug'
+import { katexOptions } from './scripts/tex-defs'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -112,7 +113,7 @@ export default defineConfig({
           slugify,
           includeLevel: [1, 2, 3, 4],
         })
-        md.use(katex)
+        md.use(katex, katexOptions)
         md.use(sup)
         md.use(sub)
         md.use(mark)
