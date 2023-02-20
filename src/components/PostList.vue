@@ -8,7 +8,7 @@ import PostItem from './PostItem.vue'
 const router = useRouter()
 const posts: IListedPostData[] = router.getRoutes()
   .filter(route => route.path.startsWith('/posts/') && !route.path.endsWith('.html'))
-  .sort((a, b) => +new Date(a.meta.frontmatter.createdAt) - +new Date(b.meta.frontmatter.createdAt))
+  .sort((a, b) => -new Date(a.meta.frontmatter.createdAt) + +new Date(b.meta.frontmatter.createdAt))
   .map((route) => {
     return {
       path: route.path,
@@ -30,6 +30,10 @@ const displayedPosts = computed(() => {
       )
   })
 })
+
+function diffYear(a = '', b = '') {
+  return new Date(a).getFullYear() !== new Date(b).getFullYear()
+}
 </script>
 
 <template>
@@ -39,7 +43,17 @@ const displayedPosts = computed(() => {
         no posts yet, coming soon ...
       </div>
     </template>
-    <template v-for="post in displayedPosts" :key="post.path">
+    <template v-for="post, idx in displayedPosts" :key="post.path">
+      <div
+        v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))
+          && post.createdAt"
+      >
+        <div class="relative h20 pointer-prevent-none">
+          <span class="absolute font-bold mt-3 text-8rem left--1rem op-15">
+            {{ new Date(post.createdAt).getFullYear() }}
+          </span>
+        </div>
+      </div>
       <PostItem :post="post" class="mt-6" />
     </template>
   </TransitionGroup>
