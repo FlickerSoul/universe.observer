@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useCommStore } from '../store'
 import TagSelector from './TagSelector.vue'
 import type { IListedPostData } from './types'
 
+const router = useRouter()
 const comm = useCommStore()
 async function buildTags() {
-  useRouter().getRoutes()
+  router.getRoutes()
     .forEach((route: { meta: { frontmatter: IListedPostData } }) => {
       route.meta.frontmatter.tags?.forEach((tag: string) => {
         comm.pushTag(tag)
@@ -22,6 +23,20 @@ const tagToggleFlag = ref(false)
 function toggleTags() {
   tagToggleFlag.value = !tagToggleFlag.value
 }
+
+if (typeof router.currentRoute.value.query.tag === 'string')
+  comm.chooseTag(router.currentRoute.value.query.tag)
+else if (Array.isArray(router.currentRoute.value.query.tag))
+  router.currentRoute.value.query.tag.forEach((tag) => { comm.chooseTag(tag as string) })
+
+watch(() => comm.selectedTags, (newVal) => {
+  router.replace({
+    path: router.currentRoute.value.path, query: { tag: newVal },
+  })
+})
+
+if (comm.selectedTags.length > 0)
+  tagToggleFlag.value = true
 </script>
 
 <template>

@@ -8,6 +8,9 @@ export const useCommStore = defineStore('comm', {
     changeTag(tag: string, value: boolean) {
       this.tagList[tag] = value
     },
+    chooseTag(tag: string) {
+      this.changeTag(tag, true)
+    },
     pushTag(tag: string) {
       this.tagList[tag] = false
     },

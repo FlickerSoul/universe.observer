@@ -18,10 +18,22 @@ const model = computed({
 </script>
 
 <template>
-  <div class="tag-selector grid" style="grid-template-columns: max-content auto;">
-    <input v-model="model" type="checkbox" class="mr-2 align-middle">
-    <div class="break-words align-middle">
+  <button
+    class="tag-selector grid cursor"
+    style="grid-template-columns: max-content auto;"
+    @click="model = !model"
+  >
+    <div :class="model ? 'i-mdi-checkbox-marked-outline' : 'i-mdi-checkbox-blank-outline'" class="mr-2 align-middle" />
+    <div class="break-words align-middle text-sm">
       {{ tagName }}
     </div>
-  </div>
+  </button>
 </template>
+
+<style scoped lang="sass">
+.tag-selector
+  background-color: transparent
+  border: none
+  color: inherit
+  font: inherit
+</style>
