@@ -85,6 +85,7 @@ export default defineConfig({
       wrapperClasses: 'post-md-content',
       headEnabled: true,
       markdownItOptions: {
+        linkify: true,
         quotes: '""\'\'',
       },
       markdownItSetup(md) {

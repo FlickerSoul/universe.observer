@@ -9,9 +9,12 @@ const lambdaCalculusTypes = {
   '\\false': '\\texttt{false}',
   '\\arwt': '\\rightarrow',
   '\\inj': '\\iota',
-  '\\fst': '\\pi_1\\,#1',
-  '\\snd': '\\pi_2\\,#1',
   '\\proj': '\\pi',
+  '\\defsas': '\\Coloneqq',
+  '\\isubs': '/',
+  '\\subs': '\\mapsto',
+  '\\sgleval': '\\mapsto',
+  '\\muleval': '\\mapsto^*',
 }
 
 const lambdaCalculusOperations = {
@@ -24,6 +27,11 @@ const lambdaCalculusOperations = {
   '\\pred': '\\texttt{pred}(#1)',
   '\\iszero': '\\texttt{iszero}(#1)',
   '\\if': '\\texttt{if}(#1)\\, \\texttt{then}(#2)\\, \\texttt{else}(#3)',
+  '\\fst': '\\pi_1\\,#1',
+  '\\snd': '\\pi_2\\,#1',
+  '\\lc': '\\lambda #1.\\ #2',
+  '\\subi': '\\left[ #1 \\isubs #2 \\right]',
+  '\\irred': '\\texttt{irred}\\left(#1\\right)',
 }
 
 export const katexOptions: KatexOptions = {

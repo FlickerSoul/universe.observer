@@ -33,4 +33,3 @@ e &= v \mid x \mid \lambda x: \tau. e \mid \app{e_1}{e_2} \\
 $$
 
 The typing rules are defined as follows: 
-
