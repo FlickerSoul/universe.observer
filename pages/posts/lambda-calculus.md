@@ -109,6 +109,8 @@ $$
 \end{align}
 $$
 
+When interpreting the preceding rules, the first rule for example, given any substitution $\sigma[x \subs e_1]$ and a term $x$, we substitute $x$ with $e_1$ and then apply the rest of the substitution $\sigma$ on the substituted term following the same rules as before.
+
 </definition-block>
 
 <definition-block name="Alpha Equivalence">
@@ -128,3 +130,16 @@ Let $e$ be a term. If there exists a term $e'$ such that $e$ evaluates to $e'$ i
 Let $e$ be a term. If there does not exist a term $e'$ such that $e \sgleval e'$, we say $\irred{e}$.
 
 </definition-block>
+
+<definition-block name="Multi Step Evaluation">
+
+Let $e$ be a term. We define $\muleval$ to be the reflexive and transitive closure of $\sgleval$. That is, the smallest relation such that 
+
+1. if $e \sgleval e'$, then $e \muleval e'$,
+2. $e \muleval e$ for all $e$, and
+3. if $e \muleval e'$ and $e' \muleval e''$, then $e \muleval e''$. 
+
+We write $e \Downarrow e'$ if and only if $e \muleval e'$.
+
+</definition-block>
+
