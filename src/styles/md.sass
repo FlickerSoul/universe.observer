@@ -4,6 +4,11 @@ html
   div.shiki-container
     overflow-x: scroll
     width: 100%
+    & span.line
+      min-height: 1em
+    span.line:last-child
+      min-height: 0
+      height: 0
   pre.shiki
     border-radius: 1rem
     padding: 1.2rem 1rem
