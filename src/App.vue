@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head'
-import { onMounted } from 'vue'
 import NavBar from './components/NavBar.vue'
 import Footer from './components/Footer.vue'
-import { webVitals } from './logics/metrics'
 
 useHead({
   meta: [
@@ -12,8 +10,6 @@ useHead({
     { name: 'description', content: 'Larry Z\'s blog' },
   ],
 })
-
-onMounted(() => webVitals())
 </script>
 
 <template>

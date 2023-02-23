@@ -41,7 +41,6 @@ specifiers:
   vue: ^3.2.47
   vue-router: ^4.1.6
   vue-tsc: ^1.0.24
-  web-vitals: ^3.1.1
 
 dependencies:
   '@iconify-json/mdi': 1.1.46
@@ -74,7 +73,6 @@ dependencies:
   vue: 3.2.47
   vue-router: 4.1.6_vue@3.2.47
   vue-tsc: 1.0.24_typescript@4.9.5
-  web-vitals: 3.1.1
 
 devDependencies:
   '@akiravoid/markdown-it-sup': 1.0.2
@@ -5006,10 +5004,6 @@ packages:
     engines: {node: '>=14'}
     dependencies:
       xml-name-validator: 4.0.0
-    dev: false
-
-  /web-vitals/3.1.1:
-    resolution: {integrity: sha512-qvllU+ZeQChqzBhZ1oyXmWsjJ8a2jHYpH8AMaVuf29yscOPZfTQTjQFRX6+eADTdsDE8IanOZ0cetweHMs8/2A==}
     dev: false
 
   /webidl-conversions/7.0.0:
