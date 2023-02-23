@@ -1,5 +1,5 @@
 ---
-title: Subtract One With Only Bits Operation In C/++
+title: Subtract One With Only Bit Operations In C/++
 lang: en
 tags: 
   - C++
