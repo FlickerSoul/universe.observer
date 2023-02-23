@@ -82,7 +82,7 @@ $$
 \end{aligned}
 $$
 
-Therefore, if we know what $n - 1$ is, we can `&` it with the mask `0x1000_0000`.
+Therefore, if we know what $n - 1$ is, we can `|` it with the mask `0x1000_0000`.
 
 So how do we compute $n-1$ without arithmetic operations? Well, 
 

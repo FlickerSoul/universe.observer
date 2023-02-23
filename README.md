@@ -7,7 +7,7 @@ high school. WordPress was awesome. It has fancy GUI
 that allowed me edit header, footer, sidebars, etc. 
 without any coding knowledge. But the biggest complaint 
 I had was that it was too slow and the writing experience 
-was not smooth. By last blog has been taken down for quite 
+was not smooth. My last blog has been taken down for quite 
 a while now and the urge of writing has haunted me since then. 
 I need something simple, pretty, fast, and enjoyable to use. 
 This is my attempt to fill the hole. I want to write again. I 
