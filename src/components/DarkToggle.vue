@@ -6,8 +6,8 @@ function toggleDark() {
 </script>
 
 <template>
-  <a title="Toggle Dark Theme" style="cursor: pointer" @click="toggleDark">
+  <div class="inline-block" title="Toggle Dark Theme" style="cursor: pointer" @click="toggleDark">
     <div v-show="isDark" class="i-mdi-white-balance-sunny" />
     <div v-show="!isDark" class="i-mdi-moon-waning-crescent" />
-  </a>
+  </div>
 </template>
