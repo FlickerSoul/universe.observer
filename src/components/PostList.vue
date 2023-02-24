@@ -1,16 +1,11 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
 import { computed } from 'vue'
 import { useCommStore } from '../store'
+import { getVisiblePosts } from '../logics/get-posts'
 import type { IListedPostData } from './types'
 import PostItem from './PostItem.vue'
 
-const router = useRouter()
-const posts: IListedPostData[] = router.getRoutes()
-  .filter(route => route.path.startsWith('/posts/') && !route.path.endsWith('.html'))
-  .filter((route) => {
-    return route.meta.frontmatter.display === undefined ? route.meta.frontmatter.title : route.meta.frontmatter.display
-  })
+const posts: IListedPostData[] = getVisiblePosts()
   .sort((a, b) => -new Date(a.meta.frontmatter.createdAt) + +new Date(b.meta.frontmatter.createdAt))
   .map((route) => {
     return {
