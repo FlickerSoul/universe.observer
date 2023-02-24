@@ -5,6 +5,10 @@
     {
       "source": "/:slug*(.html)?",
       "destination": "/:slug.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ]
 }
