@@ -8,6 +8,9 @@ import PostItem from './PostItem.vue'
 const router = useRouter()
 const posts: IListedPostData[] = router.getRoutes()
   .filter(route => route.path.startsWith('/posts/') && !route.path.endsWith('.html'))
+  .filter((route) => {
+    return route.meta.frontmatter.display === undefined ? route.meta.frontmatter.title : route.meta.frontmatter.display
+  })
   .sort((a, b) => -new Date(a.meta.frontmatter.createdAt) + +new Date(b.meta.frontmatter.createdAt))
   .map((route) => {
     return {
@@ -43,7 +46,7 @@ function diffYear(a = '', b = '') {
         no posts yet, coming soon ...
       </div>
     </template>
-    <template v-for="post, idx in displayedPosts" :key="post.path">
+    <template v-for="(post, idx) in displayedPosts" :key="post.path">
       <div
         v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))
           && post.createdAt"

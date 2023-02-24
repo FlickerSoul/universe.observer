@@ -6,6 +6,7 @@ tags:
   - learning notes
 createdAt: 2023-02-11
 updatedAt: 2023-02-11
+display: false
 ---
 
 This post assumes that you are familiar with the [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus) and the [simply typed lambda calculus](https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus).
