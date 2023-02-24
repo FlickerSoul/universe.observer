@@ -19,14 +19,17 @@ const model = computed({
 
 <template>
   <button
-    class="tag-selector grid cursor"
+    class="tag-selector flex gap-1"
     style="grid-template-columns: max-content auto;"
     @click="model = !model"
   >
-    <div :class="model ? 'i-mdi-checkbox-marked-outline' : 'i-mdi-checkbox-blank-outline'" class="mr-2 align-middle" />
-    <div class="break-words align-middle text-sm">
+    <span
+      :class="model ? 'i-mdi-checkbox-marked-outline' : 'i-mdi-checkbox-blank-outline'"
+      class="align-middle cursor-pointer"
+    />
+    <span class="break-words align-middle text-sm">
       {{ tagName }}
-    </div>
+    </span>
   </button>
 </template>
 
