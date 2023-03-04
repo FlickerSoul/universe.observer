@@ -4,7 +4,7 @@ import type { PropType } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 import { useLangController } from '../logics/i18n'
-import { I18N_LANG_ATTR, SupportedLangs } from '../../scripts/markdown-i18n'
+import { I18N_LANG_ATTR, I18N_LANG_HIDDEN_CLASS, SupportedLangs } from '../../scripts/markdown-i18n'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
@@ -50,20 +50,11 @@ const langNodes = computed<{ [key in SupportedLangs]: NodeListOf<HTMLParagraphEl
 watch(langController.currentLang, (newValue, oldValue) => {
   if (langNodes.value) {
     Object.values(langNodes.value[newValue]).forEach((node) => {
-      node.classList.remove('hidden-lang')
+      node.classList.remove(I18N_LANG_HIDDEN_CLASS)
     })
     Object.values(langNodes.value[oldValue]).forEach((node) => {
-      node.classList.add('hidden-lang')
+      node.classList.add(I18N_LANG_HIDDEN_CLASS)
     })
-  }
-})
-onMounted(() => {
-  for (const [lang, nodes] of Object.entries(langNodes.value)) {
-    if (lang !== langController.currentLang.value) {
-      nodes.forEach((node) => {
-        node.classList.add('hidden-lang')
-      })
-    }
   }
 })
 

@@ -11,7 +11,7 @@ tags:
 
 @zh@ 买了两把 [yubico](https://www.yubico.com/) 的安全钥匙，把所有常用且关键的账号都加密。
 
-@en@ I got two security keys from [yubico](https://www.yubico.com/) and most of my important accounts with the keys. 
+@en@ I got two security keys from [yubico](https://www.yubico.com/) and paired most of my important accounts with the keys. 
 
 ![yubico key](./yubico-key.jpeg)
 
