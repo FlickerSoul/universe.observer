@@ -48,12 +48,12 @@ function diffYear(a = '', b = '') {
           && post.createdAt"
       >
         <div class="relative h20 pointer-prevent-none">
-          <span class="absolute font-bold mt-3 text-8rem left--1rem op-15">
+          <span class="absolute font-bold mt-4 text-7rem left--0.2rem op-15">
             {{ new Date(post.createdAt).getFullYear() }}
           </span>
         </div>
       </div>
-      <PostItem :post="post" class="mt-6" />
+      <PostItem :post="post" class="mt-12" />
     </template>
   </TransitionGroup>
 </template>
