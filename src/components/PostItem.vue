@@ -11,10 +11,15 @@ const { post } = defineProps<{ post: IListedPostData }>()
   <li>
     <router-link :to="post.path" class="post-item font-mono no-underline opacity-50 hover:opacity-75">
       <div>
-        <LangIndicator
-          v-bind="post"
-          class="align-middle text-xs border border-current border-solid rounded px-1 md:ml--10.5 mr2"
-        />
+        <div
+          class="align-middle text-xs px-1 md:ml--10.5 mr2 inline-flex gap-1 flex-row-reverse lang-indicator-long"
+        >
+          <LangIndicator
+            v-for="lang in (post.langs || [post.lang]).sort()"
+            :key="lang"
+            :lang="lang"
+          />
+        </div>
         <span class="align-middle title-text ml-0.4em">
           {{ post.title }}
         </span>
@@ -26,6 +31,8 @@ const { post } = defineProps<{ post: IListedPostData }>()
 </template>
 
 <style lang="sass" scoped>
+@use 'src/styles/variables' as v
+
 .title-text
   font-size: 1.2em
 .post-abstract
@@ -37,4 +44,6 @@ const { post } = defineProps<{ post: IListedPostData }>()
   font-size: 0.8em
 .post-meta
   margin-left: 0.6em
+.lang-indicator-long
+  width: v.$lang-indicator-width
 </style>

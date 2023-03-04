@@ -3,9 +3,12 @@ import { useRoute, useRouter } from 'vue-router'
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import { useLangController } from '../logics/i18n'
+import { I18N_LANG_ATTR, SupportedLangs } from '../../scripts/markdown-i18n'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
+import LangIndicator from './LangIndicator.vue'
 
 const { frontmatter } = defineProps({
   frontmatter: {
@@ -26,6 +29,43 @@ const TOC = computed(() => {
 })
 
 const isTOCToggled = ref<boolean>(false)
+
+// handle i18n language control
+const langController = useLangController()
+function handleLanguageChange(lang: string) {
+  if (lang in SupportedLangs)
+    langController.changeCurrentLang(lang)
+}
+const langNodes = computed<{ [key in SupportedLangs]: NodeListOf<HTMLParagraphElement> }>(() => {
+  return Object.fromEntries(
+    ((frontmatter?.langs || [frontmatter.lang]) as SupportedLangs[]).map(
+      (lang: SupportedLangs) => {
+        return [
+          lang,
+          content.value?.querySelectorAll(`p[${I18N_LANG_ATTR}=${lang}]`),
+        ]
+      },
+    )) as { [key in SupportedLangs]: NodeListOf<HTMLParagraphElement> }
+})
+watch(langController.currentLang, (newValue, oldValue) => {
+  if (langNodes.value) {
+    Object.values(langNodes.value[newValue]).forEach((node) => {
+      node.classList.remove('hidden-lang')
+    })
+    Object.values(langNodes.value[oldValue]).forEach((node) => {
+      node.classList.add('hidden-lang')
+    })
+  }
+})
+onMounted(() => {
+  for (const [lang, nodes] of Object.entries(langNodes.value)) {
+    if (lang !== langController.currentLang.value) {
+      nodes.forEach((node) => {
+        node.classList.add('hidden-lang')
+      })
+    }
+  }
+})
 
 watch(
   isTOCToggled,
@@ -91,6 +131,16 @@ onMounted(() => {
     <div v-if="frontmatter.subtitle" class="post-meta">
       {{ frontmatter.subtitle }}
     </div>
+    <div v-if="frontmatter.langs" class="post-meta text-sm mb-1 flex gap-3">
+      <LangIndicator
+        v-for="lang in [...frontmatter.langs].sort().reverse()"
+        :key="lang"
+        :lang="lang"
+        class="cursor-pointer"
+        :class="lang === langController.currentLang.value ? ['cursor-not-allowed', 'opacity-50'] : []"
+        @click="handleLanguageChange(lang)"
+      />
+    </div>
     <div class="post-meta post-date-wrapper">
       <PostDate v-bind="frontmatter" class="ma" />
     </div>
@@ -155,4 +205,6 @@ onMounted(() => {
 .toc-show
   height: auto
   overflow: visible
+p.hidden-lang
+  display: none
 </style>

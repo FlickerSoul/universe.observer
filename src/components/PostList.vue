@@ -15,6 +15,7 @@ const posts: IListedPostData[] = getVisiblePosts()
       abstract: route.meta.frontmatter.abstract,
       title: route.meta.frontmatter.title,
       lang: route.meta.frontmatter.lang,
+      langs: route.meta.frontmatter.langs,
       tags: route.meta.frontmatter.tags,
     }
   })

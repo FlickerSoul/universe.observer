@@ -20,6 +20,7 @@ import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import { slugify } from './scripts/slug'
 import { katexOptions } from './scripts/tex-defs'
+import markdownI18n from './scripts/markdown-i18n'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -118,6 +119,7 @@ export default defineConfig({
         md.use(sup)
         md.use(sub)
         md.use(mark)
+        md.use(markdownI18n)
       },
     }),
     components({

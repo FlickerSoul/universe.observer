@@ -10,7 +10,7 @@ const langDisplay = computed(() => {
     case 'en':
       return 'EN'
     case 'zh':
-      return '中文'
+      return '简'
     default:
       return '??'
   }
@@ -18,7 +18,13 @@ const langDisplay = computed(() => {
 </script>
 
 <template>
-  <span style="min-width: 25px;" class="inline-block text-center">
+  <span class="inline-block text-center lang-display border border-current border-solid rounded">
     {{ langDisplay }}
   </span>
 </template>
+
+<style lang="sass" scoped>
+@use 'src/styles/variables' as v
+span.lang-display
+  min-width: v.$lang-indicator-width
+</style>

@@ -4,6 +4,8 @@ html
   p.katex-block
     overflow-x: scroll
     padding: 0 1em
+  p img
+    width: 100%
   div.shiki-container
     overflow-x: scroll
     width: 100%
@@ -12,9 +14,7 @@ html
       min-height: 1em
   pre.shiki
     min-width: fit-content
-    padding: 1em 0
-    padding-left: 1.2em
-    padding-right: 1.5em
+    padding: 1em 1.5em 1em 1.2em
     margin: 0
     .highlighted
       background: v.$code-highlight-color
@@ -29,7 +29,7 @@ html
       // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
       counter-reset: step
       counter-increment: step calc(var(--start, 1) - 1)
-      & .line::before 
+      & .line::before
         content: counter(step)
         counter-increment: step
         width: 1em

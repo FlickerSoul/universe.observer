@@ -6,6 +6,7 @@ export interface IPostData {
   updatedAt?: string
   tags?: string[]
   lang?: string
+  langs?: string[]
   display?: boolean
 }
 
