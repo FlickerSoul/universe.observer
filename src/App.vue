@@ -15,9 +15,9 @@ useHead({
 </script>
 
 <template>
-  <NavBar />
+  <NavBar class="no-print" />
   <main>
     <router-view />
-    <Footer />
+    <Footer class="no-print" />
   </main>
 </template>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
@@ -16,7 +16,6 @@ const { frontmatter } = defineProps({
     required: true,
   },
 })
-const route = useRoute()
 const router = useRouter()
 const content = ref<HTMLDivElement>()
 
@@ -166,17 +165,6 @@ onMounted(() => {
       </div>
       <slot />
     </article>
-
-    <hr>
-
-    <div v-if="route.path !== '/'" class="my-8">
-      <router-link
-        :to="route.path.split('/').slice(0, -1).join('/') || '/'"
-        class="font-mono no-underline opacity-50 hover:opacity-90"
-      >
-        cd ..
-      </router-link>
-    </div>
   </div>
 </template>
 
