@@ -47,6 +47,15 @@ const langNodes = computed<{ [key in SupportedLangs]: NodeListOf<HTMLParagraphEl
       },
     )) as { [key in SupportedLangs]: NodeListOf<HTMLParagraphElement> }
 })
+watch(langNodes, (newValue) => {
+  Object.entries(newValue).forEach(([lang, nodes]) => {
+    if (lang !== langController.currentLang.value) {
+      nodes.forEach((node) => {
+        node.classList.add(I18N_LANG_HIDDEN_CLASS)
+      })
+    }
+  })
+})
 watch(langController.currentLang, (newValue, oldValue) => {
   if (langNodes.value) {
     Object.values(langNodes.value[newValue]).forEach((node) => {

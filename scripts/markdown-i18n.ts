@@ -14,17 +14,11 @@ export enum SupportedLangs {
 }
 
 export interface MdI18nOptions {
-  defaultLang?: SupportedLangs
 }
 
 const LANG_REGEX = /[a-z]+-?[a-z]+/
 
 export default function (md: MarkdownIt, options: MdI18nOptions = undefined) {
-  options = {
-    defaultLang: SupportedLangs.en,
-    ...(options || {}),
-  }
-
   function parseI18nParagraph(state: StateBlock, startLine: number/* , endLine */) {
     let terminate
     let i
@@ -107,8 +101,6 @@ export default function (md: MarkdownIt, options: MdI18nOptions = undefined) {
     if (lang !== undefined) {
       token.attrs.push([I18N_LANG_ATTR, lang])
       content = content.replace(`@${lang}@`, '')
-      if (lang !== options.defaultLang)
-        token.attrs.push(['class', I18N_LANG_HIDDEN_CLASS])
     }
 
     token = state.push('inline', '', 0)
