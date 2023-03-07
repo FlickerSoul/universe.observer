@@ -19,7 +19,7 @@ import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import { slugify } from './scripts/slug'
-import { katexOptions } from './scripts/tex-defs'
+import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import markdownI18n from './scripts/markdown-i18n'
 
 // https://vitejs.dev/config/
@@ -43,6 +43,11 @@ export default defineConfig({
     vue({
       include: [/\.vue$/, /\.md$/],
       reactivityTransform: true,
+      template: {
+        compilerOptions: {
+          isCustomElement: checkCustomComponent,
+        },
+      },
     }),
     // unocss styling
     unocss({

@@ -40,3 +40,16 @@ export const katexOptions: KatexOptions = {
     ...lambdaCalculusOperations,
   },
 }
+
+const KATEX_COMPONENTS = [
+  'math', 'semantics', 'mrow',
+  'mi', 'mo', 'annotation',
+  'msub', 'mtext', 'mn',
+  'mtable', 'mtr', 'mtd',
+  'mstyle', 'big', 'msup',
+  'munder', 'mover',
+]
+
+export function checkCustomComponent(tag: string) {
+  return KATEX_COMPONENTS.includes(tag)
+}
