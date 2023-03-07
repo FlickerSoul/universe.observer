@@ -9,24 +9,27 @@ const { post } = defineProps<{ post: IListedPostData }>()
 
 <template>
   <li>
-    <router-link :to="post.path" class="post-item font-mono no-underline opacity-50 hover:opacity-75">
-      <div>
-        <div
-          class="align-middle px-1 md:ml--10.5 mr1.5 inline-flex gap-2 md:flex-row-reverse lang-indicator-long flex-col"
+    <div class="post-item font-mono no-underline ">
+      <div
+        class="align-middle px-1 md:ml--10.5 mr1.5 inline-flex gap-2 md:flex-row-reverse lang-indicator-long flex-col"
+      >
+        <router-link
+          v-for="lang in (post.langs || [post.lang]).sort()"
+          :key="lang"
+          class="border-none hover:border-none opacity-50 hover:opacity-75"
+          :to="{ path: post.path, query: { lang } }"
         >
-          <LangIndicator
-            v-for="lang in (post.langs || [post.lang]).sort()"
-            :key="lang"
-            :lang="lang"
-          />
-        </div>
+          <LangIndicator :lang="lang" />
+        </router-link>
+      </div>
+      <router-link :to="post.path" class="border-none hover:border-none opacity-50 hover:opacity-75">
         <span class="align-middle text-1.4em ml-0.4em">
           {{ post.title }}
         </span>
         <PostAbstract v-if="post.abstract" :abstract="post.abstract" class="post-abstract post-meta" />
         <PostDate v-bind="post" class="post-dates post-meta" />
-      </div>
-    </router-link>
+      </router-link>
+    </div>
   </li>
 </template>
 

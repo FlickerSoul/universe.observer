@@ -31,6 +31,12 @@ const isTOCToggled = ref<boolean>(false)
 
 // handle i18n language control
 const langController = useLangController()
+
+if (router.currentRoute.value.query.lang) {
+  handleLanguageChange(router.currentRoute.value.query.lang as string)
+  router.replace({ query: { ...router.currentRoute.value.query, lang: undefined } })
+}
+
 function handleLanguageChange(lang: string) {
   if (lang in SupportedLangs)
     langController.changeCurrentLang(lang)
