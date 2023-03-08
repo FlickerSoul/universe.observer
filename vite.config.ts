@@ -142,4 +142,8 @@ export default defineConfig({
       },
     },
   },
+  // @ts-expect-error ssg option is allowed
+  ssgOptions: {
+    formatting: 'minify',
+  },
 })
