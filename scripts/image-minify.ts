@@ -19,47 +19,36 @@ function calculateRatio(original, compressed) {
   return fs.statSync(compressed).size / fs.statSync(original).size
 }
 
-interface ICompressedStat { filePath: string; ratio: number }
-
 async function shrinkImagesInDir(dirPath: string) {
-  let compressed: ICompressedStat[] = []
   console.log('👓', dirPath)
 
   for (const dirent of fs.readdirSync(dirPath, { withFileTypes: true })) {
     if (dirent.isDirectory()) {
-      compressed = compressed.concat(await shrinkImagesInDir(path.join(dirPath, dirent.name)))
+      await shrinkImagesInDir(path.join(dirPath, dirent.name))
     } else if (dirent.isFile()) {
       const filePath = path.join(dirPath, dirent.name)
       const parsed = path.parse(filePath)
       const originalPath = path.join(parsed.dir, `${parsed.name}-original${parsed.ext}`)
-      if (IMAGE_EXTENSIONS.has(parsed.ext)) {
+
+      // check if it's an image file original and if it's not already compressed
+      if (IMAGE_EXTENSIONS.has(parsed.ext) && !ORIGINAL_REGEX.test(filePath)) {
         console.log('🏞️', dirent.name)
-        if (!ORIGINAL_REGEX.test(filePath) && !fs.existsSync(originalPath)) {
+
+        // check if the original file exists or not
+        if (!fs.existsSync(originalPath)) {
+          // copy the file to -original file
           fs.copyFileSync(filePath, originalPath)
+          // compress with tiny png
           const source = tinify.fromFile(filePath)
           await source.toFile(filePath)
-          compressed.push({ filePath, ratio: calculateRatio(originalPath, filePath) })
-          console.log('✅', 'compressed')
+          // log the result
+          console.log('✅', ' compressed', 'ratio:', `${calculateRatio(originalPath, filePath) * 100}%`)
         } else {
-          console.log('❌', 'already compressed')
+          console.log('❌', ' already compressed')
         }
       }
     }
   }
-  return compressed
 }
 
-function print_result(result: ICompressedStat[]) {
-  console.log('compressed images:')
-  if (result.length === 0) {
-    console.log('none')
-  } else {
-    result.forEach((stat) => {
-      console.log(stat.filePath, 'ratio:', stat.ratio)
-    })
-
-    throw new Error('Images compressed, please commit the changes')
-  }
-}
-
-print_result(await shrinkImagesInDir(PAGE_DIR))
+await shrinkImagesInDir(PAGE_DIR)
