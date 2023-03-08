@@ -32,3 +32,6 @@ test_*.md
 
 # env file
 .env
+
+# image compressed compiled js
+scripts/image-minify.js
