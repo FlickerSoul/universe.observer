@@ -42,6 +42,7 @@ export default defineConfig({
     // vue
     vue({
       include: [/\.vue$/, /\.md$/],
+      isProduction: process.env.VUE_PROD === 'true',
       reactivityTransform: true,
       template: {
         compilerOptions: {
