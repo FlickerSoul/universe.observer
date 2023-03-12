@@ -78,6 +78,7 @@ export default defineConfig({
     pages({
       extensions: ['vue', 'md'],
       dirs: ['pages'],
+      exclude: ['**/components/*.vue'],
       extendRoute(route) {
         const path = resolve(__dirname, route.component.slice(1))
         const md = fs.readFileSync(path, 'utf-8')
