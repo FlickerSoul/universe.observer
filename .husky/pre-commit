@@ -1,3 +1,2 @@
 #!/usr/bin/env sh
-tsc scripts/image-minify.ts -t esnext -m esnext --moduleResolution node
-node scripts/image-minify.js
+pnpm tsc scripts/image-minify.ts -t esnext -m esnext --moduleResolution node && node scripts/image-minify.js
