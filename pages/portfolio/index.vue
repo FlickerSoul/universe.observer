@@ -30,7 +30,7 @@ const contentItems: IContentItem[] = [
   <div class="portfolio-wrapper flex mx-auto content-center mt-5 gap-3">
     <div class="info-sec">
       <div class="mb-5">
-        <img src="./head.JPG" class="h-70% w-70% ma border-rd-50%"/>
+        <img src="./head.jpg" class="h-70% w-70% ma border-rd-50%"/>
       </div>
       <div class="mb-2 text-10">
         Larry Z.
