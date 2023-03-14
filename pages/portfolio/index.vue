@@ -62,6 +62,14 @@ const contentItems: IContentItem[] = [
     techStack: [TechItems.Python, TechItems.CPP, TechItems.bison, TechItems.flex],
   },
   {
+    title: 'Graphics',
+    descriptions: [
+      'Implemented <a href="https://flickersoul.github.io/bezier-funhouse/" target="_blank">a ray-casting mirror scene</a> with GLSL.',
+      'Implemented a cloth physics simulation scene in WebGL',
+    ],
+    techStack: [TechItems.WebGL, TechItems.GLSL, TechItems.JavaScript],
+  },
+  {
     title: 'Teaching Assistant & Grader',
     descriptions: [
       'MATH 121 -- Intro to Analysis',

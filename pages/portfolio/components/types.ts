@@ -18,6 +18,7 @@ interface HasEndDate extends HasStartDate {
 export enum TechItems {
   Vue = 'Vue',
   TypeScript = 'TypeScript',
+  JavaScript = 'JavaScript',
   Python = 'Python',
   Django = 'Django',
   ORM = 'ORM',
@@ -26,6 +27,7 @@ export enum TechItems {
   CPP = 'C/++',
   Rust = 'Rust',
   GLSL = 'GLSL',
+  WebGL = 'WebGL',
   flex = 'flex',
   bison = 'bison',
   Latex = 'Latex',
