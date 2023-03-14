@@ -120,7 +120,7 @@ const skillSets: ISkillSection[] = [
       <div class="cv-info-avatar mb-5">
         <img src="./head.jpg" class="h-80% w-80% ma border-rd-50%">
       </div>
-      <div class="mb-2 text-10 cv-info-name">
+      <div class="mb-1 text-10 cv-info-name serif-font">
         Larry Zeng
       </div>
       <div class="cv-info-items">
@@ -141,7 +141,7 @@ const skillSets: ISkillSection[] = [
         <ContentItem
           v-for="content in contentItems"
           :key="content.title"
-          class="mb-2"
+          class="mb-2 ml-3"
           :content="content"
         />
       </div>
@@ -153,6 +153,7 @@ const skillSets: ISkillSection[] = [
           v-for="skills in skillSets"
           :key="skills.name"
           :skills="skills"
+          class="ml-3"
         />
       </div>
     </div>
@@ -164,11 +165,15 @@ $breakpoint-md: 1024px
 
 .serif-font
   font-family: Georgia,'Times New Roman',Times,serif
+
 .section-title
-  --at-apply: "serif-font text-7 leading-none mb-3 border-0 border-b border-style-solid"
+  @extend .serif-font
+  --at-apply: "text-7 leading-none mb-3 border-0 border-b border-style-solid"
 ul
   margin-block-start: 0.5em
   line-height: 1.5em
+div[class$=sec]
+  margin-bottom: 2em
 
 @media screen and (min-width: $breakpoint-md)
   .portfolio-wrapper
