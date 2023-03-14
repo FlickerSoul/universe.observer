@@ -8,19 +8,19 @@ const { content } = defineProps<{
 
 <template>
   <div>
-    <div class="mb-2">
-      <div class="text-7 serif-font leading-none">
+    <div class="mb-1">
+      <div class="text-5 serif-font leading-none cv-content-title">
         {{ content.title }}
       </div>
       <div v-if="content.startDate">
         <span> {{ content.startDate }} </span>  <span v-if="content.endDate"> -- {{ content.endDate }} </span>
       </div>
     </div>
-    <div v-if="content.role || content.url" class="flex flex-row" style="justify-content: space-between;">
+    <div v-if="content.role || content.url" class="flex flex-row leading-none" style="justify-content: space-between;">
       <div>
         {{ content.role }}
       </div>
-      <div v-if="content.url">
+      <div v-if="content.url" class="text-3">
         <a :href="content.url" target="_blank">{{ content.url }}</a>
       </div>
     </div>
