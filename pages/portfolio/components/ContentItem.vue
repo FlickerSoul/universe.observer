@@ -17,14 +17,14 @@ const { content } = defineProps<{
       </div>
     </div>
     <div v-if="content.role || content.url" class="flex flex-row leading-none" style="justify-content: space-between;">
-      <div>
+      <div class="text-3.5">
         {{ content.role }}
       </div>
-      <div v-if="content.url" class="text-3">
+      <div v-if="content.url" class="text-3.5">
         <a :href="content.url" target="_blank">{{ content.url }}</a>
       </div>
     </div>
-    <div v-if="content.techStack" class="text-sm font-mono">
+    <div v-if="content.techStack" class="font-mono text-3.5">
       {{ content.techStack.join("\u2009|\u2009") }}
     </div>
     <div>

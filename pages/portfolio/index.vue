@@ -59,7 +59,7 @@ const contentItems: IContentItem[] = [
       'Autograder infrastructure for <a href="https://gradescope.com/">gradescope</a>',
       'Automated testing with GitHub Actions',
     ],
-    techStack: [TechItems.Python],
+    techStack: [TechItems.Python, TechItems.GitHubCICD],
   },
   {
     title: 'PL and Compiler',
@@ -168,7 +168,7 @@ $breakpoint-md: 1024px
   --at-apply: "serif-font text-7 leading-none mb-3 border-0 border-b border-style-solid"
 ul
   margin-block-start: 0.5em
-  line-height: 1.25em
+  line-height: 1.5em
 
 @media screen and (min-width: $breakpoint-md)
   .portfolio-wrapper
@@ -212,7 +212,7 @@ ul
     flex-direction: column
     gap: .5rem
     ul
-      line-height: 1rem
+      line-height: 1.25rem
     .info-sec
       display: flex
       font-size: 1rem

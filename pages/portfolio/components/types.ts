@@ -32,7 +32,7 @@ export enum TechItems {
   flex = 'flex',
   bison = 'bison',
   Latex = 'Latex',
-  GitHubCI = 'GitHub CI',
+  GitHubCICD = 'GitHub CICD',
 }
 
 interface _IContentItem {
