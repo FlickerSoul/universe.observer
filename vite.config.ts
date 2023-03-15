@@ -77,7 +77,7 @@ export default defineConfig({
     // handling markdown and vue pages routing
     pages({
       extensions: ['vue', 'md'],
-      dirs: ['pages'],
+      dirs: ['pages', 'toys'],
       exclude: ['**/components/*.vue'],
       extendRoute(route) {
         const path = resolve(__dirname, route.component.slice(1))
