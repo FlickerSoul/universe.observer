@@ -112,7 +112,7 @@ function createFaceAlphaTexture(options = { width: 1028, height: 1028 }) {
   const size = width * height
   const data = new Uint8Array(4 * size)
   const START_ALPHA = Math.floor(
-    255 * 2 / 3,
+    255 * 4 / 5,
   )
 
   function ratioPipeline(radius: number, dist: number) {
@@ -149,17 +149,27 @@ function createStats(anchor: HTMLElement) {
   return stats
 }
 
-function addAxis(scene: THREE.Scene) {
+function makeAxes() {
   const axis = new THREE.AxesHelper(5)
-  scene.add(axis)
+  axis.visible = false
+  return axis
 }
 
 let time = 0
 const SPIN_INFO = {
   maxAngle: 10,
   speedCoef: 1 / 10,
-  timeStep: 0.2,
-} as const
+  timeStep: 0.1,
+  get axis() {
+    return this._axis
+  },
+  set axis(v: boolean) {
+    this._axis = v
+    this._axisHelper.visible = v
+  },
+  _axis: false,
+  _axisHelper: makeAxes(),
+}
 const ANGLE_PLACEMENT_RANGE = [0, Math.PI * 2, 0.01] as const
 
 enum Colors {
@@ -209,7 +219,7 @@ export function main(anchor: HTMLElement) {
   const [cam, control] = createCamera(anchor, renderer.domElement)
   const light = createAmbientLight(scene)
   const gui = createGUI(anchor)
-  // addAxis(scene)
+  scene.add(SPIN_INFO._axisHelper)
 
   const GLASS_SIZE = [1, 1, 0.01, 128, 5] as Parameters<typeof createCylinder>[1]
   const greenCyl = createCylinder(0x00FF00, GLASS_SIZE)
@@ -243,6 +253,17 @@ export function main(anchor: HTMLElement) {
   spinFolder.add(SPIN_INFO, 'maxAngle', 0, 360)
   spinFolder.add(SPIN_INFO, 'speedCoef', 0, 1, 0.001)
   spinFolder.add(SPIN_INFO, 'timeStep', 0, 2, 0.01)
+  spinFolder.add(SPIN_INFO, 'axis')
+  spinFolder.add({
+    resetTime: () => {
+      time = 0
+    },
+  }, 'resetTime')
+  spinFolder.add({
+    resetCam: () => {
+      cam.position.set(...CAMERA_POSITION)
+    },
+  }, 'resetCam')
 
   const lightFolder = gui.addFolder('Light')
   lightFolder.open()
