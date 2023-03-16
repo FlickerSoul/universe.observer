@@ -12,14 +12,23 @@
     "lib": ["ESNext", "DOM"],
     "skipLibCheck": true,
     "noEmit": true,
-    "types": ["vite/client", "vite-plugin-pages/client", "@akiravoid/markdown-it-sup"]
+    "types": ["vite/client", "vite-plugin-pages/client", "@akiravoid/markdown-it-sup"],
+    "baseUrl": ".",
+    "paths": {
+      "~/*": ["src/*"],
+    }
   },
   "include": [
     "src/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "shims-vue.d.ts"
+    "shims-vue.d.ts",
+    "pages/**/*.vue",
+    "pages/**/*.md",
+    "projects/**/*.vue",
+    "projects/**/*.md",
+    "projects/**/*.ts",
   ],
   "references": [{ "path": "./tsconfig.node.json" }],
   "exclude": ["dist", "node_modules"]

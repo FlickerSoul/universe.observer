@@ -41,17 +41,20 @@ if (comm.selectedTags.length > 0)
 </script>
 
 <template>
-  <div class="tags w-90% py-2 px-7 font-mono lt-md:pl-4">
-    <div
-      class="align-middle inline-block border border-style-solid border-current rounded
+  <div
+    class="tags w-90% py-2 px-7 font-mono lt-md:pl-4"
+  >
+    <div class="cursor-pointer" style="width: max-content;" @click="toggleTags">
+      <div
+        class="align-middle inline-block border border-style-solid border-current rounded
       text-xs py-0.5 px-1 md:ml--7.5 mr2"
-      @click="toggleTags"
-    >
-      <div class="i-mdi-chevron-down cursor-pointer tags-arrow" :class="{ 'rotate-arrow': tagToggleFlag }" />
+      >
+        <div class="i-mdi-chevron-down tags-arrow" :class="{ 'rotate-arrow': tagToggleFlag }" />
+      </div>
+      <span class="pb-3">
+        Tags:
+      </span>
     </div>
-    <span class="pb-3">
-      Tags:
-    </span>
     <div class="tags-check-boxes" :class="{ 'tags-check-boxes-closed': !tagToggleFlag }">
       <div class="grid px-3 mt-4 grid-cols-3 lt-md:grid-cols-2">
         <TagSelector v-for="tag in comm.tags" :key="tag" :tag-name="tag" class="tag-check-box" />
