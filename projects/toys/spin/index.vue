@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
+import { useHead } from '@vueuse/head'
+
+useHead({
+  title: 'Spin',
+})
 
 const lines = `
 The world spins around in shades of green,
@@ -28,13 +33,8 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
 
 <template>
   <div class="post-center">
-    <div class="mb-3">
-      <h1>Spin</h1>
-      <p v-for="(line, i) in lines" :key="i" class="font-mono my-1 leading-none">
-        {{ line }}
-      </p>
-    </div>
-    <div>
+    <h1>Spin</h1>
+    <div class="mb-10">
       <ClientOnly>
         <Graphics />
         <template #placeholder>
@@ -44,5 +44,13 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
         </template>
       </ClientOnly>
     </div>
+    <p i18n-lang="en">
+      This is a humble simulation of
+      <a href="https://www.instagram.com/reel/CodaAl9jhEt/" target="_blank">this post</a>.
+      The simulation looks cool but still far from the reality. Trying to figure out how to make it look better.
+    </p>
+    <p v-for="(line, i) in lines" :key="i" class="font-mono my-1 leading-none">
+      {{ line }}
+    </p>
   </div>
 </template>

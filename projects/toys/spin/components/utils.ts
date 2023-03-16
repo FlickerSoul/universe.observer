@@ -58,6 +58,7 @@ function createCylinder(
     // reflectivity: 0.5,
     vertexColors: false,
     emissive: color,
+    transmission: 1,
     side: THREE.DoubleSide,
   })
   const matDown = createPhysicalMaterial({
@@ -69,7 +70,7 @@ function createCylinder(
     roughness: 0.2,
     reflectivity: 0.5,
     vertexColors: false,
-    emissive: 1,
+    transmission: 1,
     side: THREE.DoubleSide,
   })
   const matSide = createPhysicalMaterial({
@@ -80,6 +81,7 @@ function createCylinder(
     opacity: 0.1,
     roughness: 0.2,
     reflectivity: 0.5,
+    transmission: 1,
     side: THREE.DoubleSide,
   })
   const cyl = new THREE.Mesh(geo, [matSide, matUp, matDown])
@@ -237,6 +239,7 @@ export function main(anchor: HTMLElement) {
     cyl.translateZ(GLASS_SHIFT * i)
     cyl.rotateX(Math.PI / 2)
     cyl.updateMatrix()
+    cyl.renderOrder = i
   })
 
   window.addEventListener('resize', windowResize(anchor, cam, renderer, gui))
@@ -262,6 +265,7 @@ export function main(anchor: HTMLElement) {
   spinFolder.add({
     resetCam: () => {
       cam.position.set(...CAMERA_POSITION)
+      cam.lookAt(0, 0, 0)
     },
   }, 'resetCam')
 
