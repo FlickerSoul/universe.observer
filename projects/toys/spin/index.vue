@@ -1,8 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { main } from './utils'
-
-const canvasContainer = ref()
+import { defineAsyncComponent } from 'vue'
 
 const lines = `
 The world spins around in shades of green,
@@ -26,9 +23,7 @@ Each hue a brushstroke, endlessly ranging,
 Composed upon the soul, a never-ending painting.
 `.split('\n')
 
-onMounted(() => {
-  main(canvasContainer.value)
-})
+const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
 </script>
 
 <template>
@@ -40,12 +35,14 @@ onMounted(() => {
       </p>
     </div>
     <div>
-      <div id="canvasContainer" ref="canvasContainer" class="ma" style="position: relative;" />
+      <ClientOnly>
+        <Graphics />
+        <template #placeholder>
+          <div>
+            Loading...
+          </div>
+        </template>
+      </ClientOnly>
     </div>
   </div>
 </template>
-
-<style lang="sass">
-#canvasContainer
-  aspect-ratio: 1/1
-</style>
