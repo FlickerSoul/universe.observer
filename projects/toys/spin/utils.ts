@@ -193,6 +193,15 @@ function computePosition(cyls: { [key in Colors]: THREE.Mesh }) {
   })
 }
 
+function windowResize(anchor: HTMLElement, camera: THREE.PerspectiveCamera, renderer: THREE.WebGLRenderer, gui: GUI) {
+  return () => {
+    camera.aspect = anchor.clientWidth / anchor.clientHeight
+    camera.updateProjectionMatrix()
+    renderer.setSize(anchor.clientWidth, anchor.clientHeight)
+    gui.width = anchor.clientWidth
+  }
+}
+
 export function main(anchor: HTMLElement) {
   const stats = createStats(anchor)
   const scene = createScene()
@@ -203,11 +212,11 @@ export function main(anchor: HTMLElement) {
   // addAxis(scene)
 
   const GLASS_SIZE = [1, 1, 0.01, 128, 5] as Parameters<typeof createCylinder>[1]
-  const yellowCyl = createCylinder(0xFFFF00, GLASS_SIZE)
+  const greenCyl = createCylinder(0x00FF00, GLASS_SIZE)
   const redCyl = createCylinder(0xFF0000, GLASS_SIZE)
   const blueCyl = createCylinder(0x0000FF, GLASS_SIZE)
 
-  const cyls = { [Colors.blue]: blueCyl, [Colors.red]: redCyl, [Colors.yellow]: yellowCyl }
+  const cyls = { [Colors.blue]: blueCyl, [Colors.red]: redCyl, [Colors.yellow]: greenCyl }
   const GLASS_DISTANCE = 0.01
   const GLASS_SHIFT = 0.1
 
@@ -219,6 +228,8 @@ export function main(anchor: HTMLElement) {
     cyl.rotateX(Math.PI / 2)
     cyl.updateMatrix()
   })
+
+  window.addEventListener('resize', windowResize(anchor, cam, renderer, gui))
 
   // make gui
   const positionFolder = gui.addFolder('Angle')

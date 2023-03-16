@@ -21,6 +21,10 @@ import DarkToggle from './DarkToggle.vue'
           <span class="lt-md:hidden">Posts</span>
           <div class="md:hidden i-mdi-book-settings-outline nav-icon " />
         </router-link>
+        <router-link to="/toys">
+          <span class="lt-md:hidden">Toys</span>
+          <div class="md:hidden i-mdi-nintendo-game-boy nav-icon" />
+        </router-link>
         <router-link to="/portfolio">
           <span class="lt-md:hidden">Portfolio</span>
           <div class="md:hidden i-mdi-briefcase-outline nav-icon" />
