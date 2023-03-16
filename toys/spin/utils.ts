@@ -8,7 +8,6 @@ const CAMERA_POSITION = [0, 0, 3] as const
 function createScene() {
   const scene = new THREE.Scene()
   scene.background = new THREE.Color(0xFFFFFF)
-  scene.add(createAmbientLight())
   return scene
 }
 
@@ -16,7 +15,8 @@ function createGUI(anchor: HTMLElement) {
   const gui = new GUI(
     { name: 'Spin Control', autoPlace: false, width: anchor.clientWidth },
   )
-  anchor.appendChild(gui.domElement)
+  gui.domElement.style.margin = 'auto'
+  anchor.parentElement?.appendChild(gui.domElement)
 
   return gui
 }
@@ -38,6 +38,7 @@ function createRenderer(anchor: HTMLElement) {
   })
   renderer.physicallyCorrectLights = true
   renderer.setSize(anchor.clientWidth, anchor.clientHeight)
+  renderer.setPixelRatio(window.devicePixelRatio)
   anchor.appendChild(renderer.domElement)
   return renderer
 }
@@ -56,7 +57,7 @@ function createCylinder(
     roughness: 0.8,
     // reflectivity: 0.5,
     vertexColors: false,
-    emissive: 1,
+    emissive: color,
     side: THREE.DoubleSide,
   })
   const matDown = createPhysicalMaterial({
@@ -85,36 +86,10 @@ function createCylinder(
   return cyl
 }
 
-function createAmbientLight() {
-  const light = new THREE.AmbientLight(0xFFFFFF, 0.5)
+function createAmbientLight(scene: THREE.Scene) {
+  const light = new THREE.AmbientLight(0xFFFFFF, 2)
+  scene.add(light)
   return light
-}
-
-function createPointLight() {
-  const light = new THREE.PointLight(0xFFFFFF, 20, 0, 1)
-  const helper = new THREE.PointLightHelper(light, 0.1, 0xFF0000)
-  light.position.set(0, 0, 5)
-  return [light, helper]
-}
-
-function createSpotLight() {
-  const light = new THREE.SpotLight(0xFFFFFF, 20, 0, Math.PI / 3, 0, 2)
-  light.castShadow = true
-  light.position.set(0, 0, 5)
-  light.target.position.set(0, 0, 0)
-  const helper = new THREE.SpotLightHelper(light, 0xFF0000)
-  return [light, helper]
-}
-
-function createDirectionalLight(
-  position: [number, number, number],
-  target: THREE.Object3D,
-): [THREE.DirectionalLight, THREE.DirectionalLightHelper] {
-  const light = new THREE.DirectionalLight(0xFFFFFF, 1.5)
-  light.position.set(...position)
-  light.target = target
-  const helper = new THREE.DirectionalLightHelper(light, 1)
-  return [light, helper]
 }
 
 function createCylinderGeometry(options: ConstructorParameters<typeof THREE.CylinderGeometry> = []) {
@@ -174,20 +149,18 @@ function createStats(anchor: HTMLElement) {
   return stats
 }
 
-function spin(cyls: THREE.Mesh[], axis: THREE.Vector3, speed: number) {
-  cyls.forEach((cyl) => {
-    cyl.rotateOnAxis(axis, speed)
-  })
-}
-
 function addAxis(scene: THREE.Scene) {
   const axis = new THREE.AxesHelper(5)
   scene.add(axis)
 }
 
-const ANGLE_PLACEMENT_RANGE = [-30, 30] as const
-const LIGHT_PLACEMENT_RANGE = [-10, 10] as const
-const INTENSITY_RANGE = [0, 100000] as const
+let time = 0
+const SPIN_INFO = {
+  maxAngle: 10,
+  speedCoef: 1 / 10,
+  timeStep: 0.2,
+} as const
+const ANGLE_PLACEMENT_RANGE = [0, Math.PI * 2, 0.01] as const
 
 enum Colors {
   blue = 'blue',
@@ -195,21 +168,26 @@ enum Colors {
   yellow = 'yellow',
 }
 
-const angles: { [key in Colors]: number } = {
-  [Colors.blue]: 0,
-  [Colors.red]: 0,
-  [Colors.yellow]: 0,
-}
-
+const START_ANGLE: { [key in Colors]: number } = {
+  [Colors.blue]: Math.random() * Math.PI * 2,
+  [Colors.red]: Math.random() * Math.PI * 2,
+  [Colors.yellow]: Math.random() * Math.PI * 2,
+} as const
 const rotateRadius = 3
 
 function degreeToRadian(angle: number) {
   return angle * Math.PI / 180
 }
 
+function computeAngle(time: number, color: Colors) {
+  return SPIN_INFO.maxAngle * Math.cos(Math.PI / 2 + time * Math.PI * SPIN_INFO.speedCoef + START_ANGLE[color])
+}
+
 function computePosition(cyls: { [key in Colors]: THREE.Mesh }) {
+  time += SPIN_INFO.timeStep
+
   Object.entries(cyls).forEach(([color, cyl]) => {
-    const angle = angles[color as Colors]
+    const angle = computeAngle(time, color as Colors)
     cyl.position.setX(rotateRadius * Math.sin(degreeToRadian(angle)))
     cyl.position.setY(rotateRadius - rotateRadius * Math.cos(degreeToRadian(angle)))
   })
@@ -218,11 +196,11 @@ function computePosition(cyls: { [key in Colors]: THREE.Mesh }) {
 export function main(anchor: HTMLElement) {
   const stats = createStats(anchor)
   const scene = createScene()
-  addAxis(scene)
   const renderer = createRenderer(anchor)
   const [cam, control] = createCamera(anchor, renderer.domElement)
-
+  const light = createAmbientLight(scene)
   const gui = createGUI(anchor)
+  // addAxis(scene)
 
   const GLASS_SIZE = [1, 1, 0.01, 128, 5] as Parameters<typeof createCylinder>[1]
   const yellowCyl = createCylinder(0xFFFF00, GLASS_SIZE)
@@ -242,30 +220,23 @@ export function main(anchor: HTMLElement) {
     cyl.updateMatrix()
   })
 
-  // const [directionalLight, directionalLightHelper] = createDirectionalLight([0, 0, 2], blueCyl)
-  // scene.add(directionalLight, directionalLightHelper)
-
-  const [light, lightHelper] = createSpotLight()
-  scene.add(light, lightHelper)
-
   // make gui
   const positionFolder = gui.addFolder('Angle')
-  positionFolder.add(angles, Colors.yellow as any as string, ...ANGLE_PLACEMENT_RANGE)
-  positionFolder.add(angles, Colors.red as any as string, ...ANGLE_PLACEMENT_RANGE)
-  positionFolder.add(angles, Colors.blue as any as string, ...ANGLE_PLACEMENT_RANGE)
+  positionFolder.open()
+  positionFolder.add(START_ANGLE, Colors.yellow as any as string, ...ANGLE_PLACEMENT_RANGE)
+  positionFolder.add(START_ANGLE, Colors.red as any as string, ...ANGLE_PLACEMENT_RANGE)
+  positionFolder.add(START_ANGLE, Colors.blue as any as string, ...ANGLE_PLACEMENT_RANGE)
+
+  const spinFolder = gui.addFolder('Spin Control')
+  spinFolder.open()
+  spinFolder.add(SPIN_INFO, 'maxAngle', 0, 360)
+  spinFolder.add(SPIN_INFO, 'speedCoef', 0, 1, 0.001)
+  spinFolder.add(SPIN_INFO, 'timeStep', 0, 2, 0.01)
 
   const lightFolder = gui.addFolder('Light')
-  lightFolder.add(light, 'intensity', ...INTENSITY_RANGE)
-  lightFolder.add(light.position, 'x', ...LIGHT_PLACEMENT_RANGE)
-  lightFolder.add(light.position, 'y', ...LIGHT_PLACEMENT_RANGE)
-  lightFolder.add(light.position, 'z', ...LIGHT_PLACEMENT_RANGE)
-  lightFolder.add(light, 'distance', ...LIGHT_PLACEMENT_RANGE)
-  lightFolder.add(light, 'decay', 0, 5, 0.1)
-  lightFolder.add(light, 'penumbra', 0, 1, 0.1)
-  lightFolder.add(light, 'angle', 0, Math.PI / 2, 0.1)
+  lightFolder.open()
+  lightFolder.add(light, 'intensity', 0, 10)
   lightFolder.addColor(light, 'color')
-
-  // blueCyl.rotateOnAxis(new THREE.Vector3(0, 1, 0), Math.PI / 2)
 
   function animate() {
     requestAnimationFrame(animate)
