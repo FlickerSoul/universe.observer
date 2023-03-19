@@ -28,7 +28,7 @@ $$
 
 We can use a bit mask to extract the exponent part of $x$:
 
-```cpp
+```cpp {10}
 union float_bits {
     float f;
     unsigned u;
@@ -52,7 +52,7 @@ Recall that the exponent of the binary representation of a floating number needs
 
 We can simply take the previous code and add the bias number to the new exponent $n$ to get the new exponent part of the floating number. 
 
-```cpp
+```cpp {13}
 union float_bits {
     float f;
     unsigned u;
@@ -104,7 +104,7 @@ $$
 
 So the final code is 
 
-```cpp
+```cpp {17-22}
 union float_bits {
     float f;
     unsigned u;
