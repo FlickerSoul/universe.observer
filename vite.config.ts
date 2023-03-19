@@ -6,14 +6,14 @@ import pages from 'vite-plugin-pages'
 import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
 import markdown from 'vite-plugin-vue-markdown'
-import shiki from 'markdown-it-shiki'
+import shiki from '@uniob/markdown-it-shiki'
 import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
 import unocss from 'unocss/vite'
 import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocss'
 import components from 'unplugin-vue-components/vite'
-import katex from '@uniob/markdown-it-katex/dist'
+import katex from '@uniob/markdown-it-katex'
 import transformerDirectives from '@unocss/transformer-directives'
 import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
@@ -103,6 +103,7 @@ export default defineConfig({
             light: 'rose-pine-dawn',
           },
           highlightLines: true,
+          parseFilename: true,
         })
         md.use(anchor, {
           slugify,
