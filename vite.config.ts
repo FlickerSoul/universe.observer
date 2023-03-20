@@ -7,6 +7,7 @@ import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
 import markdown from 'vite-plugin-vue-markdown'
 import shiki from '@uniob/markdown-it-shiki'
+import { FilenameProcessor } from '@uniob/markdown-it-shiki/utils'
 import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
@@ -103,7 +104,7 @@ export default defineConfig({
             light: 'rose-pine-dawn',
           },
           highlightLines: true,
-          parseFilename: true,
+          extra: [FilenameProcessor],
         })
         md.use(anchor, {
           slugify,

@@ -35,14 +35,10 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
   <div class="post-center">
     <h1>Spin</h1>
     <div class="mb-10">
-      <ClientOnly>
-        <Graphics />
-        <template #placeholder>
-          <div>
-            Loading...
-          </div>
-        </template>
-      </ClientOnly>
+      <Graphics />
+      <div>
+        Loading...
+      </div>
     </div>
     <p i18n-lang="en">
       This is a humble simulation of
