@@ -6,6 +6,7 @@ import pages from 'vite-plugin-pages'
 import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
 import markdown from 'vite-plugin-vue-markdown'
+import type { Options as ShikiOptions } from '@uniob/markdown-it-shiki'
 import shiki from '@uniob/markdown-it-shiki'
 import { FilenameProcessor } from '@uniob/markdown-it-shiki/utils'
 import anchor from 'markdown-it-anchor'
@@ -22,6 +23,9 @@ import mark from 'markdown-it-mark'
 import { slugify } from './scripts/slug'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import markdownI18n from './scripts/markdown-i18n'
+import { CopyActionButton, LangIndicator } from './scripts/markdown-code-extras'
+import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
+import customCodeFence from './scripts/markdown-code-fence'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -98,13 +102,13 @@ export default defineConfig({
         quotes: '""\'\'',
       },
       markdownItSetup(md) {
-        md.use(shiki, {
+        md.use<ShikiOptions>(shiki, {
           theme: {
             dark: 'nord',
             light: 'rose-pine-dawn',
           },
           highlightLines: true,
-          extra: [FilenameProcessor],
+          extra: [FilenameProcessor, CopyActionButton, LangIndicator],
         })
         md.use(anchor, {
           slugify,
@@ -129,6 +133,7 @@ export default defineConfig({
         md.use(sub)
         md.use(mark)
         md.use(markdownI18n)
+        md.use<CodeFenceOptions>(customCodeFence, { wrappingTag: 'div' })
       },
     }),
     components({

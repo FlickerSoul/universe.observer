@@ -7,14 +7,33 @@ html
   p img
     width: 100%
   div.shiki-container
+    // horizontal scroll
     overflow-x: scroll
     width: 100%
+    // round corner
     border-radius: 1em
+    // fine height except the last line
     & span.line:not(:last-child)
       min-height: 1em
+    // filename section styling
     & .shiki-filename
       padding: 1em 1.5em 0 1.5em
       font-size: 0.8em
+    // floating code block hide
+    --shiki-float-hover-visible: 0
+    --shiki-float-hover-hidden: 1
+    &:hover
+      --shiki-float-hover-visible: 1
+      --shiki-float-hover-hidden: 0
+    // floating container hide/visible on hover
+    .shiki-float
+      position: absolute
+    .shiki-float-hover-visible
+      opacity: var(--shiki-float-hover-visible)
+      transition: opacity 0.3s
+    .shiki-float-hover-hidden
+      opacity: var(--shiki-float-hover-hidden)
+      transition: opacity 0.3s
   pre.shiki
     min-width: fit-content
     padding: 1em 1.5em 1em 1.2em
@@ -24,7 +43,7 @@ html
       display: block
       margin: 0 -2em 0 -1.7em
       padding: 0 2em 0 1.7em
-    code[v-pre]
+    code,code[v-pre]
       display: flex
       flex-direction: column
       font-family: "JetBrains Mono", monospace
