@@ -20,6 +20,7 @@ import transformerDirectives from '@unocss/transformer-directives'
 import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
+import Inspect from 'vite-plugin-inspect'
 import { slugify } from './scripts/slug'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import markdownI18n from './scripts/markdown-i18n'
@@ -141,6 +142,7 @@ export default defineConfig({
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
+    process.env.VUE_PROD === 'true' ? null : Inspect(),
   ],
   build: {
     rollupOptions: {
@@ -150,9 +152,5 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[ext]',
       },
     },
-  },
-  // @ts-expect-error ssg option is allowed
-  ssgOptions: {
-    formatting: 'minify',
   },
 })
