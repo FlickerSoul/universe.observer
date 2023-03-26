@@ -16,8 +16,8 @@ function copyParentText() {
 </script>
 
 <template>
-  <div ref="parent" class="copy-button">
-    <div class="i-mdi-content-copy" style="cursor: pointer;" @click="copyParentText" />
+  <div ref="parent" class="copy-button cursor-pointer" @click="copyParentText">
+    <div class="i-mdi-content-copy" />
   </div>
 </template>
 

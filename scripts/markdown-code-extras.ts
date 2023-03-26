@@ -20,6 +20,7 @@ export const CopyActionButton: IExtraProcessor = {
       },
     }
   },
+  dark: null,
 }
 
 export const LangIndicator: IExtraProcessor = {
@@ -29,7 +30,7 @@ export const LangIndicator: IExtraProcessor = {
       tag: 'div',
       attrs: {
         style: [
-          'right: 12px',
+          'right: 18px',
           'top: 6px',
           'background-color: transparent',
         ].join(';'),
@@ -39,12 +40,11 @@ export const LangIndicator: IExtraProcessor = {
         tag: 'span',
         attrs: {
           class: 'font-mono',
-          style: [
-            'font-size: 0.6em',
-          ].join(';'),
+          style: 'font-size: 0.6em;',
         },
         content: lang,
       },
     }
   },
+  dark: null,
 }

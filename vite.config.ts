@@ -108,7 +108,7 @@ export default defineConfig({
             light: 'rose-pine-dawn',
           },
           highlightLines: true,
-          extra: [FilenameProcessor, CopyActionButton, LangIndicator],
+          extra: [FilenameProcessor, LangIndicator, CopyActionButton],
         })
         md.use(anchor, {
           slugify,
