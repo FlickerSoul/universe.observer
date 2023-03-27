@@ -15,6 +15,8 @@ html
     // fine height except the last line
     & span.line:not(:last-child)
       min-height: 1em
+    & span.line:last-child
+      height: 0
     // filename section styling
     & .shiki-filename
       padding: 1em 1.5em 0 1.5em
@@ -51,7 +53,7 @@ html
       // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
       counter-reset: step
       counter-increment: step calc(var(--start, 1) - 1)
-      & .line::before
+      & .line:not(:last-child)::before
         content: counter(step)
         counter-increment: step
         width: 1em
