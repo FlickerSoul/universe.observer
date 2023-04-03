@@ -1,5 +1,31 @@
-import { ExtraPosition } from '@uniob/markdown-it-shiki'
-import type { IExtraProcessor } from '@uniob/markdown-it-shiki'
+import type { IExtraProcessor } from './types'
+import { ExtraPosition } from './types'
+
+/**
+*
+* This extra processor will parse strings like `filename=""`
+* , get the file name in between the quotes,
+* and wrap them in a div with the class `shiki-filename`
+*
+* @param matched - the result of the regex match
+* @returns the element to be inserted
+*/
+export const FilenameProcessor: IExtraProcessor = {
+  attrRe: /filename="([\w.\-_\/]+)"/,
+  position: ExtraPosition.before,
+  light: (matched) => {
+    if (matched === null)
+      return undefined
+
+    return {
+      tag: 'div',
+      attrs: {
+        class: 'shiki-filename',
+      },
+      content: matched[1],
+    }
+  },
+}
 
 export const CopyActionButton: IExtraProcessor = {
   position: ExtraPosition.f_top_right,
@@ -8,8 +34,6 @@ export const CopyActionButton: IExtraProcessor = {
       tag: 'div',
       attrs: {
         style: [
-          'right: 12px',
-          'top: 12px',
           'background-color: transparent',
         ].join(';'),
         class: 'shiki-float-hover-visible',
@@ -30,8 +54,6 @@ export const LangIndicator: IExtraProcessor = {
       tag: 'div',
       attrs: {
         style: [
-          'right: 18px',
-          'top: 6px',
           'background-color: transparent',
         ].join(';'),
         class: 'shiki-float-hover-hidden',

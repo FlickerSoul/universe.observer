@@ -28,8 +28,20 @@ html
       --shiki-float-hover-visible: 1
       --shiki-float-hover-hidden: 0
     // floating container hide/visible on hover
-    .shiki-float
+    [class*="shiki-extra-f"]
       position: absolute
+      &.shiki-extra-container
+        @apply: flex flex-row
+    .shiki-extra-f-top
+      top: 16px
+    .shiki-extra-f-right
+      right: 16px
+    .shiki-extra-f-bottom
+      bottom: 16px
+    .shiki-extra-f-left
+      left: 16px
+
+
     .shiki-float-hover-visible
       opacity: var(--shiki-float-hover-visible)
       transition: opacity 0.3s

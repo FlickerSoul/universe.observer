@@ -6,9 +6,6 @@ import pages from 'vite-plugin-pages'
 import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
 import markdown from 'vite-plugin-vue-markdown'
-import type { Options as ShikiOptions } from '@uniob/markdown-it-shiki'
-import shiki from '@uniob/markdown-it-shiki'
-import { FilenameProcessor } from '@uniob/markdown-it-shiki/utils'
 import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
@@ -21,10 +18,12 @@ import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import Inspect from 'vite-plugin-inspect'
+import type { Options as ShikiOptions } from './scripts/markdown-it-shiki'
+import { CopyActionButton, FilenameProcessor, LangIndicator } from './scripts/markdown-it-shiki/utils'
+import shiki from './scripts/markdown-it-shiki/index'
 import { slugify } from './scripts/slug'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import markdownI18n from './scripts/markdown-i18n'
-import { CopyActionButton, LangIndicator } from './scripts/markdown-code-extras'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
 import customCodeFence from './scripts/markdown-code-fence'
 
@@ -94,6 +93,7 @@ export default defineConfig({
         return route
       },
     }),
+    // MarkdownImageWrapper(),
     markdown({
       wrapperComponent: 'Post',
       wrapperClasses: 'post-md-content',
@@ -108,6 +108,7 @@ export default defineConfig({
             dark: 'nord',
             light: 'rose-pine-dawn',
           },
+          // highlighter: DEFAULT_HIGHLIGHTER,
           highlightLines: true,
           extra: [FilenameProcessor, LangIndicator, CopyActionButton],
         })

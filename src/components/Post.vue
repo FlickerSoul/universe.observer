@@ -3,12 +3,13 @@ import { useRouter } from 'vue-router'
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import { useLangController } from '../logics/i18n'
 import { I18N_LANG_ATTR, I18N_LANG_HIDDEN_CLASS, SupportedLangs } from '../../scripts/markdown-i18n'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
 import LangIndicator from './LangIndicator.vue'
+import { useLangController } from '~/logics/i18n'
+import { isDark } from '~/logics'
 
 const { frontmatter } = defineProps({
   frontmatter: {
@@ -125,6 +126,30 @@ onMounted(() => {
   useEventListener(content.value!, 'click', handleAnchors, { passive: false })
   navigate()
   setTimeout(navigate, 500)
+})
+
+onMounted(() => {
+  const mermaidGraphs: NodeListOf<HTMLPreElement>
+    = document.querySelectorAll(`pre.mermaid.${isDark.value ? 'shiki-dark' : 'shiki-light'}`)
+
+  if (mermaidGraphs.length > 0) {
+    import('mermaid').then(({ default: mermaid }) => {
+      mermaid.initialize({
+        startOnLoad: false,
+        flowchart: {
+          useMaxWidth: true,
+        },
+      })
+
+      mermaid.run({ nodes: mermaidGraphs })
+
+      watch(isDark, (newVal) => {
+        const mermaidGraphs: NodeListOf<HTMLPreElement>
+      = document.querySelectorAll(`pre.mermaid.${newVal ? 'shiki-dark' : 'shiki-light'}`)
+        mermaid.run({ nodes: mermaidGraphs })
+      })
+    })
+  }
 })
 </script>
 
