@@ -1,7 +1,7 @@
 ---
 title: About Vite Markdown Plugin
 createdAt: 2023-03-25
-updatedAt: 2023-03-25
+updatedAt: 2023-04-04
 tags:
   - vue
   - vite
