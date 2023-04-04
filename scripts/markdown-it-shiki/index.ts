@@ -68,6 +68,7 @@ export function resolveOptions(options: Options) {
         }
       : undefined,
     extra: options.extra || [],
+    mermaidTheme: { dark: 'dark', light: 'default', ...options.mermaidTheme },
   }
 }
 
@@ -211,6 +212,8 @@ const wrapFinalContainer = (
   return `<div class="shiki-container" style="position: relative;">${before}${light}${dark}${after}</div>`
 }
 
+const isMermaid = (lang: string): boolean => lang === 'mermaid'
+
 const MarkdownItShiki: MarkdownIt.PluginWithOptions<Options> = (markdownit, options = {}) => {
   const _highlighter = options.highlighter
 
@@ -220,6 +223,7 @@ const MarkdownItShiki: MarkdownIt.PluginWithOptions<Options> = (markdownit, opti
     darkModeThemes,
     highlightLines,
     extra,
+    mermaidTheme,
   } = resolveOptions(options)
 
   let syncRun: any
@@ -230,13 +234,11 @@ const MarkdownItShiki: MarkdownIt.PluginWithOptions<Options> = (markdownit, opti
   }
 
   const transformMermaid = (code: string, theme?: string): string => {
-    return `<pre class="mermaid ${theme === null ? '' : theme === 'nord' ? DARK_CLASS : LIGHT_CLASS}">
-%%{init: {'theme':'${(theme !== null && theme === 'nord') ? 'dark' : 'default'}'}}%%
+    return `<pre class="mermaid ${theme === null ? '' : theme === darkModeThemes.dark ? DARK_CLASS : LIGHT_CLASS}">
+%%{init: {'theme':'${(theme !== null && theme === darkModeThemes.dark) ? mermaidTheme.dark : mermaidTheme.light}'}}%%
 ${code}
 </pre>`
   }
-
-  const isMermaid = (lang: string): boolean => lang === 'mermaid'
 
   const highlightCode
     = (code: string, lang: string, theme?: string, lineOptions?: HtmlRendererOptions['lineOptions']): string => {

@@ -1,6 +1,14 @@
 import type { IExtraProcessor } from './types'
 import { ExtraPosition } from './types'
 
+export const makeClass = (classes: string[]) => {
+  return classes.filter(Boolean).join(' ')
+}
+
+export const makeStyle = (styles: string[]) => {
+  return styles.filter(Boolean).join(';')
+}
+
 /**
 *
 * This extra processor will parse strings like `filename=""`
@@ -28,15 +36,15 @@ export const FilenameProcessor: IExtraProcessor = {
 }
 
 export const CopyActionButton: IExtraProcessor = {
-  position: ExtraPosition.f_top_right,
+  position: ExtraPosition.f_top_left,
   light: () => {
     return {
       tag: 'div',
       attrs: {
-        style: [
+        style: makeStyle([
           'background-color: transparent',
-        ].join(';'),
-        class: 'shiki-float-hover-visible',
+        ]),
+        class: 'shiki-float-hover-hidden',
       },
       content: {
         tag: 'CodeCopyButton',
@@ -53,9 +61,9 @@ export const LangIndicator: IExtraProcessor = {
     return {
       tag: 'div',
       attrs: {
-        style: [
+        style: makeStyle([
           'background-color: transparent',
-        ].join(';'),
+        ]),
         class: 'shiki-float-hover-hidden',
       },
       content: {

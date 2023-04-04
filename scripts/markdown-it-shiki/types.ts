@@ -26,6 +26,10 @@ export interface Options {
   highlighter?: Highlighter
   highlightLines?: boolean
   extra?: IExtraProcessor[]
+  mermaidTheme?: {
+    dark?: string
+    light?: string
+  }
 }
 
 /**

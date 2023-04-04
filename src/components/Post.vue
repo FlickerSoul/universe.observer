@@ -129,27 +129,17 @@ onMounted(() => {
 })
 
 onMounted(() => {
-  const mermaidGraphs: NodeListOf<HTMLPreElement>
-    = document.querySelectorAll(`pre.mermaid.${isDark.value ? 'shiki-dark' : 'shiki-light'}`)
-
-  if (mermaidGraphs.length > 0) {
-    import('mermaid').then(({ default: mermaid }) => {
-      mermaid.initialize({
-        startOnLoad: false,
-        flowchart: {
-          useMaxWidth: true,
-        },
-      })
-
-      mermaid.run({ nodes: mermaidGraphs })
-
-      watch(isDark, (newVal) => {
-        const mermaidGraphs: NodeListOf<HTMLPreElement>
-      = document.querySelectorAll(`pre.mermaid.${newVal ? 'shiki-dark' : 'shiki-light'}`)
-        mermaid.run({ nodes: mermaidGraphs })
-      })
+  import('mermaid').then(({ default: mermaid }) => {
+    mermaid.initialize({
+      startOnLoad: false,
     })
-  }
+
+    mermaid.run({ nodes: document.querySelectorAll(`pre.mermaid.${isDark.value ? 'shiki-dark' : 'shiki-light'}`) })
+
+    watch(isDark, (newVal) => {
+      mermaid.run({ nodes: document.querySelectorAll(`pre.mermaid.${newVal ? 'shiki-dark' : 'shiki-light'}`) })
+    })
+  })
 })
 </script>
 

@@ -19,7 +19,7 @@ html
       height: 0
     // filename section styling
     & .shiki-filename
-      padding: 1em 1.5em 0 1.5em
+      padding: 1em 1.5em 0 3em
       font-size: 0.8em
     // floating code block hide
     --shiki-float-hover-visible: 0
@@ -32,15 +32,15 @@ html
       position: absolute
       &.shiki-extra-container
         @apply: flex flex-row
+    --float-margin: 8px
     .shiki-extra-f-top
-      top: 16px
+      top: var(--float-margin)
     .shiki-extra-f-right
-      right: 16px
+      right: var(--float-margin)
     .shiki-extra-f-bottom
-      bottom: 16px
+      bottom: var(--float-margin)
     .shiki-extra-f-left
-      left: 16px
-
+      left: var(--float-margin)
 
     .shiki-float-hover-visible
       opacity: var(--shiki-float-hover-visible)
@@ -48,6 +48,10 @@ html
     .shiki-float-hover-hidden
       opacity: var(--shiki-float-hover-hidden)
       transition: opacity 0.3s
+  pre.mermaid
+    svg
+      display: block
+      height: 100%
   pre.shiki
     min-width: fit-content
     padding: 1em 1.5em 1em 1.2em
