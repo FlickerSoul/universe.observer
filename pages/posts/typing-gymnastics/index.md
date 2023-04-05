@@ -8,7 +8,7 @@ createdAt: 2023-04-04
 updatedAt: 2023-04-04
 ---
 
-One friend was working on UE and wanted to create a pipeline for certain data types. For example, he would like a function that takes in a `std::string` and eventually wrap the string to `WrappedString`, `int` to `WrappedInt`, etc. So the question basically is there a way to map types in C++. 
+One friend was working on UE and wanted to create a pipeline for certain data types. For example, he would like a function that takes in a `std::string` and eventually wrap the string to `WrappedString`, or an input `int` to `WrappedInt`, etc. So the question basically is "is there a way to map types in C++". 
 
 It's easy to do it in Python because types are treated as objects. To tackle this question, we can create a mapping from types to types, like the following example. And we can write handy macros if we are working with Rust. But macros in C++ seem to be a pain and types are not objects. 
 
@@ -70,7 +70,7 @@ Type checkers are wonderful things. It's strict and precise. Unlike runtime erro
 
 Can we create type mappings with only types then? It turns out in this case is yes! 
 
-First, let's create a `TypeMap` struct. It seems like many of the handy helpers in the [`<type_traits>`](https://en.cppreference.com/w/cpp/header/type_traits) header is defined with a struct. It looks like a plausible way to start. You can check out examples like [`true_type`](https://en.cppreference.com/w/cpp/types/integral_constant) and [`is_same`](https://en.cppreference.com/w/cpp/types/integral_constant). In our case, given any type to `T`, say `TypeMap<int>`, the `TypeMap<T>` will contain nothing. Ok? How do we do the mapping then? 
+First, let's create a `TypeMap` struct. It seems like many of the handy helpers in the [`<type_traits>`](https://en.cppreference.com/w/cpp/header/type_traits) header is defined with a struct. It looks like a plausible way to start. You can check out examples like [`true_type`](https://en.cppreference.com/w/cpp/types/integral_constant) and [`is_same`](https://en.cppreference.com/w/cpp/types/is_same). In the code below, given any type `T`, say `TypeMap<int>`, the `TypeMap<T>` will contain nothing. Ok? How do we do the mapping then? 
 
 ```cpp
 template <typename T>
@@ -124,12 +124,12 @@ int main() {
 
 How exciting! We have a type mapping! C++ thinks it's valid and it looks like it does the things we want it to do!
 
-But, you may say, what if I write `piper("a string")` or pass in arguments that are not specified `TypeMap`? What would the type checker think? 
+But, you may say, what if I write `piper("a string")` or pass in arguments that are not specified in the `TypeMap`? What would the type checker think? 
 
 ![no matching!](./no-matching.png)
 
 Ta-dah! Compiler knows it's wrong! We have safe code and no copying-pasting is required anymore! 
 
-The links to the compiled version of the overloading version and the template version are [here](https://godbolt.org/z/K6TP1z8Tc) and [here](https://godbolt.org/z/34bExeWae) respectively. You can see that no overhead is added, for we only uses types that are stripped away in compiling time.   
+The links to the compiled version of the function-overloading and the template C++ code are [here](https://godbolt.org/z/K6TP1z8Tc) and [here](https://godbolt.org/z/34bExeWae), respectively. You can see that no overhead is added, for we only uses types that are stripped away in compiling time.   
 
 Can you solve eight queens with only types in C++ then? Maybe I'll update on that one. But for now, I hope you enjoy this and have a good day (imitating James Hoffmann and his smile). :)
