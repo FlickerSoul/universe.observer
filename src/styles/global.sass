@@ -42,14 +42,19 @@ html
   line-height: 1.5
   a
     text-decoration: none
-    transition: all 0.3s ease-in-out
-    border-bottom: 0px solid #9090907F
+    transition: border-bottom-color 0.3s ease-in-out
+    border-bottom: 1px solid v.$a-border-color
     &:hover
-      border-bottom: 1px solid #909090FF
+      border-bottom-color: v.$a-border-hover-color
     &:visited
       color: v.$light-a-color
     &:link
       color: v.$light-a-color
+    & code:not([class^="language-"])
+      border-bottom: 1px solid v.$a-border-color
+      transition: border-bottom-color 0.3s ease-in-out
+      &:hover
+        border-bottom-color: v.$a-border-hover-color
   h1,h2,h3,h4,h5,h6
     color: v.$light-header-color
   code:not([class^="language-"])
