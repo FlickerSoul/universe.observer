@@ -83,7 +83,7 @@ export const FLOATING_LEFT = [ExtraPosition.f_top_left, ExtraPosition.f_bottom_l
 export interface IElementIntel {
   tag: string
   attrs: Record<string, string>
-  content?: string | IElementIntel | IElementIntel[]
+  content?: string | IElementIntel | (IElementIntel | string)[]
 }
 
 /**
@@ -128,4 +128,4 @@ export interface IProcessorOutput {
   position: ExtraPosition
 }
 
-export type ElementProcessorType = (intel: IElementIntel | undefined) => string
+export type ElementProcessorType = (intel: IElementIntel | string | undefined) => string

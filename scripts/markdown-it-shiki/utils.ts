@@ -1,13 +1,6 @@
 import type { IExtraProcessor } from './types'
 import { ExtraPosition } from './types'
-
-export const makeClass = (classes: string[]) => {
-  return classes.filter(Boolean).join(' ')
-}
-
-export const makeStyle = (styles: string[]) => {
-  return styles.filter(Boolean).join(';')
-}
+import { makeStyle } from './index'
 
 /**
 *
@@ -36,15 +29,16 @@ export const FilenameProcessor: IExtraProcessor = {
 }
 
 export const CopyActionButton: IExtraProcessor = {
-  position: ExtraPosition.f_top_left,
+  position: ExtraPosition.before,
   light: () => {
     return {
       tag: 'div',
       attrs: {
         style: makeStyle([
           'background-color: transparent',
+          'display: inline-block',
         ]),
-        class: 'shiki-float-hover-hidden',
+        class: 'shiki-float-hover-show',
       },
       content: {
         tag: 'CodeCopyButton',
@@ -56,15 +50,16 @@ export const CopyActionButton: IExtraProcessor = {
 }
 
 export const LangIndicator: IExtraProcessor = {
-  position: ExtraPosition.f_top_right,
+  position: ExtraPosition.before,
   light: (matched, lang) => {
     return {
       tag: 'div',
       attrs: {
         style: makeStyle([
           'background-color: transparent',
+          'display: inline-block',
         ]),
-        class: 'shiki-float-hover-hidden',
+        class: 'shiki-float-hover-show',
       },
       content: {
         tag: 'span',

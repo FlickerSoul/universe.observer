@@ -147,6 +147,9 @@ export const h: ElementProcessorType = (intel) => {
   if (!intel)
     return ''
 
+  if (typeof intel === 'string')
+    return intel
+
   const headPartial = `<${intel.tag}${Object.entries(intel.attrs).reduce((prev, now) => {
       return `${prev} ${now[0]}="${now[1]}"`
     }, '')}`
@@ -163,11 +166,28 @@ export const h: ElementProcessorType = (intel) => {
 
 const SHIKI_EXTRA_CONTAINER_CLASS = 'shiki-extra-container'
 
-function extraPositionHolderFactory(contentOnPosition: string[]) {
-  return (i: ExtraPosition) => {
+export const makeClass = (classes: string[]) => {
+  return classes.filter(Boolean).join(' ')
+}
+
+export const makeStyle = (styles: string[]) => {
+  return styles.filter(Boolean).join(';')
+}
+
+function extraPositionHolderFactory(
+  contentOnPosition: (IElementIntel | undefined)[][],
+  extraStyles: string[] = [], extraClasses: string[] = []) {
+  return (i: ExtraPosition): IElementIntel => {
     const content = contentOnPosition[i]
     const posClass = PositionHolderClasses[i]
-    return `<div class="${posClass} ${SHIKI_EXTRA_CONTAINER_CLASS}">${content}</div>`
+    return {
+      tag: 'div',
+      attrs: {
+        class: makeClass([posClass, SHIKI_EXTRA_CONTAINER_CLASS, ...extraClasses]),
+        style: makeStyle(extraStyles),
+      },
+      content,
+    }
   }
 }
 
@@ -175,41 +195,48 @@ const wrapFinalContainer = (
   light: string,
   dark: string | undefined = undefined,
   processedExtra: IProcessorOutput[] | undefined = undefined) => {
-  const extraContentsOnPosition: string[] = Object.keys(ExtraPosition).map(() => '')
+  const lightExtraContentsOnPosition: (IElementIntel | undefined)[][] = Object.keys(ExtraPosition).map(() => [])
+  const darkExtraContentsOnPosition: (IElementIntel | undefined)[][] = Object.keys(ExtraPosition).map(() => [])
 
   dark = dark || ''
   processedExtra = processedExtra || []
 
-  const light_style_content = getStyleContent(light, BACKGROUND_STYLE_RE)
-  const dark_style_content = getStyleContent(dark, BACKGROUND_STYLE_RE)
+  const lightStyleContent = getStyleContent(light, BACKGROUND_STYLE_RE)
+  const darkStyleContent = getStyleContent(dark, BACKGROUND_STYLE_RE)
 
   processedExtra.forEach((extra) => {
-    if (extra.dark !== null) {
-      // if extra dark is not null,
-      // then the element is not universal
-      // add theme specific classes to both light and dark mode
-      appendClass(extra.light, LIGHT_CLASS)
-      prependStyle(extra.light, light_style_content)
-      appendClass(extra.dark, DARK_CLASS)
-      prependStyle(extra.dark, dark_style_content)
-    } else {
-      // if extra dark is null, then the element is universal
-      // don't add theme specific classes, and set dark to undefined
+    if (extra.dark === null)
       extra.dark = undefined
-    }
 
-    const lightExtra = h(extra.light)
-    const darkExtra = h(extra.dark)
-
-    extraContentsOnPosition[extra.position] += lightExtra
-    extraContentsOnPosition[extra.position] += darkExtra
+    lightExtraContentsOnPosition[extra.position].push(extra.light)
+    darkExtraContentsOnPosition[extra.position].push(extra.dark)
   })
 
-  const extraHolderMapper = extraPositionHolderFactory(extraContentsOnPosition)
-  const before = PREPENDING_POSITIONS.map(extraHolderMapper).reduce((prev, exc) => prev + exc, '')
-  const after = APPENDING_POSITIONS.map(extraHolderMapper).reduce((prev, exc) => prev + exc, '')
+  const lightMapper = extraPositionHolderFactory(lightExtraContentsOnPosition, [lightStyleContent], [LIGHT_CLASS])
+  const lightExtraBefore = PREPENDING_POSITIONS.map(lightMapper)
+  const lightExtraAfter = APPENDING_POSITIONS.map(lightMapper)
 
-  return `<div class="shiki-container" style="position: relative;">${before}${light}${dark}${after}</div>`
+  const darkMapper = extraPositionHolderFactory(lightExtraContentsOnPosition, [darkStyleContent], [DARK_CLASS])
+  const darkExtraBefore = PREPENDING_POSITIONS.map(darkMapper)
+  const darkExtraAfter = APPENDING_POSITIONS.map(darkMapper)
+
+  return h({
+    tag: 'div',
+    attrs: {
+      class: 'shiki-container',
+      style: 'position: relative;',
+    },
+    content: [
+      ...lightExtraBefore,
+      ...darkExtraBefore,
+      {
+        tag: 'div',
+        attrs: { style: 'overflow-x: scroll' },
+        content: [light, dark],
+      },
+      ...lightExtraAfter,
+      ...darkExtraAfter],
+  })
 }
 
 const isMermaid = (lang: string): boolean => lang === 'mermaid'
