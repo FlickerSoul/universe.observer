@@ -5,7 +5,7 @@ import { useClipboard } from '@vueuse/core'
 const parent = ref<HTMLDivElement>()
 function copyParentText() {
   const codeNode: HTMLPreElement | null | undefined
-    = parent.value?.parentElement?.parentElement?.querySelector('pre.shiki')
+    = parent.value?.parentElement?.parentElement?.parentElement?.querySelector('pre.shiki')
   if (codeNode?.textContent) {
     const { isSupported, copy } = useClipboard()
     copy(codeNode.textContent)
