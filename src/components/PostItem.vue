@@ -11,7 +11,7 @@ const { post } = defineProps<{ post: IListedPostData }>()
   <li>
     <div class="post-item font-mono no-underline ">
       <div
-        class="align-middle px-1 md:ml--10.5 mr1.5 inline-flex gap-2 md:flex-row-reverse lang-indicator-long flex-col"
+        class="align-middle px-1 md:ml--10.5 mr1.5 inline-flex gap-2 flex-row-reverse md:w-25px"
       >
         <router-link
           v-for="lang in (post.langs || [post.lang]).sort()"
@@ -23,7 +23,7 @@ const { post } = defineProps<{ post: IListedPostData }>()
         </router-link>
       </div>
       <router-link :to="post.path" class="border-none hover:border-none opacity-50 hover:opacity-75">
-        <span class="align-middle text-1.4em ml-0.4em">
+        <span class="md:inline-block block align-middle text-1.4em ml-0.4em">
           {{ post.title }}
         </span>
         <PostAbstract v-if="post.abstract" :abstract="post.abstract" class="post-abstract post-meta" />
