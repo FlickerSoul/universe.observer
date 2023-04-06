@@ -440,8 +440,12 @@ struct Solve<Nil, row, PlacedQueens> {
     using val = Nil;
 };
 
+
+// THE SOLUTION! 
 using Solution = typename Solve<typename Next<Zero>::val, Zero, Nil>::val;
 
+
+// debug flag 
 #define DEBUG false
 
 
