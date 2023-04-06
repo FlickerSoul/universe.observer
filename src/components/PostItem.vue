@@ -39,11 +39,11 @@ const { post } = defineProps<{ post: IListedPostData }>()
 .title-text
   font-size: 1.2em
 .post-abstract
-  margin-top: 0.4em
+  margin-bottom: 0.4em
   font-size: 0.9em
   width: 80%
 .post-dates
-  margin-top: 0.4em
+  margin-bottom: 0.4em
   font-size: 0.8em
 .post-meta
   margin-left: 0.6em
