@@ -99,8 +99,6 @@ export default defineConfig({
           hostname: 'https://universe.observer',
           routes: routes.filter((r: RouteRecordNormalized) => {
             // @ts-expect-error no type for display
-            console.log(r.meta.frontmatter.display)
-            // @ts-expect-error no type for display
             return r.meta.frontmatter.display !== false
           }),
         })
