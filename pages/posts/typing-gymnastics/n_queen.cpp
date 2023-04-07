@@ -81,8 +81,19 @@ struct Succ<Zero> {
 };
 
 
+// make number
+template <unsigned long long N>
+struct MakeNumber {
+    using val = Succ<typename MakeNumber<N - 1>::val>;
+};
+
+template <>
+struct MakeNumber<0> {
+    using val = Zero;
+};
+
 // the size of the board
-using N = Succ<Succ<Succ<Succ<Succ<Succ<Zero>>>>>>;
+using N = typename MakeNumber<6>::val;
 
 
 // predecessor
