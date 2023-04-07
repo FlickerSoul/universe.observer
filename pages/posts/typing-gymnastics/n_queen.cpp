@@ -85,44 +85,7 @@ struct Succ<Zero> {
 using N = Succ<Succ<Succ<Succ<Succ<Succ<Zero>>>>>>;
 
 
-// equality
-template <typename T, typename S>
-struct Equals {
-    using val = False;
-};
-
-template <typename T>
-struct Equals<T, T> {
-    using val = True;
-};
-
-// Sadly, the recursive version of Equals does not seem to work.
-// Let me know if you know a recursive way to do this.
-// template <typename T, typename S>
-// struct Equals {};
-
-// template <>
-// struct Equals<Zero, Zero> {
-//     using val = True;
-// };
-
-// template <typename T>
-// struct Equals<Zero, T> {
-//     using val = False;
-// };
-
-// template <typename T>
-// struct Equals<T, Zero> {
-//     using val = False;
-// };
-
-// template <typename T, typename S>
-// struct Equals<Succ<T>, Succ<S>> {
-//     using val = struct Equals<T, S>::val;
-// };
-
-
-// predessor
+// predecessor
 template <typename T>
 struct Pred {};
 
@@ -167,6 +130,62 @@ struct Cons {
     using x = X;
     using xs = Xs;
 };
+
+
+// Equality for numbers and lists
+template <typename Xs, typename Ys>
+struct Equals {
+    using val = typename And<
+                    typename Equals<typename Xs::x, typename Ys::x>::val,
+                    typename Equals<typename Xs::xs, typename Ys::xs>::val
+                >::val;
+};
+
+template <>
+struct Equals<Nil, Nil> {
+    using val = True;
+};
+
+template <typename Xs>
+struct Equals<Nil, Xs> {
+    using val = False;
+};
+
+template <typename Xs>
+struct Equals<Xs, Nil> {
+    using val = False;
+};
+
+template <>
+struct Equals<Zero, Zero> {
+    using val = True;
+};
+
+template <typename T>
+struct Equals<Zero, T> {
+    using val = False;
+};
+
+template <typename T>
+struct Equals<T, Zero> {
+    using val = False;
+};
+
+template <typename T, typename S>
+struct Equals<Succ<T>, Succ<S>> {
+    using val = typename Equals<T, S>::val;
+};
+
+// or we can do equality the easy way
+// ~~but who likes the easy way?~~
+// template <typename T, typename S>
+// struct Equals {
+//     using val = False;
+// };
+// template <typename T>
+// struct Equals<T, T> {
+//     using val = True;
+// };
 
 
 // If any in the list is true
@@ -308,7 +327,7 @@ struct Solve<Nil, row, PlacedQueens> {
 using Solution = typename Solve<typename Next<Zero>::val, Zero, Nil>::val;
 
 
-// the debug flag
+// debug flag
 #define DEBUG false
 
 

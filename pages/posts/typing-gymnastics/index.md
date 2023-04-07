@@ -140,13 +140,13 @@ Can you solve N queens with only types in C++ then? ~~Maybe I'll update on that 
 #include <boost/core/demangle.hpp>  // enable if you can use boost to demangle the type name
 
 
-// logics 
+// logics
 struct True {
     using val = True;
 };
 
 struct False {
-    using val = False;     
+    using val = False;
 };
 
 template <typename T>
@@ -180,12 +180,12 @@ struct And {};
 
 template <typename T>
 struct And<False, T> {
-    using val = False; 
-}; 
+    using val = False;
+};
 
 template <typename T>
 struct And<True, T> {
-    using val = T; 
+    using val = T;
 };
 
 template <typename T, typename S>
@@ -202,9 +202,9 @@ struct Or<False, T> {
 };
 
 
-// numbers 
+// numbers
 struct Zero {
-    using val = struct Zero; 
+    using val = struct Zero;
 };
 
 template <typename T>
@@ -214,64 +214,27 @@ struct Succ {
 
 template <>
 struct Succ<Zero> {
-    using val = struct Succ<Zero>; 
+    using val = struct Succ<Zero>;
 };
 
 
-// the size of the board 
+// the size of the board
 using N = Succ<Succ<Succ<Succ<Succ<Succ<Zero>>>>>>;
 
 
-// equality 
-template <typename T, typename S>
-struct Equals {
-    using val = False;
-};
-
-template <typename T>
-struct Equals<T, T> {
-    using val = True;
-};
-
-// Sadly, the recursive version of Equals does not seem to work.
-// Let me know if you know a recursive way to do this.
-// template <typename T, typename S>
-// struct Equals {};
-
-// template <>
-// struct Equals<Zero, Zero> {
-//     using val = True;
-// };
-
-// template <typename T>
-// struct Equals<Zero, T> {
-//     using val = False;
-// };
-
-// template <typename T>
-// struct Equals<T, Zero> {
-//     using val = False;
-// };
-
-// template <typename T, typename S>
-// struct Equals<Succ<T>, Succ<S>> {
-//     using val = struct Equals<T, S>::val;
-// };
-
-
-// predessor
+// predecessor
 template <typename T>
 struct Pred {};
 
-template <> 
+template <>
 struct Pred<Zero> {};
 
 template <typename T>
 struct Pred<Succ<T>> {
-    using val = T; 
+    using val = T;
 };
 
-// abs difference 
+// abs difference
 template <typename T, typename S>
 struct AbsDiff {
     using val = typename AbsDiff<typename Pred<T>::val, typename Pred<S>::val>::val;
@@ -295,7 +258,7 @@ struct AbsDiff<Zero, Zero> {
 
 // List
 struct Nil {
-    using val = Nil; 
+    using val = Nil;
 };
 
 template <typename X, typename Xs = Nil>
@@ -304,6 +267,62 @@ struct Cons {
     using x = X;
     using xs = Xs;
 };
+
+
+// Equality for numbers and lists
+template <typename Xs, typename Ys>
+struct Equals {
+    using val = typename And<
+                    typename Equals<typename Xs::x, typename Ys::x>::val,
+                    typename Equals<typename Xs::xs, typename Ys::xs>::val
+                >::val;
+};
+
+template <>
+struct Equals<Nil, Nil> {
+    using val = True;
+};
+
+template <typename Xs>
+struct Equals<Nil, Xs> {
+    using val = False;
+};
+
+template <typename Xs>
+struct Equals<Xs, Nil> {
+    using val = False;
+};
+
+template <>
+struct Equals<Zero, Zero> {
+    using val = True;
+};
+
+template <typename T>
+struct Equals<Zero, T> {
+    using val = False;
+};
+
+template <typename T>
+struct Equals<T, Zero> {
+    using val = False;
+};
+
+template <typename T, typename S>
+struct Equals<Succ<T>, Succ<S>> {
+    using val = typename Equals<T, S>::val;
+};
+
+// or we can do equality the easy way
+// ~~but who likes the easy way?~~
+// template <typename T, typename S>
+// struct Equals {
+//     using val = False;
+// };
+// template <typename T>
+// struct Equals<T, T> {
+//     using val = True;
+// };
 
 
 // If any in the list is true
@@ -325,13 +344,13 @@ struct RangeFromZero {
     using val = Cons<N, xs>;
 };
 
-template <typename Xs> 
+template <typename Xs>
 struct RangeFromZero<Zero, Xs> {
-    using val = Cons<Zero, Xs>; 
+    using val = Cons<Zero, Xs>;
 };
 
 
-// the queen 
+// the queen
 template <typename X, typename Y>
 struct Queen {
     using val = Queen<X, Y>;
@@ -347,9 +366,9 @@ struct RowOfQueens {
     using val = Cons<Queen<col, row>, typename RowOfQueens<typename Cols::xs, row>::val>;
 };
 
-template <typename Row> 
+template <typename Row>
 struct RowOfQueens<Nil, Row> {
-    using val = Nil; 
+    using val = Nil;
 };
 
 
@@ -358,11 +377,11 @@ template <typename A, typename B>
 struct Threatens {
     using val = typename Or<
         typename Or<
-            typename Equals<typename A::x, typename B::x>::val, 
+            typename Equals<typename A::x, typename B::x>::val,
             typename Equals<typename A::y, typename B::y>::val
         >::val,
         typename Equals<
-            typename AbsDiff<typename A::x, typename B::x>::val, 
+            typename AbsDiff<typename A::x, typename B::x>::val,
             typename AbsDiff<typename A::y, typename B::y>::val
         >::val
     >::val;
@@ -377,7 +396,7 @@ struct ThreateningQueens {
 
 template <typename Q>
 struct ThreateningQueens<Nil, Q> {
-    using val = Nil; 
+    using val = Nil;
 };
 
 
@@ -388,13 +407,13 @@ struct Safe {
 };
 
 
-// try to add more safe queens to placed queens 
+// try to add more safe queens to placed queens
 template <typename Candidates, typename PlacedQueens>
 struct SafeQueens {
     using candidate = typename Candidates::x;
     using val = typename If<
-                            typename Safe<PlacedQueens, candidate>::val, 
-                            Cons<candidate, typename SafeQueens<typename Candidates::xs, PlacedQueens>::val>, 
+                            typename Safe<PlacedQueens, candidate>::val,
+                            Cons<candidate, typename SafeQueens<typename Candidates::xs, PlacedQueens>::val>,
                             typename SafeQueens<typename Candidates::xs, PlacedQueens>::val>::val;
 };
 
@@ -415,20 +434,20 @@ struct Next {
 template <typename Candidates, typename row, typename PlacedQueens>
 struct Solve;
 
-// solve a row 
+// solve a row
 template <typename row, typename PlacedQueens>
 struct SolveNextRow {
     using val = typename Solve<typename Next<Succ<row>, PlacedQueens>::val, Succ<row>, PlacedQueens>::val;
 };
 
-// solve all rows 
+// solve all rows
 template <typename Candidates, typename row, typename PlacedQueens>
 struct Solve {
     using val = typename If<
-                            typename Equals<row, N>::val,  
+                            typename Equals<row, N>::val,
                             Cons<typename Candidates::x, PlacedQueens>,
                             typename If<
-                                typename Equals<typename SolveNextRow<row, Cons<typename Candidates::x, PlacedQueens>>::val, Nil>::val, 
+                                typename Equals<typename SolveNextRow<row, Cons<typename Candidates::x, PlacedQueens>>::val, Nil>::val,
                                typename Solve<typename Candidates::xs, row, PlacedQueens>::val,
                                typename SolveNextRow<row, Cons<typename Candidates::x, PlacedQueens>>::val
                             >::val
@@ -441,11 +460,11 @@ struct Solve<Nil, row, PlacedQueens> {
 };
 
 
-// THE SOLUTION! 
+// THE SOLUTION!
 using Solution = typename Solve<typename Next<Zero>::val, Zero, Nil>::val;
 
 
-// debug flag 
+// debug flag
 #define DEBUG false
 
 
@@ -455,32 +474,32 @@ int main() {
         std::cout << typeid(Equals<Succ<Zero>::val, Succ<Zero>>::val).name() << std::endl;
         std::cout << typeid(Equals<Zero, Zero>::val).name() << std::endl;
         std::cout << typeid(Equals<Succ<Zero>::val, Zero::val>::val).name() << std::endl;
-        
-        std::cout << std::endl; 
+
+        std::cout << std::endl;
         std::cout << typeid(AbsDiff<Succ<Zero>::val, Succ<Zero>>::val).name() << std::endl;
         std::cout << typeid(AbsDiff<Zero, Zero>::val).name() << std::endl;
         std::cout << (typeid(AbsDiff<Succ<Succ<Zero>>::val, Zero::val>::val).name() == typeid(Succ<Succ<Zero>>::val).name()) << std::endl;
         std::cout << (typeid(AbsDiff<Succ<Succ<Zero>>::val, Succ<Zero>::val>::val).name() == typeid(Succ<Zero>::val).name()) << std::endl;
-        
-        std::cout << std::endl; 
-        std::cout << (typeid(RangeFromZero<Zero>::val).name() == typeid(Cons<Zero>::val).name()) << std::endl; 
-        std::cout << (typeid(RangeFromZero<Succ<Succ<Succ<Zero>>>>::val).name() == 
+
+        std::cout << std::endl;
+        std::cout << (typeid(RangeFromZero<Zero>::val).name() == typeid(Cons<Zero>::val).name()) << std::endl;
+        std::cout << (typeid(RangeFromZero<Succ<Succ<Succ<Zero>>>>::val).name() ==
         typeid(Cons<
-                    Succ<Succ<Succ<Zero>>>, 
+                    Succ<Succ<Succ<Zero>>>,
                     Cons<
-                        Succ<Succ<Zero>>, 
+                        Succ<Succ<Zero>>,
                         Cons<
-                            Succ<Zero>, 
+                            Succ<Zero>,
                             Cons<Zero>
                         >
                     >
-                >::val).name()) << std::endl; 
+                >::val).name()) << std::endl;
     }
-    
+
     std::cout << std::endl;
     std::cout << boost::core::demangle(typeid(Solution).name()) << std::endl;  // demangled type name
     // std::cout << typeid(Solution).name() << std::endl;  // mangled type name
-    
+
     /*
     *   Cons<
             Queen<Succ<Zero>, Succ<Succ<Succ<Succ<Succ<Succ<Zero>>>>>>>,                    => Queen(1, 6)
@@ -499,6 +518,6 @@ int main() {
         Nil>>>>>>>
     */
 
-    return 0; 
+    return 0;
 }
 ```
