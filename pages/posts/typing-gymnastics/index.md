@@ -132,7 +132,7 @@ Ta-dah! Compiler knows it's wrong! We have safe code and no copying-pasting is r
 
 The links to the compiled version of the function-overloading and the template C++ code are [here](https://godbolt.org/z/K6TP1z8Tc) and [here](https://godbolt.org/z/34bExeWae), respectively. You can see that no overhead is added, for we only uses types that are stripped away in compiling time.   
 
-Can you solve N queens with only types in C++ then? ~~Maybe I'll update on that one. But for now, I hope you enjoy this and have a good day (imitating James Hoffmann and his smile). :)~~ Ok there we go! The file is [here](./n_queen.cpp), or you can look at the code below. Thank you so much for reading. I hope you have a great day!  (imitating James Hoffmann and his smile again) :)
+Can you solve N queens with only types in C++ then? ~~Maybe I'll update on that one. But for now, I hope you enjoy this and have a good day (imitating James Hoffmann and his smile). :)~~ Ok there we go! The executed result is [here](https://godbolt.org/z/WK7MG933r). You can also look at the code below. Thank you so much for reading. I hope you have a great day!  (imitating James Hoffmann and his smile again) :)
 
 ```cpp
 #include <iostream>
@@ -329,9 +329,15 @@ struct Equals<Succ<T>, Succ<S>> {
 
 
 // If any in the list is true
-template <typename L>
-struct AnyTrue {
-    using val = typename Or<typename L::x, typename AnyTrue<typename L::xs>::val>::val;
+template <typename E, typename Es = Nil>
+struct AnyTrue {};
+
+template <typename E, typename Es>
+struct AnyTrue<Cons<E, Es>> {
+    using val = typename Or<
+                            E,
+                            typename AnyTrue<Es>::val
+                         >::val;
 };
 
 template <>
@@ -363,10 +369,15 @@ struct Queen {
 
 
 // representing a row of queen
-template <typename Cols, typename row>
-struct RowOfQueens {
-    using col = typename Cols::x;
-    using val = Cons<Queen<col, row>, typename RowOfQueens<typename Cols::xs, row>::val>;
+template <typename Col, typename row, typename Cols = Nil>
+struct RowOfQueens {};
+
+template <typename Col, typename Row, typename Cols>
+struct RowOfQueens<Cons<Col, Cols>, Row> {
+    using val = Cons<
+                     Queen<Col, Row>,
+                     typename RowOfQueens<Cols, Row>::val
+                    >;
 };
 
 template <typename Row>
@@ -392,9 +403,12 @@ struct Threatens {
 
 
 // check if any of the queen is threatening queen Q
-template <typename PlacedQueens, typename Q>
-struct ThreateningQueens {
-    using val = Cons<typename Threatens<typename PlacedQueens::x, Q>::val, typename ThreateningQueens<typename PlacedQueens::xs, Q>::val>;
+template <typename PlacedQueen, typename Q, typename RemainingQ = Nil>
+struct ThreateningQueens {};
+
+template <typename PlacedQueen, typename Q, typename RemainingQ>
+struct ThreateningQueens<Cons<PlacedQueen, RemainingQ>, Q> {
+    using val = Cons<typename Threatens<PlacedQueen, Q>::val, typename ThreateningQueens<RemainingQ, Q>::val>;
 };
 
 template <typename Q>
@@ -411,13 +425,16 @@ struct Safe {
 
 
 // try to add more safe queens to placed queens
-template <typename Candidates, typename PlacedQueens>
-struct SafeQueens {
-    using candidate = typename Candidates::x;
+template <typename Candidate, typename PlacedQueens, typename RemainingC = Nil>
+struct SafeQueens {};
+
+template <typename Candidate, typename PlacedQueens, typename RemainingC>
+struct SafeQueens<Cons<Candidate, RemainingC>, PlacedQueens> {
     using val = typename If<
-                            typename Safe<PlacedQueens, candidate>::val,
-                            Cons<candidate, typename SafeQueens<typename Candidates::xs, PlacedQueens>::val>,
-                            typename SafeQueens<typename Candidates::xs, PlacedQueens>::val>::val;
+                            typename Safe<PlacedQueens, Candidate>::val,
+                            Cons<Candidate, typename SafeQueens<RemainingC, PlacedQueens>::val>,
+                            typename SafeQueens<RemainingC, PlacedQueens>::val
+                           >::val;
 };
 
 template <typename PlacedQueens>
