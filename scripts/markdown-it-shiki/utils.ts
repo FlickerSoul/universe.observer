@@ -21,9 +21,19 @@ export const FilenameProcessor: IExtraProcessor = {
     return {
       tag: 'div',
       attrs: {
-        class: 'shiki-filename',
+        style: makeStyle([
+          'background-color: transparent',
+        ]),
+        class: 'inline-block',
       },
-      content: matched[1],
+      content: {
+        tag: 'span',
+        attrs: {
+          class: 'font-mono align-middle',
+          style: 'font-size: 0.8em;',
+        },
+        content: matched[1],
+      },
     }
   },
 }
@@ -36,9 +46,8 @@ export const CopyActionButton: IExtraProcessor = {
       attrs: {
         style: makeStyle([
           'background-color: transparent',
-          'display: inline-block',
         ]),
-        class: 'shiki-float-hover-show',
+        class: 'inline-block',
       },
       content: {
         tag: 'CodeCopyButton',
@@ -57,15 +66,14 @@ export const LangIndicator: IExtraProcessor = {
       attrs: {
         style: makeStyle([
           'background-color: transparent',
-          'display: inline-block',
         ]),
-        class: 'shiki-float-hover-show',
+        class: 'nline-block',
       },
       content: {
         tag: 'span',
         attrs: {
-          class: 'font-mono',
-          style: 'font-size: 0.6em;',
+          class: 'font-mono align-middle',
+          style: 'font-size: 0.8em;',
         },
         content: lang,
       },
