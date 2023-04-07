@@ -270,11 +270,14 @@ struct Cons {
 
 
 // Equality for numbers and lists
-template <typename Xs, typename Ys>
-struct Equals {
+template <typename X, typename Y, typename Xs = Nil, typename Ys = Nil>
+struct Equals {};
+
+template <typename X, typename Y, typename Xs, typename Ys>
+struct Equals<Cons<X, Xs>, Cons<Y, Ys>> {
     using val = typename And<
-                    typename Equals<typename Xs::x, typename Ys::x>::val,
-                    typename Equals<typename Xs::xs, typename Ys::xs>::val
+                    typename Equals<X, Y>::val,
+                    typename Equals<Xs, Ys>::val
                 >::val;
 };
 
