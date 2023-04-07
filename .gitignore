@@ -35,3 +35,6 @@ test_*.md
 
 # image compressed compiled js
 scripts/image-minify.js
+
+# ignore auto generated sitemap
+public/sitemap.xml

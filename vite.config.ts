@@ -18,6 +18,8 @@ import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import Inspect from 'vite-plugin-inspect'
+import generateSitemap from 'vite-plugin-pages-sitemap'
+import type { RouteRecordNormalized } from 'vue-router'
 import type { Options as ShikiOptions } from './scripts/markdown-it-shiki'
 import { CopyActionButton, FilenameProcessor, LangIndicator } from './scripts/markdown-it-shiki/utils'
 import shiki from './scripts/markdown-it-shiki/index'
@@ -91,6 +93,17 @@ export default defineConfig({
         route.meta = Object.assign(route.meta || {}, { frontmatter: data.data })
 
         return route
+      },
+      onRoutesGenerated(routes) {
+        generateSitemap({
+          hostname: 'https://universe.observer',
+          routes: routes.filter((r: RouteRecordNormalized) => {
+            // @ts-expect-error no type for display
+            console.log(r.meta.frontmatter.display)
+            // @ts-expect-error no type for display
+            return r.meta.frontmatter.display !== false
+          }),
+        })
       },
     }),
     // MarkdownImageWrapper(),
