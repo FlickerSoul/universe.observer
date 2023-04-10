@@ -48,7 +48,7 @@ function diffYear(a = '', b = '') {
           && post.createdAt"
       >
         <div class="relative h20 pointer-prevent-none">
-          <span class="absolute font-bold mt-8 md:mt-4 text-7rem right-0.2rem op-15">
+          <span class="absolute font-bold mt-8 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15">
             {{ new Date(post.createdAt).getFullYear() }}
           </span>
         </div>
