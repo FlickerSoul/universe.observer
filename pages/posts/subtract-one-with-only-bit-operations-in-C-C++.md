@@ -6,6 +6,10 @@ tags:
   - fun
 createdAt: 2023-02-22
 updatedAt: 2023-02-22
+description: You are obsessed with bit operations and want to do everything 
+  and want to do everything with & and |. 
+  How to subtract one with only bit operations then? 
+  Hmm, I wonder... 
 ---
 
 In the tutoring session, I was asked to swap the exponent part of a (32-bit) floating point number to be a new value without any arithmetic operations. That is, let $x$ be a floating number in the binary format like the following:

@@ -7,6 +7,7 @@ langs:
   - en
 tags: 
   - 碎碎念
+description: I got two Yubico keys and they are cool!
 ---
 
 @zh@ 买了两把 [yubico](https://www.yubico.com/) 的安全钥匙，把所有常用且关键的账号都加密。

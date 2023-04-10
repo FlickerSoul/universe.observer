@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { useHead } from '@vueuse/head'
 import type { IToyInfo } from './types'
 
 const toys: IToyInfo[] = [
   { name: 'Spin', url: '/toys/spin' },
 ]
+useHead({
+  meta: [
+    { name: 'description', content: 'Here is a list of toys I made!' },
+  ],
+})
 </script>
 
 <template>

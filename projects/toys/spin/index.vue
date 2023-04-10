@@ -4,7 +4,11 @@ import { useHead } from '@vueuse/head'
 import Post from '~/components/Post.vue'
 
 useHead({
-  title: 'Spin',
+  meta: [{
+    name: 'description',
+    content: 'This is a humble simulation of colored glass blending! '
+      + 'Not quite working but it looks pretty cool already!',
+  }],
 })
 
 const lines = `

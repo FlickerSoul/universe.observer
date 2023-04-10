@@ -9,6 +9,7 @@ export interface IPostData {
   langs?: string[]
   display?: boolean
   hasComments?: boolean
+  description?: string
 }
 
 export type IListedPostData = Omit<IPostData, 'display' | 'hasComments'> & { path: string; title: string }

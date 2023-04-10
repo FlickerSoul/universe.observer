@@ -6,6 +6,10 @@ tags:
 lang: en 
 createdAt: 2023-04-04
 updatedAt: 2023-04-05
+description: Types are fun! Wanna exercise with types? 
+  Turns out you can create (static) type mappings in C++! 
+  To spicy things up a bit more, let's try to solve the n queen problem 
+    with just types! 
 ---
 
 One friend was working on UE and wanted to create a pipeline for certain data types. For example, he would like a function that takes in a `std::string` and eventually wrap the string to `WrappedString`, or an input `int` to `WrappedInt`, etc. So the question basically is "is there a way to map types in C++". 
