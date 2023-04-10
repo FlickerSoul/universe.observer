@@ -2,7 +2,6 @@
 title: Universe Observer 
 createdAt: 2023-02-04
 updatedAt: 2023-02-08
-hasComments: false
 ---
 
 Hey, I am Larry Z, currently a senior studying CS. 
@@ -27,7 +26,6 @@ maybe we can code together or climb together.
 
 :)
 
-*** 
 
 You can find me on [GitHub](https://github.com/FlickerSoul) or 
 on [Telegram](https://t.me/FlickerSoul). There is also a [Telegram channel](https://t.me/the_universe_observer) in which I may post updates  on what I read and see.

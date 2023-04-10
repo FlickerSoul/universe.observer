@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import type { PropType } from 'vue'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
-import Discussion from '@giscus/vue'
+
 import { I18N_LANG_ATTR, I18N_LANG_HIDDEN_CLASS, SupportedLangs } from '../../scripts/markdown-i18n'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
@@ -18,6 +18,9 @@ const { frontmatter } = defineProps({
     required: true,
   },
 })
+
+const Discussion = defineAsyncComponent(() => import('@giscus/vue'))
+
 const router = useRouter()
 const content = ref<HTMLDivElement>()
 
@@ -188,23 +191,25 @@ onMounted(() => {
       <slot />
     </article>
 
-    <Discussion
-      v-if="frontmatter?.hasComments !== false"
-      id="giscus-comments"
-      host="https://giscus.app"
-      repo="flickersoul/me"
-      repo-id="R_kgDOI6RsMA"
-      category="General"
-      category-id="DIC_kwDOI6RsMM4CVqJj"
-      mapping="pathname"
-      strict="1"
-      reactions-enabled="1"
-      emit-metadata="0"
-      input-position="top"
-      :theme="isDark ? 'preferred_color_scheme' : 'light'"
-      lang="en"
-      loading="lazy"
-    />
+    <template v-if="frontmatter?.hasComments !== false">
+      <hr>
+      <Discussion
+        id="giscus-comments"
+        host="https://giscus.app"
+        repo="flickersoul/me"
+        repo-id="R_kgDOI6RsMA"
+        category="General"
+        category-id="DIC_kwDOI6RsMM4CVqJj"
+        mapping="pathname"
+        strict="1"
+        reactions-enabled="1"
+        emit-metadata="0"
+        input-position="top"
+        :theme="isDark ? 'preferred_color_scheme' : 'light'"
+        lang="en"
+        loading="lazy"
+      />
+    </template>
   </div>
 </template>
 
