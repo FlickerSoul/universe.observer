@@ -5,7 +5,7 @@ import TagFilter from '~/components/TagFilter.vue'
 </script>
 
 <template>
-  <Post :frontmatter="{ title: 'Posts' }">
+  <Post :frontmatter="{ title: 'Posts', hasComments: false }">
     <Suspense>
       <TagFilter />
     </Suspense>

@@ -2,6 +2,7 @@
 title: Universe Observer 
 createdAt: 2023-02-04
 updatedAt: 2023-02-08
+hasComments: false
 ---
 
 Hey, I am Larry Z, currently a senior studying CS. 

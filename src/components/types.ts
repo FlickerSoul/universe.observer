@@ -8,6 +8,7 @@ export interface IPostData {
   lang?: string
   langs?: string[]
   display?: boolean
+  hasComments?: boolean
 }
 
-export type IListedPostData = Omit<IPostData, 'display'> & { path: string; title: string }
+export type IListedPostData = Omit<IPostData, 'display' | 'hasComments'> & { path: string; title: string }

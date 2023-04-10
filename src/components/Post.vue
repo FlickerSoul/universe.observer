@@ -3,6 +3,7 @@ import { useRouter } from 'vue-router'
 import type { PropType } from 'vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
+import Discussion from '@giscus/vue'
 import { I18N_LANG_ATTR, I18N_LANG_HIDDEN_CLASS, SupportedLangs } from '../../scripts/markdown-i18n'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
@@ -171,7 +172,7 @@ onMounted(() => {
 
     <div class="mb-12" />
 
-    <article ref="content" class="post-content">
+    <article ref="content" class="post-content mb-3em">
       <div
         v-if="TOC"
         class="border border-solid border-current rounded box-content pa-1 cursor-pointer"
@@ -186,6 +187,24 @@ onMounted(() => {
       </div>
       <slot />
     </article>
+
+    <Discussion
+      v-if="frontmatter?.hasComments !== false"
+      id="giscus-comments"
+      host="https://giscus.app"
+      repo="flickersoul/me"
+      repo-id="R_kgDOI6RsMA"
+      category="General"
+      category-id="DIC_kwDOI6RsMM4CVqJj"
+      mapping="pathname"
+      strict="1"
+      reactions-enabled="1"
+      emit-metadata="0"
+      input-position="top"
+      :theme="isDark ? 'preferred_color_scheme' : 'light'"
+      lang="en"
+      loading="lazy"
+    />
   </div>
 </template>
 

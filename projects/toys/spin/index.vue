@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from 'vue'
 import { useHead } from '@vueuse/head'
+import Post from '~/components/Post.vue'
 
 useHead({
   title: 'Spin',
@@ -32,7 +33,7 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
 </script>
 
 <template>
-  <div class="post-center">
+  <Post :frontmatter="{ title: 'Spin' }">
     <h1>Spin</h1>
     <div class="mb-10">
       <Graphics />
@@ -48,5 +49,5 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
     <p v-for="(line, i) in lines" :key="i" class="font-mono my-1 leading-none">
       {{ line }}
     </p>
-  </div>
+  </Post>
 </template>
