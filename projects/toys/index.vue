@@ -5,9 +5,14 @@ import type { IToyInfo } from './types'
 const toys: IToyInfo[] = [
   { name: 'Spin', url: '/toys/spin' },
 ]
+const TITLE = 'Toys %sep %site.name'
+const DESCRIPTION = 'Here is a list of toys I made!'
 useHead({
+  title: TITLE,
   meta: [
-    { name: 'description', content: 'Here is a list of toys I made!' },
+    { name: 'description', content: DESCRIPTION },
+    { name: 'og:description', content: DESCRIPTION },
+    { name: 'og:title', content: TITLE },
   ],
 })
 </script>

@@ -3,12 +3,17 @@ import { defineAsyncComponent } from 'vue'
 import { useHead } from '@vueuse/head'
 import Post from '~/components/Post.vue'
 
+const DESCRIPTION = 'This is a humble simulation of colored glass blending! '
+    + 'Not quite working but it looks pretty cool already!'
+const TITLE = 'Spin'
+
 useHead({
-  meta: [{
-    name: 'description',
-    content: 'This is a humble simulation of colored glass blending! '
-      + 'Not quite working but it looks pretty cool already!',
-  }],
+  title: TITLE,
+  meta: [
+    { name: 'description', content: DESCRIPTION },
+    { name: 'og:description', content: DESCRIPTION },
+    { name: 'og:title', content: TITLE },
+  ],
 })
 
 const lines = `

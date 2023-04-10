@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useHead } from '@vueuse/head'
 import InfoItem from './components/InfoItem.vue'
 import ContentItem from './components/ContentItem.vue'
 import type { IContentItem, IInfoItem, ISkillSection } from './components/types'
@@ -112,6 +113,18 @@ const skillSets: ISkillSection[] = [
       { name: 'Lambda Calculus' },
     ],
   }]
+
+const TITLE = 'Portfolio %sep %site.author'
+const DESCRIPTION = 'Portfolio of Larry Zeng'
+useHead({
+  title: TITLE,
+  meta: [
+    { name: 'description', content: DESCRIPTION },
+    { property: 'og:title', content: TITLE },
+    { property: 'og:description', content: DESCRIPTION },
+    { property: 'og:image', content: 'https://universe.observer/head.jpg' },
+  ],
+})
 </script>
 
 <template>
