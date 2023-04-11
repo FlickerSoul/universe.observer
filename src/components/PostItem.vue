@@ -22,8 +22,8 @@ const { post } = defineProps<{ post: IListedPostData }>()
           <LangIndicator :lang="lang" />
         </router-link>
       </div>
-      <router-link :to="post.path" class="border-none hover:border-none opacity-50 hover:opacity-75">
-        <span class="md:inline-block block align-middle text-1.4em ml-0.4em">
+      <router-link :to="post.path" class="post-body border-none hover:border-none opacity-50 hover:opacity-75">
+        <span class="post-title md:inline-block block align-middle text-1.4em ml-0.4em">
           {{ post.title }}
         </span>
         <PostAbstract v-if="post.abstract" :abstract="post.abstract" class="post-abstract post-meta" />
@@ -38,15 +38,18 @@ const { post } = defineProps<{ post: IListedPostData }>()
 
 .title-text
   font-size: 1.2em
+.post-title
+  line-height: 1.2em
+  margin-top: 0.2em
 .post-abstract
-  margin-bottom: 0.4em
   font-size: 0.9em
   width: 80%
 .post-dates
-  margin-bottom: 0.4em
   font-size: 0.8em
 .post-meta
   margin-left: 0.6em
 .lang-indicator-long
   width: v.$lang-indicator-width
+.post-body > *
+  margin-bottom: 0.4em
 </style>
