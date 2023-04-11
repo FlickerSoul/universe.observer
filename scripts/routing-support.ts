@@ -84,7 +84,7 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
       },
       // redirect to langs
       beforeEnter: (to, from, next) => {
-        const path = ensureSlashEnding(to.fullPath)
+        const path = ensureSlashEnding(to.path)
 
         let lang
         if (to.meta.frontmatter.langs.includes(to.query.lang as string))
