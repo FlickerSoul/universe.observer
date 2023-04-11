@@ -1,6 +1,6 @@
 import { remove } from 'diacritics'
 import type { RouteRecordRaw } from 'vue-router'
-import { DEFAULT_LANG } from './lang'
+import { DEFAULT_LANG, SupportedLangs } from './lang'
 
 // eslint-disable-next-line no-control-regex
 const rControl = /[\u0000-\u001F]/g
@@ -35,7 +35,11 @@ export function addHtmlExtension(routes: RouteRecordRaw[]) {
   ))
 }
 
-const BASE_MATCHING_REGEX = /^(.*?)(en|zh)$/
+function generateBaseMatchingRegex() {
+  return new RegExp(`^(.*?)(${Object.values(SupportedLangs).join('|')})\$`)
+}
+
+const BASE_MATCHING_REGEX = generateBaseMatchingRegex()
 
 export function matchMultiLangBase(path: string) {
   return path.match(BASE_MATCHING_REGEX)
