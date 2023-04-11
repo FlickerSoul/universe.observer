@@ -4,15 +4,15 @@ import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
-import { I18N_LANG_ATTR, I18N_LANG_HIDDEN_CLASS, SupportedLangs } from '../../scripts/markdown-i18n'
+import { SupportedLangs } from '../../scripts/lang'
+import { matchMultiLangBase } from '../../scripts/routing-support'
 import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
 import LangIndicator from './LangIndicator.vue'
-import { useLangController } from '~/logics/i18n'
 import { isDark } from '~/logics'
 
-const { frontmatter } = defineProps({
+const props = defineProps({
   frontmatter: {
     type: Object as PropType<IPostData>,
     required: true,
@@ -35,47 +35,22 @@ const TOC = computed(() => {
 const isTOCToggled = ref<boolean>(false)
 
 // handle i18n language control
-const langController = useLangController()
+const route = router.currentRoute
 
-if (router.currentRoute.value.query.lang) {
-  handleLanguageChange(router.currentRoute.value.query.lang as string)
-  router.replace({ query: { ...router.currentRoute.value.query, lang: undefined } })
-}
+function handleLanguageChange(lang: SupportedLangs) {
+  const { path, meta: { frontmatter: { langs } } } = route.value
+  if (!langs?.includes(lang) || !(lang in SupportedLangs))
+    return
 
-function handleLanguageChange(lang: string) {
-  if (lang in SupportedLangs)
-    langController.changeCurrentLang(lang)
-}
-const langNodes = computed<{ [key in SupportedLangs]: NodeListOf<HTMLParagraphElement> }>(() => {
-  return Object.fromEntries(
-    ((frontmatter?.langs || [frontmatter.lang]) as SupportedLangs[]).map(
-      (lang: SupportedLangs) => {
-        return [
-          lang,
-          content.value?.querySelectorAll(`p[${I18N_LANG_ATTR}=${lang}]`),
-        ]
-      },
-    )) as { [key in SupportedLangs]: NodeListOf<HTMLParagraphElement> }
-})
-watch(langNodes, (newValue) => {
-  Object.entries(newValue).forEach(([lang, nodes]) => {
-    if (lang !== langController.currentLang.value) {
-      nodes.forEach((node) => {
-        node.classList.add(I18N_LANG_HIDDEN_CLASS)
-      })
-    }
-  })
-})
-watch(langController.currentLang, (newValue, oldValue) => {
-  if (langNodes.value) {
-    Object.values(langNodes.value[newValue]).forEach((node) => {
-      node.classList.remove(I18N_LANG_HIDDEN_CLASS)
-    })
-    Object.values(langNodes.value[oldValue]).forEach((node) => {
-      node.classList.add(I18N_LANG_HIDDEN_CLASS)
+  const matched = matchMultiLangBase(path)
+
+  if (matched) {
+    router.push({
+      path: `${matched[1]}${lang}`,
+      replace: true,
     })
   }
-})
+}
 
 watch(
   isTOCToggled,
@@ -132,6 +107,7 @@ onMounted(() => {
   setTimeout(navigate, 500)
 })
 
+// handle mermaid graphing
 onMounted(() => {
   import('mermaid').then(({ default: mermaid }) => {
     mermaid.initialize({
@@ -145,6 +121,11 @@ onMounted(() => {
     })
   })
 })
+
+const frontmatter = computed<IPostData>(() => ({
+  ...props.frontmatter,
+  langs: route.value.meta.frontmatter.langs,
+}))
 </script>
 
 <template>
@@ -161,8 +142,8 @@ onMounted(() => {
         :key="lang"
         :lang="lang"
         class="cursor-pointer"
-        :class="lang === langController.currentLang.value ? ['cursor-not-allowed', 'opacity-50'] : []"
-        @click="handleLanguageChange(lang)"
+        :class="lang === frontmatter.lang ? ['cursor-not-allowed', 'opacity-50'] : []"
+        @click="lang === frontmatter.lang ? undefined : handleLanguageChange(lang as SupportedLangs)"
       />
     </div>
     <div class="post-meta post-date-wrapper">

@@ -1,7 +1,9 @@
 import 'vue-router'
+import type { IPostData } from "src/components/types";
 
 declare module 'vue-router' {
     interface RouteMeta {
-        frontmatter: any
+        frontmatter: IPostData
+        defaultLang?: string
     }
 }

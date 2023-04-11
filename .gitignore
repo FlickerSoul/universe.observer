@@ -29,6 +29,7 @@ auto-imports.d.ts
 
 # test files
 test_*.md
+pages/posts/test_*/
 
 # env file
 .env

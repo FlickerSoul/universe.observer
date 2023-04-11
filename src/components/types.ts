@@ -8,6 +8,7 @@ export interface IPostData {
   lang?: string
   langs?: string[]
   display?: boolean
+  hidden?: boolean
   hasComments?: boolean
   description?: string
 }

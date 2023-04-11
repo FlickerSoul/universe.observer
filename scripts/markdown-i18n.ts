@@ -4,14 +4,10 @@
 */
 import type MarkdownIt from 'markdown-it'
 import type StateBlock from 'markdown-it/lib/rules_block/state_block'
+import { SupportedLangs } from './lang'
 
 export const I18N_LANG_ATTR = 'i18n-lang'
 export const I18N_LANG_HIDDEN_CLASS = 'hidden-lang'
-
-export enum SupportedLangs {
-  en = 'en',
-  zh = 'zh',
-}
 
 export interface MdI18nOptions {
 }
