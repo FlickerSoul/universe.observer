@@ -23,7 +23,7 @@ import type { RouteRecordNormalized, RouteRecordRaw } from 'vue-router'
 import type { Options as ShikiOptions } from './scripts/markdown-it-shiki'
 import { CopyActionButton, FilenameProcessor, LangIndicator } from './scripts/markdown-it-shiki/utils'
 import shiki from './scripts/markdown-it-shiki/index'
-import { addMultiLangPages, slugify } from './scripts/routing-support'
+import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import markdownI18n from './scripts/markdown-i18n'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
@@ -95,9 +95,6 @@ export default defineConfig({
         return route
       },
       onRoutesGenerated(routes: RouteRecordRaw[]) {
-        // routes = addHtmlExtension(routes)
-        routes = addMultiLangPages(routes)
-
         generateSitemap({
           hostname: 'https://universe.observer',
           routes: routes.filter((r: RouteRecordNormalized) => {

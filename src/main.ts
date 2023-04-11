@@ -2,13 +2,16 @@ import './styles/global.sass'
 import './styles/md.sass'
 import 'katex/dist/katex.min.css'
 import 'uno.css'
-import routes from 'virtual:generated-pages'
+import autoRoutes from 'virtual:generated-pages'
 import { createPinia } from 'pinia'
 import { createHead } from '@vueuse/head'
 import NProgress from 'nprogress'
 import { createRouter, createWebHistory } from 'vue-router'
 import { createApp } from 'vue'
+import { addMultiLangPages } from '../scripts/routing-support'
 import App from './App.vue'
+
+const routes = addMultiLangPages(autoRoutes)
 
 const scrollBehavior = (to: any, from: any, savedPosition: any) => {
   if (savedPosition)

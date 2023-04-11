@@ -53,6 +53,10 @@ function getMultiLangBase({ path }: RouteRecordRaw): [string, string] | undefine
     return undefined
 }
 
+function ensureSlashEnding(path: string) {
+  return path.endsWith('/') ? path : `${path}/`
+}
+
 function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<string, RouteRecordRaw>>) {
   mapping.forEach((langMap, base) => {
     const langs = [...langMap.keys()]
@@ -80,11 +84,15 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
       },
       // redirect to langs
       beforeEnter: (to, from, next) => {
-        if (to.meta.frontmatter.langs.includes(to.query.lang as string)) {
-          next({ path: `${to.fullPath}${to.query.lang}` })
-          return
-        }
-        next({ path: `${to.fullPath}${to.meta.defaultLang}` })
+        const path = ensureSlashEnding(to.fullPath)
+
+        let lang
+        if (to.meta.frontmatter.langs.includes(to.query.lang as string))
+          lang = to.query.lang
+        else
+          lang = to.meta.defaultLang
+
+        next({ path: `${path}${lang}` })
       },
     }
 
