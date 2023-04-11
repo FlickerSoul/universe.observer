@@ -2,8 +2,8 @@
 import DateDisplay from './DateDisplay.vue'
 
 const { createdAt, updatedAt } = defineProps({
-  createdAt: { type: String },
-  updatedAt: { type: String },
+  createdAt: { type: Date },
+  updatedAt: { type: Date },
 })
 </script>
 

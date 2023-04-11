@@ -1,7 +1,7 @@
 import { useDark } from '@vueuse/core'
 import dayjs from 'dayjs'
 
-export function formatDate(date: Date | string) {
+export function formatDate(date: Date) {
   const day = dayjs(date)
   if (day.year() === dayjs().year())
     return day.format('MMM.DD')

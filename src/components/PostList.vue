@@ -1,23 +1,32 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useCommStore } from '../store'
-import { getVisiblePosts } from '../logics/get-posts'
 import type { IListedPostData } from './types'
 import PostItem from './PostItem.vue'
+import { useCommStore } from '~/store'
+import { getVisiblePosts } from '~/logics/get-posts'
+
+const UNKNOWN_DATE_REPR = '?'
 
 const posts: IListedPostData[] = getVisiblePosts()
-  .sort((a, b) => -new Date(a.meta.frontmatter.createdAt) + +new Date(b.meta.frontmatter.createdAt))
   .map((route) => {
     return {
       path: route.path,
-      createdAt: route.meta.frontmatter.createdAt,
-      updatedAt: route.meta.frontmatter.updatedAt,
+      createdAt: route.meta.frontmatter.createdAt ? new Date(route.meta.frontmatter.createdAt) : undefined,
+      updatedAt: route.meta.frontmatter.updatedAt ? new Date(route.meta.frontmatter.updatedAt) : undefined,
       abstract: route.meta.frontmatter.abstract,
       title: route.meta.frontmatter.title,
       lang: route.meta.frontmatter.lang,
       langs: route.meta.frontmatter.langs,
       tags: route.meta.frontmatter.tags,
     }
+  })
+  .sort((a, b) => {
+    if (a.createdAt && b.createdAt)
+      return (-a.createdAt + +b.createdAt)
+    else if (a.createdAt)
+      return -1
+    else
+      return 1
   })
 
 const comm = useCommStore()
@@ -30,8 +39,13 @@ const displayedPosts = computed(() => {
   })
 })
 
-function diffYear(a = '', b = '') {
-  return new Date(a).getFullYear() !== new Date(b).getFullYear()
+function diffYear(a: Date | undefined, b: Date | undefined) {
+  if (a === undefined && b === undefined)
+    return false
+  else if (a === undefined || b === undefined)
+    return true
+  else
+    return a.getFullYear() !== b.getFullYear()
 }
 </script>
 
@@ -44,12 +58,11 @@ function diffYear(a = '', b = '') {
     </template>
     <template v-for="(post, idx) in displayedPosts" :key="post.path">
       <div
-        v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))
-          && post.createdAt"
+        v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))"
       >
         <div class="relative h20 pointer-prevent-none">
           <span class="absolute font-bold mt-8 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15">
-            {{ new Date(post.createdAt).getFullYear() }}
+            {{ post.createdAt ? post.createdAt.getFullYear() : UNKNOWN_DATE_REPR }}
           </span>
         </div>
       </div>

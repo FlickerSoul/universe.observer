@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { formatDate } from '../logics'
+import { formatDate } from '~/logics'
 
 const { name, date, delimiter } = defineProps({
   name: { type: String, required: true },
-  date: { type: String },
+  date: { type: Date },
   delimiter: { type: String, default: ' ' },
 })
 

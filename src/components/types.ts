@@ -2,8 +2,8 @@ export interface IPostData {
   title?: string
   subtitle?: string
   abstract?: string
-  createdAt?: string
-  updatedAt?: string
+  createdAt?: string | Date
+  updatedAt?: string | Date
   tags?: string[]
   lang?: string
   langs?: string[]
@@ -13,4 +13,5 @@ export interface IPostData {
   description?: string
 }
 
-export type IListedPostData = Omit<IPostData, 'display' | 'hasComments'> & { path: string; title: string }
+export type IListedPostData =
+  Omit<IPostData, 'display' | 'hasComments'> & { path: string; createdAt?: Date; updatedAt?: Date }
