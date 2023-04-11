@@ -1,5 +1,5 @@
 import 'vue-router'
-import type { IPostData } from "src/components/types";
+import type { IPostData } from "./src/components/types";
 
 declare module 'vue-router' {
     interface RouteMeta {
