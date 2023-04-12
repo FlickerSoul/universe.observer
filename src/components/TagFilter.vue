@@ -1,16 +1,15 @@
-<script setup lang="ts">
+<script async setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref, watch } from 'vue'
-import { useCommStore } from '../store'
-import { getVisiblePosts } from '../logics/get-posts'
 import TagSelector from './TagSelector.vue'
-import type { IListedPostData } from './types'
+import { useCommStore } from '~/store'
+import { getVisiblePosts } from '~/logics/get-posts'
 
 const router = useRouter()
 const comm = useCommStore()
 async function buildTags() {
   getVisiblePosts()
-    .forEach((route: { meta: { frontmatter: IListedPostData } }) => {
+    .forEach((route) => {
       route.meta.frontmatter.tags?.forEach((tag: string) => {
         comm.pushTag(tag)
       })
