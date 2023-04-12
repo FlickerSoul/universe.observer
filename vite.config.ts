@@ -29,7 +29,6 @@ import markdownI18n from './scripts/markdown-i18n'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
 import customCodeFence from './scripts/markdown-code-fence'
 
-const IS_PRODUCTION = process.env.VUE_PROD === 'true'
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -46,7 +45,6 @@ export default defineConfig({
     // vue
     vue({
       include: [/\.vue$/, /\.md$/],
-      isProduction: IS_PRODUCTION,
       reactivityTransform: true,
       template: {
         compilerOptions: {
@@ -159,7 +157,7 @@ export default defineConfig({
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
-    IS_PRODUCTION ? null : Inspect(),
+    process.env.NODE_ENV ? null : Inspect(),
   ],
   build: {
     rollupOptions: {
@@ -172,6 +170,5 @@ export default defineConfig({
   },
   ssgOptions: {
     formatting: 'minify',
-    mode: IS_PRODUCTION ? 'production' : undefined,
   },
 })
