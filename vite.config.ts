@@ -25,7 +25,6 @@ import { CopyActionButton, FilenameProcessor, LangIndicator } from './scripts/ma
 import shiki from './scripts/markdown-it-shiki/index'
 import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
-import markdownI18n from './scripts/markdown-i18n'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
 import customCodeFence from './scripts/markdown-code-fence'
 
@@ -148,7 +147,6 @@ export default defineConfig({
         md.use(sup)
         md.use(sub)
         md.use(mark)
-        md.use(markdownI18n)
         md.use<CodeFenceOptions>(customCodeFence, { wrappingTag: 'div' })
       },
     }),
