@@ -124,6 +124,8 @@ onMounted(() => {
 
 const frontmatter = computed<IPostData>(() => ({
   ...props.frontmatter,
+  createdAt: props.frontmatter.createdAt && new Date(props.frontmatter.createdAt),
+  updatedAt: props.frontmatter.updatedAt && new Date(props.frontmatter.updatedAt),
   langs: route.value.meta.frontmatter.langs,
 }))
 </script>
@@ -147,7 +149,11 @@ const frontmatter = computed<IPostData>(() => ({
       />
     </div>
     <div class="post-meta post-date-wrapper">
-      <PostDate v-bind="frontmatter" class="ma" />
+      <PostDate
+        :created-at="frontmatter.createdAt"
+        :updated-at="frontmatter.updatedAt"
+        class="ma"
+      />
     </div>
     <div v-if="frontmatter.tags" class="post-meta flex flex-wrap font-mono items-center text-sm">
       <span class="mr2">Tags: </span>

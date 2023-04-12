@@ -73,6 +73,11 @@ export default defineConfig({
       transformers: [transformerDirectives()],
     }),
     imports({
+      include: [
+        /\.[tj]sx?$/, // .ts, .tsx, .js, .jsx
+        /\.vue$/, /\.vue\?vue/, // .vue
+        /\.md$/, // .md
+      ],
       imports: [
         'vue',
         'vue-router',
@@ -167,5 +172,9 @@ export default defineConfig({
         assetFileNames: 'assets/[name].[ext]',
       },
     },
+  },
+  // @ts-expect-error ssg option is allowed
+  ssgOptions: {
+    formatting: 'minify',
   },
 })
