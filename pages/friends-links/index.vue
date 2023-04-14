@@ -1,7 +1,20 @@
 <script setup lang="ts">
 import { ref, shallowRef } from 'vue'
+import { useHead } from '@vueuse/head'
 import LinkSection from './components/LinkSection.vue'
 import Post from '~/components/Post.vue'
+
+const DESCRIPTION = 'A page containing links to my friends and some places I found interesting!'
+const TITLE = 'Friends\' Links | Universe Observer'
+
+useHead({
+  title: TITLE,
+  meta: [
+    { name: 'description', content: DESCRIPTION },
+    { name: 'og:title', content: TITLE },
+    { name: 'og:description', content: DESCRIPTION },
+  ],
+})
 
 const LINKS = {
   friends: [
