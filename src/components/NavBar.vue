@@ -13,7 +13,7 @@ import DarkToggle from './DarkToggle.vue'
     </router-link>
     <nav class="nav">
       <div class="spacer" />
-      <div class="flex flex-row flex-nowrap gap-7 items-center">
+      <div class="flex flex-row flex-nowrap gap-5 items-center">
         <router-link to="/">
           <span class="lt-md:hidden">Home</span>
         </router-link>
@@ -28,6 +28,10 @@ import DarkToggle from './DarkToggle.vue'
         <router-link to="/portfolio">
           <span class="lt-md:hidden">Portfolio</span>
           <div class="md:hidden i-mdi-briefcase-outline nav-icon" />
+        </router-link>
+        <router-link to="/friends-links">
+          <span class="lt-md:hidden">Friends</span>
+          <div class="md:hidden i-mdi-account-group-outline nav-icon" />
         </router-link>
         <a href="https://github.com/FlickerSoul" target="_blank" title="GitHub" class="nav-icon">
           <div class="i-mdi-github-box" />
