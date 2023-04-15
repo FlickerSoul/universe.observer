@@ -29,6 +29,7 @@ defineProps({
   display: flex
   flex-wrap: wrap
   gap: 1rem
+  align-items: start
   .link-card
     max-width: 400px
 </style>

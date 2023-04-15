@@ -48,6 +48,10 @@ html.dark
   transition: box-shadow 0.7s ease
   &:hover
     box-shadow: 0 0 40px 5px rgba(109, 109, 109, 0.4)
+  .link-about
+    margin-top: 1em
+    p
+      margin: 0.25em 0
   .moving-comp
     display: inline-block
     padding: 0 5px
