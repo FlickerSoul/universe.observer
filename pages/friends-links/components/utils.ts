@@ -10,7 +10,7 @@ export function moveCursor(event: MouseEvent) {
     return
 
   const { x, y } = event
-  cursor.value?.style.setProperty('--cursor-top', `${y}px`)
+  cursor.value?.style.setProperty('--cursor-top', `${y + window.scrollY}px`)
   cursor.value?.style.setProperty('--cursor-left', `${x}px`)
 }
 
@@ -23,7 +23,7 @@ export function compOnEnter(event: MouseEvent) {
     rect = target.getBoundingClientRect()
 
     cursor.value.classList.add('is-locked')
-    cursor.value.style.setProperty('--cursor-top', `${rect.top - 2}px`)
+    cursor.value.style.setProperty('--cursor-top', `${rect.top + window.scrollY - 2}px`)
     cursor.value.style.setProperty('--cursor-left', `${rect.left - 5}px`)
     cursor.value.style.setProperty('--cursor-width', `${rect.width + 10}px`)
     cursor.value.style.setProperty('--cursor-height', `${rect.height + 4}px`)
