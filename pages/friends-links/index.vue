@@ -22,7 +22,7 @@ const LINKS = {
     {
       name: 'Jabrial Zhang',
       url: 'https://wh0.is',
-      about: ['A wizard who\'s mastering Unreal Engine', 'Artists'],
+      about: ['A wizard who\'s mastering Unreal Engine', 'Artist and Game Dev'],
     },
     {
       name: 'Sima Nerush',
@@ -37,7 +37,26 @@ const LINKS = {
       url: 'https://yihuiblog.top/',
     },
   ],
-  interestingBlogs: [],
+  interestingSites: [
+    { name: 'Matrix67', url: 'http://www.matrix67.com/' },
+    { name: 'Matrix67: The Aha Moments', url: 'http://www.matrix67.com/blog/' },
+    { name: 'STRML: Projects and Work', url: 'https://www.strml.net/' },
+    { name: '虎兔手记', url: 'http://notes.localhost-8080.com/' },
+    { name: '考据癖', url: 'http://localhost-8080.com/' },
+    { name: 'Halfrost\'s Field | 冰霜之地', url: 'https://halfrost.com/' },
+    { name: '失眠海峡', url: 'https://blog.imalan.cn/' },
+    { name: '1010Code', url: 'https://andy6804tw.github.io/' },
+    { name: 'Kamikat\'s Blog', url: 'https://banana.moe/posts/' },
+    { name: 'Zirnc\'s Blog', url: 'https://blog.chungzh.cn/' },
+    { name: '无垠', url: 'https://flyhigher.top/' },
+    { name: 'Math & Programming', url: 'https://jeremykun.com/' },
+    { name: '编程随想', url: 'https://program-think.blogspot.com/' },
+    { name: 'royee', url: 'https://guanhui07.github.io/blog/' },
+    { name: '深红', url: 'https://anata.me/' },
+    { name: 'DIYgod', url: 'https://diygod.me/' },
+    { name: '宇宙よりも遠い場所', url: 'https://kirainmoe.com/' },
+    { name: '乌云压顶是吧', url: 'https://wyydsb.xin/' },
+  ],
 } as const
 
 const frontmatter = { title: 'Friends\' Links', createdAt: '2023-04-12', updatedAt: '2023-04-12' } as const
@@ -50,7 +69,7 @@ onMounted(() => {
 <template>
   <Post :frontmatter="frontmatter" class="link-page" @mousemove="moveCursor">
     <LinkSection :links="LINKS.friends" name="Friends" />
-    <LinkSection :links="LINKS.interestingBlogs" name="Interesting Blogs" />
+    <LinkSection :links="LINKS.interestingSites" name="Interesting Sites" />
     <div id="cursor" ref="cursor">
       <div id="cursor__content" />
     </div>

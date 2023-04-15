@@ -30,5 +30,5 @@ defineProps({
   flex-wrap: wrap
   gap: 1rem
   .link-card
-    max-width: 200px
+    max-width: 400px
 </style>
