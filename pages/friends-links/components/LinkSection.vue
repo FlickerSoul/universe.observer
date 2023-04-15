@@ -1,18 +1,12 @@
 <script setup lang="ts">
 import type { PropType } from 'vue'
-import { computed, defineEmits, defineProps } from 'vue'
+import { defineProps } from 'vue'
 import type { IFriendLink } from './types'
 import LinkCard from './LinkCard.vue'
-const props = defineProps({
+
+defineProps({
   name: { type: String, required: true },
   links: { type: Object as PropType<IFriendLink[]> },
-  cursor: { type: Object as PropType<HTMLDivElement> },
-  locked: { type: Boolean, required: true },
-})
-const emits = defineEmits(['update:locked'])
-const isLocked = computed({
-  get() { return props.locked },
-  set(v) { emits('update:locked', v) },
 })
 </script>
 
@@ -23,9 +17,7 @@ const isLocked = computed({
       <LinkCard
         v-for="(link, i) in links"
         :key="i"
-        v-model:locked="isLocked"
         :link="link"
-        :cursor="cursor"
         class="link-card"
       />
     </div>

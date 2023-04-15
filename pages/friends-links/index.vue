@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, shallowRef } from 'vue'
 import { useHead } from '@vueuse/head'
+import { onMounted } from 'vue'
+import { cursor, moveCursor } from './components/utils'
 import LinkSection from './components/LinkSection.vue'
 import Post from '~/components/Post.vue'
 
@@ -21,6 +22,7 @@ const LINKS = {
     {
       name: 'Jabrial Zhang',
       url: 'https://wh0.is',
+      about: ['A wizard who\'s mastering Unreal Engine', 'Artists'],
     },
     {
       name: 'Sima Nerush',
@@ -40,22 +42,15 @@ const LINKS = {
 
 const frontmatter = { title: 'Friends\' Links', createdAt: '2023-04-12', updatedAt: '2023-04-12' } as const
 
-const cursor = shallowRef<HTMLDivElement>()
-const isLocked = ref(false)
-
-function moveCursor(event: MouseEvent) {
-  if (isLocked.value)
-    return
-  const { x, y } = event
-  cursor.value?.style.setProperty('--cursor-top', `${y}px`)
-  cursor.value?.style.setProperty('--cursor-left', `${x}px`)
-}
+onMounted(() => {
+  cursor.value = document.querySelector('#cursor') as HTMLDivElement
+})
 </script>
 
 <template>
   <Post :frontmatter="frontmatter" class="link-page" @mousemove="moveCursor">
-    <LinkSection v-model:locked="isLocked" :links="LINKS.friends" name="Friends" :cursor="cursor" />
-    <LinkSection v-model:locked="isLocked" :links="LINKS.interestingBlogs" name="Interesting Blogs" :cursor="cursor" />
+    <LinkSection :links="LINKS.friends" name="Friends" />
+    <LinkSection :links="LINKS.interestingBlogs" name="Interesting Blogs" />
     <div id="cursor" ref="cursor">
       <div id="cursor__content" />
     </div>
@@ -69,7 +64,7 @@ function moveCursor(event: MouseEvent) {
 
 html.dark
   #cursor
-    --cursor-color: #fff
+    --cursor-color: #c5c5c5
 
 .link-page
   cursor: none
@@ -93,6 +88,7 @@ html.dark
     left: var(--cursor-left)
     width: var(--cursor-width)
     height: var(--cursor-height)
+
     &, #cursor__content
       position: absolute
       transition-duration: 0.1s
@@ -105,11 +101,11 @@ html.dark
       left: 0
       right: 0
       top: 0
-      transform: translate(var(--hover-translateX), var(--hover-translateY))
+      transform: translate(var(--hover-translateX), var(--hover-translateY)) scale(var(--hover-scale))
       transition-property: opacity
     &.is-locked
-      transition-property: width, height, left, top
       --cursor-radius: 0.3em
+      transition-property: width, height, left, top
       #cursor__content
-        opacity: 0.1
+        opacity: 0.2
 </style>
