@@ -20,7 +20,7 @@ useHead({
 const LINKS = {
   friends: [
     {
-      name: 'Jabrial Zhang',
+      name: 'Jabriel Zhang',
       url: 'https://wh0.is',
       about: ['A wizard who\'s mastering Unreal Engine', 'Artist and Game Dev'],
     },

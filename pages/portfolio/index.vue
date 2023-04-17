@@ -16,7 +16,7 @@ const infoItems: IInfoItem[] = [
   {
     icon: 'i-mdi-key',
     name: 'GPG key',
-    value: 'C591 74DB 000B 0AAF',
+    value: '4101 ED17 F1A5 9D01',
     mono: true,
   },
   {
