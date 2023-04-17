@@ -14,7 +14,7 @@ description: Types are fun! Wanna exercise with types?
 
 One friend was working on UE and wanted to create a pipeline for certain data types. For example, he would like a function that takes in a `std::string` and eventually wrap the string to `WrappedString`, or an input `int` to `WrappedInt`, etc. So the question basically is "is there a way to map types in C++". 
 
-It's easy to do it in Python because types are treated as objects. To tackle this question, we can create a mapping from types to types, like the following example. And we can write handy macros if we are working with Rust. But macros in C++ seem to be a pain and types are not objects. 
+It's easy to do it in Python because types are treated as objects. To tackle this question, we can create a mapping from types to types, like the following example. If we were working with Rust, we can write handy macros. But in C++, macros seem to be a pain and types are not objects. 
 
 ```python
 DATA_TYPE_MAPPING = {
@@ -81,7 +81,7 @@ template <typename T>
 struct TypeMap {};
 ```
 
-We can utilize the [partial template specification](https://en.cppreference.com/w/cpp/language/partial_specialization) to create specific mapping pairs. In the highlighted lines, `TypeMap` are not parametrized anymore. In the case of `TypeMap<int>`, the struct is defined to contain a type alias of `WrappedInt`, named [`type`](https://en.cppreference.com/w/cpp/language/type_alias). Similarly, in the case of `double`, we create a type alias also named type for `WrappedDouble`. Once those are written down, whenever we mention `TypeMap<int>` and `TypeMap<double>`, C++ will use the specific versions and allows use to access the `type` by using the scope resolution operator `::`. For example, `TypeMap<int>::type` will be evaluated to `WrappedInt`. 
+We can utilize the [partial template specification](https://en.cppreference.com/w/cpp/language/partial_specialization) to create specific mapping pairs. In the highlighted lines, `TypeMap` are not parametrized anymore. In the case of `TypeMap<int>`, the struct is defined to contain a type alias of `WrappedInt`, named [`type`](https://en.cppreference.com/w/cpp/language/type_alias). Similarly, in the case of `double`, we create a type alias also named type for `WrappedDouble`. Once those are written down, whenever we mention `TypeMap<int>` and `TypeMap<double>`, C++ will use the specific versions and allows us to access the `type` by using the scope resolution operator `::`. For example, `TypeMap<int>::type` will be evaluated to `WrappedInt`. 
 
 ```cpp {4-7,9-12}
 template <typename T>
