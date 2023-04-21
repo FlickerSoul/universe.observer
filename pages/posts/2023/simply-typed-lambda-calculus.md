@@ -7,6 +7,7 @@ tags:
 createdAt: 2023-02-18
 updatedAt: 2023-02-18
 display: false
+hidden: true
 ---
 
 This post assumes that you are familiar with the [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus) system.

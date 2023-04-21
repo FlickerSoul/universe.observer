@@ -7,6 +7,7 @@ tags:
 createdAt: 2023-02-21
 updatedAt: 2023-02-21
 display: false
+hidden: true
 ---
 
 Playing with Programming Languages is like playing with Legos. You have some fundamental blocks, build structures, and see what comes out of it. 
