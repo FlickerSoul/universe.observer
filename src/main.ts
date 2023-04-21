@@ -6,12 +6,14 @@ import autoRoutes from 'virtual:generated-pages'
 import { createPinia } from 'pinia'
 import NProgress from 'nprogress'
 import { ViteSSG } from 'vite-ssg'
-import { addHtmlExtension, addMultiLangPages } from '../scripts/routing-support'
+import { addHtmlExtension, addMultiLangPages, redirectAll } from '../scripts/routing-support'
 import App from './App.vue'
 
-const routes = addHtmlExtension(
-  addMultiLangPages(
-    autoRoutes,
+const routes = redirectAll(
+  addHtmlExtension(
+    addMultiLangPages(
+      autoRoutes,
+    ),
   ),
 )
 

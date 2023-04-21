@@ -122,3 +122,13 @@ export function addMultiLangPages(routes: RouteRecordRaw[]): RouteRecordRaw[] {
 
   return routes
 }
+
+export function redirectAll(routes: RouteRecordRaw[]) {
+  routes.push({
+    name: 'CatchAll',
+    path: '/:catchAll(.*)',
+    redirect: { path: '/404' },
+  })
+
+  return routes
+}
