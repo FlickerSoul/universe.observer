@@ -27,6 +27,7 @@ const LINKS = {
     {
       name: 'Sima Nerush',
       url: 'https://www.simanerush.com/',
+      about: ['A passionate iOS Dev!'],
     },
     {
       name: 'Huggy',
