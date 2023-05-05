@@ -64,6 +64,13 @@ watch(
   },
 )
 
+onMounted(() => {
+  if (isTOCToggled.value)
+    TOC.value?.classList.add('toc-show')
+
+  TOC.value?.parentElement?.classList.add('ma-0')
+})
+
 // handling anchors and scroll to hash
 onMounted(() => {
   const navigate = () => {
