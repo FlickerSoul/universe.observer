@@ -2,9 +2,12 @@
 import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import { watch } from 'vue'
+import { inject } from '@vercel/analytics'
 import NavBar from './components/NavBar.vue'
 import Footer from './components/Footer.vue'
 import { isDark } from './logics'
+
+inject()
 
 const route = useRoute()
 const TITLE = 'Universe Observer'
