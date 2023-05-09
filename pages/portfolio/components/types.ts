@@ -18,6 +18,7 @@ interface HasEndDate extends HasStartDate {
 
 export enum TechItems {
   Vue = 'Vue',
+  Vite = 'Vite',
   TypeScript = 'TypeScript',
   JavaScript = 'JavaScript',
   Python = 'Python',
@@ -33,6 +34,7 @@ export enum TechItems {
   bison = 'bison',
   Latex = 'Latex',
   GitHubCICD = 'GitHub CICD',
+  Communication = 'Communication',
 }
 
 interface _IContentItem {
