@@ -1,13 +1,16 @@
 <script setup lang="ts">
 import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
-import { watch } from 'vue'
-import { inject } from '@vercel/analytics'
+import { onMounted, watch } from 'vue'
 import NavBar from './components/NavBar.vue'
 import Footer from './components/Footer.vue'
 import { isDark } from './logics'
 
-inject()
+onMounted(() => {
+  import('@vercel/analytics').then((mod) => {
+    mod.inject()
+  })
+})
 
 const route = useRoute()
 const TITLE = 'Universe Observer'
