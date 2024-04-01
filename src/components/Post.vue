@@ -4,6 +4,7 @@ import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
+import { useHead } from '@vueuse/head'
 import { SupportedLangs } from '../../scripts/lang'
 import { matchMultiLangBase } from '../../scripts/routing-support'
 import type { IPostData } from './types'
@@ -139,7 +140,19 @@ const frontmatter = computed<IPostData>(() => ({
   createdAt: props.frontmatter.createdAt && new Date(props.frontmatter.createdAt),
   updatedAt: props.frontmatter.updatedAt && new Date(props.frontmatter.updatedAt),
   langs: route.value.meta.frontmatter.langs,
+  get description(): string | undefined {
+    return props.frontmatter.description || props.frontmatter?.abstract
+  },
 }))
+
+useHead({
+  title: `${frontmatter.value.title} %sep %site.name`,
+  meta: [
+    { name: 'description', content: frontmatter.value.description },
+    { name: 'og:description', content: frontmatter.value.description },
+    { name: 'og:title', content: frontmatter.value.title },
+  ],
+})
 </script>
 
 <template>

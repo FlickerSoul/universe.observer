@@ -20,7 +20,7 @@ export interface IPostData {
   hidden?: boolean
   // whether should display comments in this post
   hasComments?: boolean
-  description: string
+  description?: string
 }
 
 export type IListedPostData =

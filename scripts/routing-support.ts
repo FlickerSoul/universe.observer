@@ -79,8 +79,8 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
           ...defaultRoute.meta.frontmatter,
           display: true,
           langs: [...langs],
-          get description(): string {
-            return this.abstract || ''
+          get description(): string | undefined {
+            return defaultRoute.meta?.frontmatter.description || this.abstract
           },
         },
         defaultLang,
