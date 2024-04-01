@@ -61,10 +61,13 @@ Tokenizer
 
 Internally, it maintains a finite automata, a direct graph where nodes are
 states and edges are symbols to be consumed in order to move to the next state.
+
 The library tries to be smart so that moving from one state to another consumes
 as many character as possible, instead of a single character each time. It also
 tries to flatten the graph as much as possible to reduce the size and the number
-of jumps. In the example below, you can see the lexer needs to consume `b` and
+of jumps.
+
+In the example below, you can see the lexer needs to consume `b` and
 the consume `c` to reach state 4 from 1 through state 3. Note that, because
 there are no other branches in state 3, we can compress the path into one.
 Similarly, we can compress the step from step 1 to step 5, knowing from state 1
@@ -92,6 +95,14 @@ stateDiagram-v2
     1 --> 6: d
     1 --> 7
 ```
+
+Sometimes it's possible for multiple tokens to terminate in the same exit node.
+Since we want a deterministic lex outcome, only one token can be specified per
+exit node. This is sorted out by an ordering system: the more specific the token
+is specified, the higher the rank is. The library then chooses the token with
+the highest rank when there are multiple choices. When two tokens have the same
+highest ranks, the programmer needs to specify a priority to help the library
+choose a token.
 
 ## Why
 
