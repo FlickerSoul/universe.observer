@@ -4,6 +4,7 @@ import type { IToyInfo } from './types'
 
 const toys: IToyInfo[] = [
   { name: 'Spin', url: '/toys/spin' },
+  { name: 'Kaleidoscope', url: '/toys/kaleidoscope/' },
 ]
 const TITLE = 'Toys %sep %site.name'
 const DESCRIPTION = 'Here is a list of toys I made!'
