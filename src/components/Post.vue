@@ -85,15 +85,15 @@ onMounted(() => {
     const link = event.target.closest('a')
     if (
       !event.defaultPrevented
-        && link
-        && event.button === 0
-        && link.target !== '_blank'
-        && link.rel !== 'external'
-        && !link.download
-        && !event.metaKey
-        && !event.ctrlKey
-        && !event.shiftKey
-        && !event.altKey
+      && link
+      && event.button === 0
+      && link.target !== '_blank'
+      && link.rel !== 'external'
+      && !link.download
+      && !event.metaKey
+      && !event.ctrlKey
+      && !event.shiftKey
+      && !event.altKey
     ) {
       const url = new URL(link.href)
       if (url.origin !== window.location.origin)
@@ -119,12 +119,17 @@ onMounted(() => {
   import('mermaid').then(({ default: mermaid }) => {
     mermaid.initialize({
       startOnLoad: false,
+      theme: isDark.value ? 'dark' : 'default',
     })
 
-    mermaid.run({ nodes: document.querySelectorAll(`pre.mermaid.${isDark.value ? 'shiki-dark' : 'shiki-light'}`) })
+    mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
 
     watch(isDark, (newVal) => {
-      mermaid.run({ nodes: document.querySelectorAll(`pre.mermaid.${newVal ? 'shiki-dark' : 'shiki-light'}`) })
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: newVal ? 'dark' : 'default',
+      })
+      mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
     })
   })
 })
@@ -218,8 +223,10 @@ const frontmatter = computed<IPostData>(() => ({
     border-color: v.$post-tag-color
     cursor: pointer
     font-size: 0.875rem
+
   .toc-icon
     transition: transform 0.2s ease-in-out
+
   .toc-icon-up
     transform: scaleY(-1)
 </style>
@@ -229,9 +236,11 @@ const frontmatter = computed<IPostData>(() => ({
   height: 0
   overflow: hidden
   transition: height 0.2s ease-in-out
+
 .toc-show
   height: auto
   overflow: visible
+
 p.hidden-lang
   display: none
 </style>

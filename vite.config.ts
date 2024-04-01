@@ -20,10 +20,12 @@ import Inspect from 'vite-plugin-inspect'
 import generateSitemap from 'vite-plugin-pages-sitemap'
 import type { RouteRecordNormalized, RouteRecordRaw } from 'vue-router'
 import MarkdownItShiki from '@shikijs/markdown-it'
+import { transformerMetaHighlight } from '@shikijs/transformers'
 import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
 import customCodeFence from './scripts/markdown-code-fence'
+import retainMermaid from './scripts/markdown-mermaid'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -119,6 +121,7 @@ export default defineConfig({
           },
           defaultColor: false,
           cssVariablePrefix: '--shiki-',
+          transformers: [transformerMetaHighlight()],
         }))
         md.use(anchor, {
           slugify,
@@ -143,6 +146,7 @@ export default defineConfig({
         md.use(sub)
         md.use(mark)
         md.use<CodeFenceOptions>(customCodeFence, { wrappingTag: 'div' })
+        md.use(retainMermaid)
       },
     }),
     components({

@@ -133,6 +133,9 @@ devDependencies:
   '@shikijs/markdown-it':
     specifier: ^1.2.3
     version: 1.2.3
+  '@shikijs/transformers':
+    specifier: ^1.2.3
+    version: 1.2.3
   '@types/dat.gui':
     specifier: ^0.7.12
     version: 0.7.12

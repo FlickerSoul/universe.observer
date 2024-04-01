@@ -4,12 +4,22 @@ html
   p.katex-block
     overflow-x: scroll
     padding: 0 1em
+
   p img
     width: 100%
-  pre.mermaid
-    svg
-      display: block
-      height: 100%
+
+  div.mermaid-container
+    overflow-x: hidden
+    width: 100%
+
+    pre.mermaid-content
+      overflow-x: auto
+      overflow-y: hidden
+
+      svg
+        display: block
+        height: 100%
+
   pre.shiki
     // horizontal scroll
     overflow: hidden
@@ -19,12 +29,14 @@ html
     margin: 0
     line-height: 1.25em
     -webkit-text-size-adjust: none
+
     .highlighted
       background: v.$code-highlight-color
       display: block
       margin: 0 -2em 0 -1.7em
       padding: 0 2em 0 1.7em
-    code,code[v-pre]
+
+    code, code[v-pre]
       overflow-x: auto
       overflow-y: hidden
       display: flex
@@ -34,13 +46,14 @@ html
       // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
       counter-reset: step
       counter-increment: step calc(var(--start, 1) - 1)
+
       & .line::before
         content: counter(step)
         counter-increment: step
         width: 1em
         display: inline-block
         text-align: right
-        color: rgba(115,138,148,.4)
+        color: rgba(115, 138, 148, .4)
         margin-right: 1.2em
 
   mark
@@ -49,10 +62,12 @@ html
     padding: 0 0.4em
     border-radius: .8em .3em
     box-decoration-break: clone
+
   .table-of-contents
-    &>ul
+    & > ul
       margin: 0
     margin: 1em 0
+
   .katex-error
     color: v.$katex-error-color
 
