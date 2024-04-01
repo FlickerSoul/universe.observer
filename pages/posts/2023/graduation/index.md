@@ -23,13 +23,15 @@ only be found in memories.
 I've been trying to write something since then. But every time a few sentences
 were jotted down, they were deleted. I can feel sorting out this departure is
 like untangling strings that straps a scary and bleeding wound. Even a tiny
-touch feels painful and this pain is something I have yet experienced.
+touch feels painful and the pain felt like something I had yet experienced ever
+time.
 
-I've been wondering what's hurting me that much. The answer seems simple: the
-place, the culture, and the people there. Even though part of my undergrad
-journey was not very pleasant, I'm grateful about everything. The professors
-were kind and trying to be helpful as much as they can. The peers at Reed were
-amazing. We were all trying to break out our comfort zone to learn and grow.
+I've been wondering what's hurting me that much. The answer seems simple: I'm
+losing many things from my grip: the place, the culture, and the people there.
+Even though part of my undergrad journey was not very pleasant, I'm grateful
+about everything. The professors were kind and trying to be helpful as much as
+they can. The peers at Reed were amazing. We were all trying to break out our
+comfort zone to learn and grow.
 People in Portland were warm-hearted and the environment of Portland cannot be
 more perfect in my opinion. I miss talking to peers in the common about the math
 problems they are working on; I miss smiling and saying hi to people and they
