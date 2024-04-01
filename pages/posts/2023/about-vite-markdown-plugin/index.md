@@ -6,7 +6,7 @@ tags:
   - vue
   - vite
 lang: en
-description: This website uses vite-plugin-markdown-vue extensively. 
+abstract: This website uses vite-plugin-markdown-vue extensively. 
    Let's disassemble the plugin and see how it works! 
    It's surprisingly powerful and fun! 
 ---

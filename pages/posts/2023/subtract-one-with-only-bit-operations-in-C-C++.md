@@ -6,7 +6,7 @@ tags:
   - fun
 createdAt: 2023-02-22
 updatedAt: 2023-02-22
-description: You are obsessed with bit operations and want to do everything 
+abstract: You are obsessed with bit operations and want to do everything 
   and want to do everything with & and |. 
   How to subtract one with only bit operations then? 
   Hmm, I wonder... 

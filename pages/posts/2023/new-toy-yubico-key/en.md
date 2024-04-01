@@ -5,7 +5,7 @@ updatedAt: 2023-03-03
 lang: en
 tags: 
   - 碎碎念
-description: I got two Yubico keys and they are cool!
+abstract: I got two Yubico keys and they are cool!
 ---
 
 I got two security keys from [yubico](https://www.yubico.com/) and paired most of my important accounts with the keys.

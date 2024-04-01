@@ -5,7 +5,7 @@ updatedAt: 2023-03-03
 lang: zh
 tags: 
   - 碎碎念
-description: 买了两把 Yubico 密钥！很有趣！
+abstract: 买了两把 Yubico 密钥！很有趣！
 ---
 
 买了两把 [yubico](https://www.yubico.com/) 的安全钥匙，把所有常用且关键的账号都加密。

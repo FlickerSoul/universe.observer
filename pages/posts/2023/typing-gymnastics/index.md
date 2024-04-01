@@ -6,7 +6,7 @@ tags:
 lang: en 
 createdAt: 2023-04-04
 updatedAt: 2023-04-05
-description: Types are fun! Wanna exercise with types? 
+abstract: Types are fun! Wanna exercise with types? 
   Turns out you can create (static) type mappings in C++! 
   To spicy things up a bit more, let's try to solve the n queen problem 
     with just types! 
