@@ -5,24 +5,21 @@ import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
 import imports from 'unplugin-auto-import/vite'
 import matter from 'gray-matter'
-import markdown from 'vite-plugin-vue-markdown'
+import markdown from 'unplugin-vue-markdown/vite'
 import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
 import unocss from 'unocss/vite'
-import { presetAttributify, presetIcons, presetUno, presetWebFonts } from 'unocss'
+import { presetAttributify, presetIcons, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
 import components from 'unplugin-vue-components/vite'
 import katex from '@uniob/markdown-it-katex'
-import transformerDirectives from '@unocss/transformer-directives'
 import sup from 'markdown-it-sup'
 import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import Inspect from 'vite-plugin-inspect'
 import generateSitemap from 'vite-plugin-pages-sitemap'
 import type { RouteRecordNormalized, RouteRecordRaw } from 'vue-router'
-import type { Options as ShikiOptions } from './scripts/markdown-it-shiki'
-import { CopyActionButton, FilenameProcessor, LangIndicator } from './scripts/markdown-it-shiki/utils'
-import shiki from './scripts/markdown-it-shiki/index'
+import MarkdownItShiki from '@shikijs/markdown-it'
 import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
@@ -44,7 +41,6 @@ export default defineConfig({
     // vue
     vue({
       include: [/\.vue$/, /\.md$/],
-      reactivityTransform: true,
       template: {
         compilerOptions: {
           isCustomElement: checkCustomComponent,
@@ -115,16 +111,15 @@ export default defineConfig({
         linkify: true,
         quotes: '""\'\'',
       },
-      markdownItSetup(md) {
-        md.use<ShikiOptions>(shiki, {
-          theme: {
+      async markdownItSetup(md) {
+        md.use(await MarkdownItShiki({
+          themes: {
             dark: 'nord',
             light: 'rose-pine-dawn',
           },
-          // highlighter: DEFAULT_HIGHLIGHTER,
-          highlightLines: true,
-          extra: [FilenameProcessor, LangIndicator, CopyActionButton],
-        })
+          defaultColor: false,
+          cssVariablePrefix: '--shiki-',
+        }))
         md.use(anchor, {
           slugify,
           permalink: anchor.permalink.linkInsideHeader({

@@ -39,3 +39,5 @@ scripts/image-minify.js
 
 # ignore auto generated sitemap
 public/sitemap.xml
+
+vite.config.ts.*.mjs

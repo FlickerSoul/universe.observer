@@ -6,56 +6,15 @@ html
     padding: 0 1em
   p img
     width: 100%
-  div.shiki-container
-    // horizontal scroll
-    overflow-x: hidden
-    width: 100%
-    // round corner
-    border-radius: 1em
-    // fine height except the last line
-    & span.line:not(:last-child)
-      min-height: 1em
-    & span.line:last-child
-      height: 0
-    // filename section styling
-    & .shiki-filename
-      font-size: 0.8em
-    // floating code block hide
-    --shiki-float-hover-visible: 0
-    --shiki-float-hover-hidden: 1
-    &:hover
-      --shiki-float-hover-visible: 1
-      --shiki-float-hover-hidden: 0
-    // floating container hide/visible on hover
-    [class*="shiki-extra-f"]
-      position: absolute
-    .shiki-extra-container
-      @apply: flex flex-row align-center gap-2
-    .shiki-extra-before:not(:empty),.shiki-extra-after:not(:empty)
-      padding: 0.5em 1.5em 0 1.25em
-      width: 100%
-    --float-margin: 8px
-    .shiki-extra-f-top
-      top: var(--float-margin)
-    .shiki-extra-f-right
-      right: var(--float-margin)
-    .shiki-extra-f-bottom
-      bottom: var(--float-margin)
-    .shiki-extra-f-left
-      left: var(--float-margin)
-
-    .shiki-float-hover-visible
-      opacity: var(--shiki-float-hover-visible)
-      transition: opacity 0.3s
-    .shiki-float-hover-hidden
-      opacity: var(--shiki-float-hover-hidden)
-      transition: opacity 0.3s
   pre.mermaid
     svg
       display: block
       height: 100%
   pre.shiki
-    min-width: fit-content
+    // horizontal scroll
+    overflow: hidden
+    width: 100%
+
     padding: 0.75em 1.5em 0.75em 1.25em
     margin: 0
     line-height: 1.25em
@@ -66,6 +25,8 @@ html
       margin: 0 -2em 0 -1.7em
       padding: 0 2em 0 1.7em
     code,code[v-pre]
+      overflow-x: auto
+      overflow-y: hidden
       display: flex
       flex-direction: column
       font-family: "JetBrains Mono", monospace
@@ -73,7 +34,7 @@ html
       // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
       counter-reset: step
       counter-increment: step calc(var(--start, 1) - 1)
-      & .line:not(:last-child)::before
+      & .line::before
         content: counter(step)
         counter-increment: step
         width: 1em
@@ -96,9 +57,9 @@ html
     color: v.$katex-error-color
 
 html:not(.dark)
-  .shiki-dark
-    display: none !important
+  .shiki, .shiki span
+    color: var(--shiki-light, inherit)
 
 html.dark
-  .shiki-light
-    display: none !important
+  .shiki, .shiki span
+    color: var(--shiki-dark, inherit)
