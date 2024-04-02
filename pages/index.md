@@ -1,14 +1,14 @@
 ---
 title: Universe Observer
 createdAt: 2023-02-04
-updatedAt: 2023-02-08
+updatedAt: 2024-04-02
 abstract: Hey, I am Larry Z, currently a senior studying CS.
   I'm interested in PL theory and also software engineering.
   This is my personal website, hosting my thoughts, learning notes,
   and some projects. 
 ---
 
-Hey, I am Larry Z, currently a senior studying CS.
+Hey, I am Larry Z, currently studyibg towards my Software Systems Engineering Master's degree.
 I'm interested in PL theory and also software engineering.
 
 This is my personal website, hosting my thoughts, learning notes,
