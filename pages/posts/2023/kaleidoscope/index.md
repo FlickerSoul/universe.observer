@@ -1,0 +1,1 @@
+../../../../projects/toys/kaleidoscope/index.md

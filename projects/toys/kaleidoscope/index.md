@@ -5,8 +5,10 @@ title: Kaleidoscope
 lang: en
 #langs: 
 tags:
-  - Toys
-  - Lexer
+  - toy
+  - lexer
+  - LLVM
+  - swift
 createdAt: 2023-12-07
 updatedAt: 2024-04-01
 #hidden: 
