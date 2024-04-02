@@ -1,7 +1,9 @@
 ---
 title: Kaleidoscope
 #subtitle: 
-#abstract: 
+abstract: A lexer generator macro in swift using swift macros,
+ `_RegexParser` in the experimental string processing library,
+ and directed graphs. 
 lang: en
 #langs: 
 tags:
