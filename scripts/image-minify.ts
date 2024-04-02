@@ -1,14 +1,16 @@
-import { cwd } from 'node:process'
+import { cwd, exit } from 'node:process'
 import * as path from 'node:path'
 import * as fs from 'node:fs'
 import tinify from 'tinify'
 import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
 dotenv.config()
 
-if (process.env.TINY_PNG_API_KEY)
+if (process.env.TINY_PNG_API_KEY) {
   tinify.key = process.env.TINY_PNG_API_KEY
-else
-  throw new Error('TINY_PNG_API_KEY is not set')
+} else {
+  console.error('Please set TINY_PNG_API_KEY in .env file')
+  exit(0)
+}
 
 const WORKING_DIR = cwd()
 const PAGE_DIR = path.join(WORKING_DIR, 'pages')
@@ -50,7 +52,7 @@ async function shrinkImagesInDir(dirPath: string) {
           await source.toFile(filePath)
           compressed.push({
             path: originalPath,
-            ratio: `${calculateRatio(originalPath, filePath) * 100}%`
+            ratio: `${calculateRatio(originalPath, filePath) * 100}%`,
           })
           // log the result
           console.log('✅', ' compressed', 'ratio:', compressed[compressed.length - 1].ratio)
@@ -65,9 +67,8 @@ async function shrinkImagesInDir(dirPath: string) {
 await shrinkImagesInDir(PAGE_DIR)
 
 if (compressed.length > 0) {
-  console.error("New Files Compressed. Aborting git commit...")
+  console.error('New Files Compressed. Aborting git commit...')
   process.exit(1)
 } else {
-  console.log("Everything is compressed!")
+  console.log('Everything is compressed!')
 }
-
