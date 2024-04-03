@@ -8,7 +8,7 @@ abstract: Hey, I am Larry Z, currently a senior studying CS.
   and some projects. 
 ---
 
-Hey, I am Larry Z, currently studyibg towards my Software Systems Engineering Master's degree.
+Hey, I am Larry Z, currently studying towards my Software Systems Engineering Master's degree.
 I'm interested in PL theory and also software engineering.
 
 This is my personal website, hosting my thoughts, learning notes,
