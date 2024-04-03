@@ -107,7 +107,8 @@ stateDiagram-v2
     PAUSED --> STOPPED: by stopping the audio
     PLAYING --> STOPPED: by stopping the audio
 
-    state STOPPED {
+    state STOPPED { 
+      direction LR
       state "🚫 Location update" as s1
       state "🚫 Orientation update" as s2
       state "🚫 Playing coroutine job" as s3
@@ -115,6 +116,7 @@ stateDiagram-v2
     }
 
     state PLAYING {
+      direction LR
       state "✅ Location update" as pl1
       state "✅ Orientation update" as pl2
       state "✅ Playing coroutine job" as pl3
@@ -122,6 +124,7 @@ stateDiagram-v2
     }
 
     state PAUSED {
+      direction LR
       state "🚫 Location update" as pu1
       state "🚫 Orientation update" as pu2
       state "🚫 Playing coroutine job" as pu3
@@ -142,6 +145,7 @@ stateDiagram-v2
     PLAYING --> STOPPED: by finishing the current playing and exhausting the play queue
 
     state STOPPED {
+      direction LR
       state "🚫 Location update" as s1
       state "🚫 Orientation update" as s2
       state "🚫 Playing coroutine job" as s3
@@ -149,6 +153,7 @@ stateDiagram-v2
     }
 
     state PLAYING {
+      direction LR
       state "✅ Location update" as pl1
       state "✅ Orientation update" as pl2
       state "✅ Playing coroutine job" as pl3
@@ -156,6 +161,7 @@ stateDiagram-v2
     }
 
     state PAUSED {
+      direction LR
       state "🚫 Location update" as pu1
       state "🚫 Orientation update" as pu2
       state "🚫 Playing coroutine job" as pu3
