@@ -191,11 +191,12 @@ flowchart
   looper_initialized[looper initialized] -->|on start| loop_cond
   loop_cond[/block until movement is received/]
   loop_cond -->|movement received| get_callouts[get callout data queue based on movements]
-  get_callouts --> queue_empty[/if the queue is empty/]
+  get_callouts --> queue_empty{if the queue is empty}
   queue_empty -->|yes, wait for next update| loop_cond
   queue_empty -->|no| dequeue[dequeue first]
-  dequeue --> dup_cond[if the dequeued callout is seen recently]
-  dup_cond -->|yes, skip| loop_cond
+  dequeue --> dup_cond{"if the dequeued callout 
+  is seen recently"}
+  dup_cond -->|yes, skip| queue_empty
   dup_cond -->|no, callout| callout[submit callout data to the discrete player]
   callout --> queue_empty
   loop_cond -->|on stop| looper_initialized
