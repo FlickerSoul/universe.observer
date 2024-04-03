@@ -40,13 +40,19 @@ We divided 8 of us into 4 groups, each responsible for a different component of 
 
 Because of the time constraint, there are still many great features that  weren't listed in our planning. However, we hope the future team can take over our work and continue making Soundscape a  complete and optimal navigation solution for people who need it.
 
-## Technologies, Challenges, and What I Have Done
+## Technologies and The Audio Stuff
+
+### Technologies
 
 We decided to use Kotlin (with JNI) for developmemt, Jetpack Compose for UI, Room for persistence, and, latter in the course, hilt (dagger) for dependency injection and proto DataStore for lightweight data persistence duch as values in settings.
 
-I worked in the audio team, addling with Raimund, because I think the audio part is the most challenging and interesting component of the app. It turned put to be true, because unlike iOS which provides many AMAZING high-level and yet POWERFUL audio APIs and access to AirPods' head tracking sensors, Android has very limited APIs that allow  the level of customizability and control we need.
+### The Audio Team
+
+I worked in the audio team, along with Raimund, because I think the audio part is the most challenging and interesting component of the app. It turned put to be true, because unlike iOS which provides many AMAZING high-level and yet POWERFUL audio APIs and access to AirPods' head tracking sensors, Android has very limited APIs that allow  the level of customizability and control we need.
 
 The process of building the audio part has mainly three stages: making a audio renderer from a existing low-level audio engine, implementing state-aware players that can play, pause, and queue audios to be spatialized and rendered (played) by the audio renderer, and creating and providing a service containing the functionalities to other parts of the app.
+
+### ACT I: The Audio Renderer
 
 The first step was to find a suitable audio engine for audio spatialization and customization. It was clear to us that it is impossible to implement an engine from scratch and that there didn't seem to exit anything high level in the kotlin world. We decided to use JNI and focus on engines implemented in C or C++. There are many choices on the market: Steam Audio, Oboe, OpenAL, FMOD, SoLoud, etc. We chose SoLoud because it is open source, powerful, and lightweight. The only down side is that SoLoud, even though it works, is not actively maintained: the existing audio backend support for Android (OpenSL ES) is already deprecated, and the new backend (AAidio) is out of horizon.
 
@@ -54,12 +60,108 @@ Thee process of choosing an engine wasn't easy. I personally did not have any pr
 
 Once we've decided SoLoud is our choice, we started to creating APIs for kotlin world using JNI. This was basically done by an wrapper over SoLoud along with necessary data structures, such as bytes of audio source, and specific JNI bridge functions that creates and interacting with pointers to the wrapper instances. Together, we allowed kotlin to prepare audio sources for playing, play, pause, stop, and spatializes audio the sources, and thus we have a audio renderer, completing the first stage.
 
-One of the tricky things we encountered was changing the audio cues based the quality of user orientation. As mentioned, the closer the user is facing the destination, the more positive the sound cue is. Internally, we have 2 to 4 tracks per sound cue; every track has the same length and each track has a different positiveness. To allow transition from one track to another, we first decided to natively play all tracks at the same time but only allow the one appropriate track to have an audible volume while others' volumes are set to 0; as the user changes their orientation, different tracks will have their volumes changed accordingly. However, because SoLoud does not provide a way to do this batch action: turn up the volume of one track and turn down that of the other, one has to do this one by one, which incurs delays in between the changes and breaking the continuity of what the user would hear. We then wrote our own batch action and achieved a better effect, although it is still not perfect. We are currently experimenting a beat system, mimicking wha's been done on the iOS side. Essentially, each sound cue had number of beats and these beats are marks of spots on which changing tracks wont be noticable. This also means all of the tracks of the cue have the same number of beats, meaning even though the currently playing track can be changed at any time, we only change it on the best, creating a seamless transition. To do so efficiently, we are creating a audio data source that's aware of the bytes of all tracks and the number of beats; the audio data source serves the bytes of the track that's currently playing and starts to serve the bytes of the next track when the end of a beat is reached.
+```mermaid
+graph 
+    Koltin_Code(Koltin Code)
+    Soloud_Wrapper(SoLoud Wrapper)
+    
+    Koltin_Code -->|Interact Through JNI| Soloud_Wrapper
+    
+    subgraph Soloud_Wrapper [SoLoud Wrapper]
+        SI(SoLoud Instance)
+        AT(An Array of Audio Track Instances)
+        NY(Number of Tracks)
+        Func(Functions)
+    end
+
+    subgraph Func [Functions]
+        CR(Create and Pass Wrapper Pointer To Kotlin)
+        PR(Prepare Audio Source for spatialization)
+        PL(Play)
+        WT(Wait for, or block until, Playing to Finish)
+        PA(Pause)
+        RM(Resume)
+        ST(Stop and Reset Prepared Audio Source)
+    end
+```
+
+One of the tricky things we encountered was changing the audio cues based the quality of user orientation. As mentioned, the closer the user is facing the destination, the more positive the sound cue is. Internally, we have 2 to 4 tracks per sound cue; every track has the same length and each track has a different positiveness. To allow transition from one track to another, we first decided to natively play all tracks at the same time but only allow the one appropriate track to have an audible volume while others' volumes are set to 0; as the user changes their orientation, different tracks will have their volumes changed accordingly. However, because SoLoud does not provide a way to do this batch action: turn up the volume of one track and turn down that of the other, one has to do this one by one, which incurs delays in between the changes and breaking the continuity of what the user would hear. We then wrote our own batch action and achieved a better effect, although it is still not perfect. We are currently experimenting a beat system, mimicking wha's been done on the iOS side. Essentially, each sound cue had number of beats and these beats are marks of spots on which changing tracks wont be noticeable. This also means all of the tracks of the cue have the same number of beats, meaning even though the currently playing track can be changed at any time, we only change it on the best, creating a seamless transition. To do so efficiently, we are creating a audio data source that's aware of the bytes of all tracks and the number of beats; the audio data source serves the bytes of the track that's currently playing and starts to serve the bytes of the next track when the end of a beat is reached.
 
 [I can put some audio samples here]
 
+### ACT II: The Players
+
 Once we had the renderer, we needed to invent players to play, pause, and queue audio sources to be rendered by the renderer. In our design, there are two kinds of players in the app: the one that plays audio beacon _**continuously**_ (meaning it's always playing unless it's paused or stopped) and the one that plays callouts _**discretely**_ (meaning it plays one thing at a time in the queue, and stops if there are nothing to play). The two kinds of players share many comment processes and states, thus finding the balance and creating a common abstract class that can be reused in both players are crucial and intricate. I am pretty happy and proud of the abstraction I've created.
 
-The hardest part turned out to be dealing with threading (or coroutines) and race conditions. This is due to the nature of an application which uses the main thread for UI and other background threads for various tasks. Audio playing is included 
+The hardest part turned out to be dealing with threading (or coroutines) and race conditions. This is due to the nature of an application which uses the main thread for UI and other background threads for various tasks. Audio playing is counted as one of the background tasks and deserves its own thread. We decided to do it in kotlin´s way: coroutines. Because the players are stateful, we need to manage the life of spawned coroutine jobs for playing and sensor updates. Tests are used to check and ensure the players are working as expected. 
+
+<!-- FIXME: chart sizing -->
+
+```mermaid
+stateDiagram-v2
+  state "Continuous Player (for audio beacon)" as CP {
+    [*] --> STOPPED: by initializing continuous player
+    STOPPED --> PAUSED: by preparing the audio source
+    PLAYING --> PAUSED: by pausing the audio
+    PAUSED --> PLAYING: by resuming the audio
+    PAUSED --> STOPPED: by stopping the audio
+    PLAYING --> STOPPED: by stopping the audio
+
+    state STOPPED {
+      state "🚫 Location update" as s1
+      state "🚫 Orientation update" as s2
+      state "🚫 Playing coroutine job" as s3
+      state "🚫 Audio resources" as s4
+    }
+
+    state PLAYING {
+      state "✅ Location update" as pl1
+      state "✅ Orientation update" as pl2
+      state "✅ Playing coroutine job" as pl3
+      state "✅ Audio resources" as pl4
+    }
+
+    state PAUSED {
+      state "🚫 Location update" as pu1
+      state "🚫 Orientation update" as pu2
+      state "🚫 Playing coroutine job" as pu3
+      state "✅ Audio resources" as pu4
+    }
+  }
+```
+
+```mermaid
+stateDiagram-v2
+  state "Discrete Player (for callouts)" as DP {
+    [*] --> STOPPED: by initializing continuous player
+    STOPPED --> PAUSED: by scheduling audio sources
+    PLAYING --> PAUSED: by pausing the audio
+    PAUSED --> PLAYING: by resuming the audio
+    PAUSED --> STOPPED: by stopping the audio
+    PLAYING --> STOPPED: by stopping the audio
+    PLAYING --> STOPPED: by finishing the current playing and exhausting the play queue
+
+    state STOPPED {
+      state "🚫 Location update" as s1
+      state "🚫 Orientation update" as s2
+      state "🚫 Playing coroutine job" as s3
+      state "🚫 Audio resources" as s4
+    }
+
+    state PLAYING {
+      state "✅ Location update" as pl1
+      state "✅ Orientation update" as pl2
+      state "✅ Playing coroutine job" as pl3
+      state "✅ Audio resources" as pl4
+    }
+
+    state PAUSED {
+      state "🚫 Location update" as pu1
+      state "🚫 Orientation update" as pu2
+      state "🚫 Playing coroutine job" as pu3
+      state "✅ Audio resources" as pu4
+    }
+  }
+```
 
 (To be continued)
