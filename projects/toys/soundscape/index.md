@@ -50,7 +50,7 @@ We decided to use Kotlin (with JNI) for developmemt, Jetpack Compose for UI, Roo
 
 I worked in the audio team, along with Raimund, because I think the audio part is the most challenging and interesting component of the app. It turned put to be true, because unlike iOS which provides many AMAZING high-level and yet POWERFUL audio APIs and access to AirPods' head tracking sensors, Android has very limited APIs that allow  the level of customizability and control we need.
 
-The process of building the audio part has mainly three stages: making a audio renderer from a existing low-level audio engine, implementing state-aware players that can play, pause, and queue audios to be spatialized and rendered (played) by the audio renderer, and creating and providing a service containing the functionalities to other parts of the app.
+The process of building the audio part has mainly three stages: making a audio renderer from a existing low-level audio engine, implementing state-aware players that can play, pause, and queue audios to be spatialized and rendered (played) by the audio renderer, and creating and providing a audio service containing the functionalities to other parts of the app, along with an UI interaction commander that triggers callouts according to users' need.
 
 ### ACT I: The Audio Renderer
 
@@ -93,7 +93,7 @@ One of the tricky things we encountered was changing the audio cues based the qu
 
 Once we had the renderer, we needed to invent players to play, pause, and queue audio sources to be rendered by the renderer. In our design, there are two kinds of players in the app: the one that plays audio beacon _**continuously**_ (meaning it's always playing unless it's paused or stopped) and the one that plays callouts _**discretely**_ (meaning it plays one thing at a time in the queue, and stops if there are nothing to play). The two kinds of players share many comment processes and states, thus finding the balance and creating a common abstract class that can be reused in both players are crucial and intricate. I am pretty happy and proud of the abstraction I've created.
 
-The hardest part turned out to be dealing with threading (or coroutines) and race conditions. This is due to the nature of an application which uses the main thread for UI and other background threads for various tasks. Audio playing is counted as one of the background tasks and deserves its own thread. We decided to do it in kotlin´s way: coroutines. Because the players are stateful, we need to manage the life of spawned coroutine jobs for playing and sensor updates. Tests are used to check and ensure the players are working as expected. 
+The hardest part turned out to be dealing with threading (or coroutines) and race conditions. This is due to the nature of an application which uses the main thread for UI and other background threads for various tasks. Audio playing is counted as one of the background tasks and deserves its own thread. We decided to do it in kotlin´s way: coroutines. Because the players are stateful, we need to manage the life of spawned coroutine jobs for playing and sensor updates. In addition, since the playing job mainly uses JNI code which doesn't provide suspension points like some of the native coroutine utilities, we had to manually do the hassle of checking if the job is canceled. Luckily, we have testing to help us ensure the players are working as expected and the development of players was mostly smooth.
 
 <!-- FIXME: chart sizing -->
 
@@ -163,5 +163,46 @@ stateDiagram-v2
     }
   }
 ```
+
+### ACT III: The Audio Service, Commander, and the Callout Looper
+
+Once players are ready to manage and serve audio, we need a service that ensures the liveness of players even when the app is in the background. We designed the service to contain all the audio components including a continuous player, a discrete player, a text-to-speech engine, and a callout looper. Additionally, we implemented a commander that processes users' interactions and triggers corresponding callouts. Conveniently, we allow the service to be paused and resumed when user requests so; when paused, the service pauses all players and their updates from sensors, saving battery and CPU usage. The service also serves as an entry point and a bridge so that the audio components are initialized properly through the service and other parts of the app can use them easily.
+
+Since the service is essentially a collection of independent component part instances, we use kotlin's "mixin" to simplify and make the code more readable. A mixin can be create through [delegation](https://kotlinlang.org/docs/delegation.html). Thus, each component part resides in its own mixin class, and the service class is a composition of these mixin classes. This allows us to easily add or remove components, code a particular component without distractions, and test each component separately.
+
+We also used data injection architecture to inject necessary components using hilt. This made our life easier because we don't need to create and manage the dependencies manually. Instead, the dependencies are mostly provided from a central place, allowing us to add, remove, or change dependencies easily. A rough structure is shown as below. 
+
+```mermaid
+graph 
+    SD(Persistence Storage of Markers and Routes) -->|injected to| CalloutGenerator
+    context -->|injected to| CalloutGenerator
+    Commander --> |injected to| ViewModels
+    CalloutGenerator -->|injected to| AudioService
+    AudioSettings -->|injected to| AudioService
+    AudioSettings -->|injected to| SettingsViewModels
+    CalloutGenerator -->|injected to| Commander
+    Settings -->|injected and transformed to| AudioSettings
+```
+
+The callout looper is the last thing added to the audio service. As we discussed, the looper calls out user's surroundings based on user's movements.
+
+```mermaid
+flowchart
+  looper_initialized[looper initialized] -->|on start| loop_cond
+  loop_cond[/block until movement is received/]
+  loop_cond -->|movement received| get_callouts[get callout data queue based on movements]
+  get_callouts --> queue_empty[/if the queue is empty/]
+  queue_empty -->|yes, wait for next update| loop_cond
+  queue_empty -->|no| dequeue[dequeue first]
+  dequeue --> dup_cond[if the dequeued callout is seen recently]
+  dup_cond -->|yes, skip| loop_cond
+  dup_cond -->|no, callout| callout[submit callout data to the discrete player]
+  callout --> queue_empty
+  loop_cond -->|on stop| looper_initialized
+```
+
+### Some Lessons
+
+This is
 
 (To be continued)
