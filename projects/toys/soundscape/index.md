@@ -1,7 +1,7 @@
 ---
 title: Soundscape
 #subtitle: 
-abstract: An Android application providing hands-free navigation using spatial audio,  empowering visually impaired people to navigate the world at ease.
+abstract: An Android application providing hands-free navigation using spatial audio,  empowering visually impaired people to navigate the world at ease. This project is brought to you by 8 UCL Software Systems Engineering students.
 lang: en
 #langs: 
 tags: 
