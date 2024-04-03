@@ -2,6 +2,7 @@
 import { useHead } from '@vueuse/head'
 import { useRoute } from 'vue-router'
 import { onMounted, watch } from 'vue'
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import NavBar from './components/NavBar.vue'
 import Footer from './components/Footer.vue'
 import { isDark } from './logics'
@@ -58,5 +59,6 @@ watch(() => route.fullPath, (val) => {
   <main>
     <router-view />
     <Footer class="no-print" />
+    <SpeedInsights />
   </main>
 </template>
