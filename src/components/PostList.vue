@@ -61,7 +61,7 @@ function diffYear(a: Date | undefined, b: Date | undefined) {
         v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))"
       >
         <div class="relative h20 pointer-prevent-none select-none">
-          <span class="absolute font-bold mt-8 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15">
+          <span class="absolute font-bold mt-4 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15">
             {{ post.createdAt ? post.createdAt.getFullYear() : UNKNOWN_DATE_REPR }}
           </span>
         </div>
