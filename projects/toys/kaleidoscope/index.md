@@ -2,8 +2,8 @@
 title: Kaleidoscope
 #subtitle: 
 abstract: A lexer generator macro in swift using swift macros,
- `_RegexParser` in the experimental string processing library,
- and directed graphs. 
+  `_RegexParser` in the experimental string processing library,
+  and directed graphs.
 lang: en
 #langs: 
 tags:
@@ -17,9 +17,13 @@ updatedAt: 2024-04-01
 #hasComments:
 ---
 
-I made a [tokenizer in swift](https://github.com/FlickerSoul/Kaleidoscope) with
-[Swift Macro](https://www.avanderlee.com/swift/macros/). It’s
-inspired by [logos](https://github.com/maciejhirsz/logos), a rust tokenizer
+[[TOC]]
+
+## What Is Kaleidoscope
+
+I made a [tokenizer in swift](https://github.com/FlickerSoul/Kaleidoscope),
+named Kaleidoscope with [Swift Macro](https://www.avanderlee.com/swift/macros/).
+It’s inspired by [logos](https://github.com/maciejhirsz/logos), a rust tokenizer
 library, but performs a bit worse 🤣
 
 It allows you to create a tokenizer on a enum of tokens with just a couple
@@ -63,10 +67,64 @@ Identifier("fast")
 Tokenizer
 ```
 
+## How It Works
+
 Internally, it maintains a finite automata, a direct graph where nodes are
 states and edges are symbols to be consumed in order to move to the next state.
 
-The library tries to be smart so that moving from one state to another consumes
+Each of the regex or exact strings for matching a token is converted into a
+initial graph. We used the `_RegexParser` library in the experimental string
+processing library to obtain the structures of regexes, and convert the
+structures into one of the three basic patterns: walk, cycle, and terminals. For
+example, to match, `ab` as `⍺`, `ac` as `β`, and `ab*?` as `ω`, we obtain the
+following graphs. Note that the numbers on the node does not have any meaning
+besides differentiating the nodes. However, the nodes labeled with greek
+alphabets are the terminals, standing for a match if reached.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    1 --> 2: a
+    2 --> 3: b
+    3 --> ⍺
+    5 --> 6: a
+    6 --> 7: c
+    7 --> β
+    9 --> 10: a
+    10 --> 10: b
+    10 --> ω
+```
+
+Then all initial graphs went through a merging process to obtain a single finite
+automata.
+
+```mermaid
+stateDiagram-v2
+    direction LR
+    1 --> 2: a
+    2 --> 3: c
+    3 --> β
+    2 --> 4
+    4 --> ω
+    4 --> 5: b
+    5 --> β/⍵
+    5 --> 7: b
+    7 --> 7: b
+    7 --> ω
+```
+
+Sometimes it's possible for multiple tokens to terminate in the same exit node.
+Since we want a deterministic lex outcome, only one token can be specified per
+exit node. This is sorted out by an ordering system: the more specific the token
+is specified, the higher the rank is. The library then chooses the token with
+the highest rank when there are multiple choices. When two tokens have the same
+highest ranks, the programmer needs to specify a priority to help the library
+choose a token. For example, in the diagram above, state 5, by matching nothing,
+can go to a terminal that stands for a matching for either `β` or `ω`. Suppose,
+the rank of `ω` is higher than that of `β`, then the terminal will be resolved
+as `ω`.
+
+Kaleidoscope tries to be smart so that moving from one state to another consumes
 as many character as possible, instead of a single character each time. It also
 tries to flatten the graph as much as possible to reduce the size and the number
 of jumps.
@@ -99,14 +157,6 @@ stateDiagram-v2
     1 --> 6: d
     1 --> 7
 ```
-
-Sometimes it's possible for multiple tokens to terminate in the same exit node.
-Since we want a deterministic lex outcome, only one token can be specified per
-exit node. This is sorted out by an ordering system: the more specific the token
-is specified, the higher the rank is. The library then chooses the token with
-the highest rank when there are multiple choices. When two tokens have the same
-highest ranks, the programmer needs to specify a priority to help the library
-choose a token.
 
 ## Why
 
