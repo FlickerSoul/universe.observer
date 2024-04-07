@@ -5,6 +5,7 @@ import type { IToyInfo } from './types'
 const toys: IToyInfo[] = [
   { name: 'Spin', url: '/toys/spin' },
   { name: 'Kaleidoscope', url: '/toys/kaleidoscope/' },
+  { name: 'Soundscape', url: '/toys/soundscape/' },
 ]
 const TITLE = 'Toys %sep %site.name'
 const DESCRIPTION = 'Here is a list of toys I made!'
@@ -23,7 +24,7 @@ useHead({
     <p>
       Here is a list of toys I made :)
     </p>
-    <div class="grid grid-cols-5 gap-2">
+    <div class="flex gap-4">
       <div v-for="(toy, i) in toys" :key="toy.name">
         <span>{{ i }}. </span>
         <a v-if="toy.outside" :href="toy.url">
