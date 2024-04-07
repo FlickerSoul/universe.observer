@@ -141,7 +141,7 @@ const frontmatter = computed<IPostData>(() => ({
   updatedAt: props.frontmatter.updatedAt && new Date(props.frontmatter.updatedAt),
   langs: route.value.meta.frontmatter.langs,
   get description(): string | undefined {
-    return props.frontmatter.description || props.frontmatter?.abstract
+    return props.frontmatter.description || props.frontmatter?.abstract || props.frontmatter?.excerpt
   },
 }))
 
@@ -208,7 +208,7 @@ useHead({
       <Discussion
         id="giscus-comments"
         host="https://giscus.app"
-        repo="flickersoul/me"
+        repo="flickersoul/universe.observer"
         repo-id="R_kgDOI6RsMA"
         category="General"
         category-id="DIC_kwDOI6RsMM4CVqJj"

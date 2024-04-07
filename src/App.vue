@@ -16,14 +16,15 @@ onMounted(() => {
 const route = useRoute()
 const TITLE = 'Universe Observer'
 const DESCRIPTION = 'Larry Z\'s blog'
+const AUTHOR = 'Larry Zeng'
 
 useHead({
   templateParams: {
     sep: '|',
     site: {
       url: 'https://universe.observer',
-      name: 'Universe Observer',
-      author: 'Larry Zeng',
+      name: TITLE,
+      author: AUTHOR,
     },
   },
   title: TITLE,

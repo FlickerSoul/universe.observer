@@ -20,6 +20,9 @@ export interface IPostData {
   hidden?: boolean
   // whether should display comments in this post
   hasComments?: boolean
+  // excerpt of a post
+  excerpt?: string
+  // description of the post
   description?: string
 }
 

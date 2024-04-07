@@ -108,11 +108,12 @@ export default defineConfig({
     markdown({
       wrapperComponent: 'Post',
       wrapperClasses: 'post-md-content',
-      headEnabled: true,
       markdownItOptions: {
         linkify: true,
         quotes: '""\'\'',
       },
+      excerpt: true,
+      exposeFrontmatter: false,
       async markdownItSetup(md) {
         md.use(await MarkdownItShiki({
           themes: {
