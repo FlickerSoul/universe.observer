@@ -108,9 +108,9 @@ stateDiagram-v2
     4 --> ω
     4 --> 5: b
     5 --> β/⍵
-    5 --> 7: b
-    7 --> 7: b
-    7 --> ω
+    5 --> 6: b
+    6 --> 6: b
+    6 --> ω
 ```
 
 Sometimes it's possible for multiple tokens to terminate in the same exit node.
