@@ -26,7 +26,7 @@ import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import type { Options as CodeFenceOptions } from './scripts/markdown-code-fence'
 import customCodeFence from './scripts/markdown-code-fence'
 import retainMermaid from './scripts/markdown-mermaid'
-import MarkdownImageWrapper from './scripts/markdown-image-wrapper'
+import wrapMagnifier from './scripts/markdown-img-wrapper'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -105,7 +105,6 @@ export default defineConfig({
         return routes
       },
     }),
-    MarkdownImageWrapper(),
     markdown({
       wrapperComponent: 'Post',
       wrapperClasses: 'post-md-content',
@@ -149,6 +148,7 @@ export default defineConfig({
         md.use(mark)
         md.use<CodeFenceOptions>(customCodeFence, { wrappingTag: 'div' })
         md.use(retainMermaid)
+        md.use(wrapMagnifier)
       },
     }),
     components({

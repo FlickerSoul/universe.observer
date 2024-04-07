@@ -1,27 +1,18 @@
 import type MarkdownIt from 'markdown-it'
-import type { MermaidConfig } from 'mermaid'
-import Mermaid from 'mermaid'
 
-export type MermaidOptions = MermaidConfig
-
-export default function retainMermaid(md: MarkdownIt, options: MermaidOptions = {}) {
-  Mermaid.initialize({
-    securityLevel: 'loose',
-    ...options,
-  })
-
+export default function retainMermaid(md: MarkdownIt) {
   function getLangName(info: string) {
     return info.split(/\s+/g)[0]
   }
 
   const defaultFenceRenderer = md.renderer.rules.fence
 
-  function customFenceRenderer(
-    tokens: any[],
-    idx: number,
-    options: any,
-    env: any,
-    slf: any,
+  md.renderer.rules.fence = function customFenceRenderer(
+    tokens,
+    idx,
+    options,
+    env,
+    slf,
   ) {
     const token = tokens[idx]
     const info = token.info.trim()
@@ -37,6 +28,4 @@ export default function retainMermaid(md: MarkdownIt, options: MermaidOptions = 
 
     return `<Magnifier><div class="mermaid-container"><pre class='mermaid-content'>${token.content}</pre></div></Magnifier>`
   }
-
-  md.renderer.rules.fence = customFenceRenderer
 }
