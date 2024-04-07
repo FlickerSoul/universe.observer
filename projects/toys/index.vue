@@ -22,7 +22,7 @@ useHead({
 <template>
   <div class="post-center">
     <p>
-      Here is a list of toys I made :)
+      Here is a list of toys I made myself or with peers :)
     </p>
     <div class="flex gap-4">
       <div v-for="(toy, i) in toys" :key="toy.name">
