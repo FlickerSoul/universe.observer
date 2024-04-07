@@ -35,7 +35,7 @@ export default function retainMermaid(md: MarkdownIt, options: MermaidOptions = 
       return ''
     }
 
-    return `<div class="mermaid-container"><pre class='mermaid-content'>${token.content}</pre></div>`
+    return `<Magnifier><div class="mermaid-container"><pre class='mermaid-content'>${token.content}</pre></div></Magnifier>`
   }
 
   md.renderer.rules.fence = customFenceRenderer
