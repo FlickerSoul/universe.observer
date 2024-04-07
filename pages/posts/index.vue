@@ -17,7 +17,7 @@ useHead({
 </script>
 
 <template>
-  <Post :frontmatter="{ title: 'Posts', hasComments: false, description: DESCRIPTION }">
+  <Post :custom-frontmatter="{ title: 'Posts', hasComments: false, description: DESCRIPTION }">
     <Suspense>
       <TagFilter />
     </Suspense>

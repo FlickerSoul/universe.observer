@@ -68,7 +68,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Post :frontmatter="frontmatter" class="link-page" @mousemove="moveCursor">
+  <Post :custom-frontmatter="frontmatter" class="link-page" @mousemove="moveCursor">
     <LinkSection :links="LINKS.friends" name="Friends" />
     <LinkSection :links="LINKS.interestingSites" name="Interesting Sites" />
     <div id="cursor" ref="cursor">
@@ -88,8 +88,10 @@ html.dark
 
 .link-page
   cursor: none
+
   *
     cursor: inherit
+
   #cursor
     --cursor-height: 1em
     --cursor-width: 1em
@@ -113,6 +115,7 @@ html.dark
       position: absolute
       transition-duration: 0.1s
       transition-timing-function: ease-out
+
     #cursor__content
       opacity: 0.5
       border-radius: var(--cursor-radius)
@@ -123,9 +126,11 @@ html.dark
       top: 0
       transform: translate(var(--hover-translateX), var(--hover-translateY)) scale(var(--hover-scale))
       transition-property: opacity
+
     &.is-locked
       --cursor-radius: 0.3em
       transition-property: width, height, left, top
+
       #cursor__content
         opacity: 0.2
 </style>

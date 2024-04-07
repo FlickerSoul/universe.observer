@@ -6,9 +6,9 @@ export interface IPostData {
   // abstract of the post
   abstract?: string
   // path of the post
-  createdAt?: Date
+  createdAt?: string
   // path of the post
-  updatedAt?: Date
+  updatedAt?: string
   // path of the post
   tags?: string[]
   // languages of this post
@@ -27,4 +27,8 @@ export interface IPostData {
 }
 
 export type IListedPostData =
-  Omit<IPostData, 'display' | 'hasComments'> & { path: string; createdAt?: Date; updatedAt?: Date }
+  Omit<IPostData, 'display' | 'hasComments' | 'createdAt' | 'updatedAt'> & {
+    path: string
+    createdAt?: Date
+    updatedAt?: Date
+  }

@@ -91,10 +91,8 @@ export default defineConfig({
         route.meta = Object.assign(route.meta || {}, {
           frontmatter: {
             ...data.data,
-            excerpt: data.excerpt,
-            createdAt: data.data.createdAt ? new Date(data.data.createdAt) : undefined,
-            updatedAt: data.data.updatedAt ? new Date(data.data.updatedAt) : undefined,
-            get description(): string {
+            excerpt: data.excerpt.length > 0 ? data.excerpt : undefined,
+            get description(): string | undefined {
               return data.data.description || this.abstract || this.excerpt
             },
           },

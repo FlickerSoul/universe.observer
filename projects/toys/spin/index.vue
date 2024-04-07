@@ -4,7 +4,7 @@ import { useHead } from '@vueuse/head'
 import Post from '~/components/Post.vue'
 
 const DESCRIPTION = 'This is a humble simulation of colored glass blending! '
-    + 'Not quite working but it looks pretty cool already!'
+  + 'Not quite working but it looks pretty cool already!'
 const TITLE = 'Spin'
 
 useHead({
@@ -20,7 +20,7 @@ const Graphics = defineAsyncComponent(() => import('./components/graphics.vue'))
 </script>
 
 <template>
-  <Post :frontmatter="{ title: 'Spin' }">
+  <Post :custom-frontmatter="{ title: 'Spin' }">
     <h1>Spin</h1>
     <div class="mb-10">
       <client-only>

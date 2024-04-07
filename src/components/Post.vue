@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
+import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
@@ -12,6 +13,13 @@ import PostTag from './PostTag.vue'
 import LangIndicator from './LangIndicator.vue'
 import { isDark } from '~/logics'
 
+const props = defineProps({
+  customFrontmatter: {
+    type: Object as PropType<IPostData>,
+    required: false,
+    default: undefined,
+  },
+})
 const Discussion = defineAsyncComponent(() => import('@giscus/vue'))
 
 const router = useRouter()
@@ -127,7 +135,12 @@ onMounted(() => {
   })
 })
 
-const frontmatter = computed<IPostData>(() => route.value.meta.frontmatter)
+const frontmatter = computed<IPostData>(() => {
+  if (props.customFrontmatter === undefined)
+    return route.value.meta.frontmatter
+  else
+    return props.customFrontmatter
+})
 
 useHead({
   title: `${frontmatter.value.title} %sep %site.name`,

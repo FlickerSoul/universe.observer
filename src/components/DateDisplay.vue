@@ -4,7 +4,7 @@ import { formatDate } from '~/logics'
 
 const { name, date, delimiter } = defineProps({
   name: { type: String, required: true },
-  date: { type: Date },
+  date: { type: [String, Date] },
   delimiter: { type: String, default: ' ' },
 })
 
