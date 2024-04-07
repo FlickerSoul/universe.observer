@@ -2,20 +2,22 @@ import type { Plugin, TransformResult } from 'vite'
 import { createFilter } from 'vite'
 
 export interface Options {
+  wrappingTag?: string
   include?: string[]
   exclude?: string[]
   matchRe?: RegExp
-  converter?: (matched: RegExpMatchArray) => string
+  converter?: (matched: RegExpMatchArray, tag: string) => string
 }
 
 export type ResolvedOptions = Required<Options>
 
 export const DEFAULT_OPTIONS: ResolvedOptions = {
+  wrappingTag: 'Magnifier',
   include: ['**/*.md'],
   exclude: [],
   matchRe: /!\[(.*?)\]\((.*?)\)/g,
-  converter(matched) {
-    return `<Magnifier>\n\n${matched[0]}\n\n</Magnifier>`
+  converter(matched, tag) {
+    return `<${tag}>\n\n${matched[0]}\n\n</${tag}>`
   },
 }
 
@@ -30,11 +32,11 @@ type Extractor = (code: string) => TransformResult
 
 function getExtractor(options: ResolvedOptions): Extractor {
   return (code) => {
-    const { matchRe, converter } = options
+    const { wrappingTag, matchRe, converter } = options
     const matches = code.matchAll(matchRe)
 
     for (const match of matches)
-      code = code.replace(match[0], converter(match))
+      code = code.replace(match[0], converter(match, wrappingTag))
 
     return {
       code,
