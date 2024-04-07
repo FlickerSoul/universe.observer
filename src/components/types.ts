@@ -6,9 +6,9 @@ export interface IPostData {
   // abstract of the post
   abstract?: string
   // path of the post
-  createdAt?: string | Date
+  createdAt?: Date
   // path of the post
-  updatedAt?: string | Date
+  updatedAt?: Date
   // path of the post
   tags?: string[]
   // languages of this post

@@ -27,7 +27,7 @@ const { post } = defineProps<{ post: IListedPostData }>()
           {{ post.title }}
         </span>
         <PostDate v-bind="post" class="post-dates post-meta" />
-        <PostAbstract v-if="post.abstract" :abstract="post.abstract" class="post-abstract post-meta" />
+        <PostAbstract v-if="post.description" :abstract="post.description" class="post-abstract post-meta" />
       </router-link>
     </div>
   </li>
@@ -38,18 +38,24 @@ const { post } = defineProps<{ post: IListedPostData }>()
 
 .title-text
   font-size: 1.2em
+
 .post-title
   line-height: 1.2em
   margin-top: 0.2em
+
 .post-abstract
   font-size: 0.9em
   width: 80%
+
 .post-dates
   font-size: 0.8em
+
 .post-meta
   margin-left: 0.6em
+
 .lang-indicator-long
   width: v.$lang-indicator-width
+
 .post-body > *
   margin-bottom: 0.4em
 </style>

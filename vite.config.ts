@@ -87,8 +87,18 @@ export default defineConfig({
       extendRoute(route) {
         const path = resolve(__dirname, route.component.slice(1))
         const md = fs.readFileSync(path, 'utf-8')
-        const data = matter(md)
-        route.meta = Object.assign(route.meta || {}, { frontmatter: data.data })
+        const data = matter(md, { excerpt_separator: '<!-- more -->' })
+        route.meta = Object.assign(route.meta || {}, {
+          frontmatter: {
+            ...data.data,
+            excerpt: data.excerpt,
+            createdAt: data.data.createdAt ? new Date(data.data.createdAt) : undefined,
+            updatedAt: data.data.updatedAt ? new Date(data.data.updatedAt) : undefined,
+            get description(): string {
+              return data.data.description || this.abstract || this.excerpt
+            },
+          },
+        })
 
         return route
       },
@@ -112,8 +122,9 @@ export default defineConfig({
         linkify: true,
         quotes: '""\'\'',
       },
-      excerpt: true,
       exposeFrontmatter: false,
+      exportFrontmatter: false,
+      frontmatter: true,
       async markdownItSetup(md) {
         md.use(await MarkdownItShiki({
           themes: {
@@ -156,7 +167,7 @@ export default defineConfig({
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
-    process.env.NODE_ENV ? null : Inspect(),
+    process.env.NODE_ENV === 'production' ? null : Inspect(),
   ],
   build: {
     rollupOptions: {

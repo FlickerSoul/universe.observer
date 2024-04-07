@@ -10,14 +10,8 @@ const UNKNOWN_DATE_REPR = '?'
 const posts: IListedPostData[] = getVisiblePosts()
   .map((route) => {
     return {
+      ...route.meta.frontmatter,
       path: route.path,
-      createdAt: route.meta.frontmatter.createdAt ? new Date(route.meta.frontmatter.createdAt) : undefined,
-      updatedAt: route.meta.frontmatter.updatedAt ? new Date(route.meta.frontmatter.updatedAt) : undefined,
-      abstract: route.meta.frontmatter.abstract,
-      title: route.meta.frontmatter.title,
-      lang: route.meta.frontmatter.lang,
-      langs: route.meta.frontmatter.langs,
-      tags: route.meta.frontmatter.tags,
     }
   })
   .sort((a, b) => {

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import type { PropType } from 'vue'
 import { computed, defineAsyncComponent, onMounted, ref, watch } from 'vue'
 import { useEventListener } from '@vueuse/core'
 
@@ -12,13 +11,6 @@ import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
 import LangIndicator from './LangIndicator.vue'
 import { isDark } from '~/logics'
-
-const props = defineProps({
-  frontmatter: {
-    type: Object as PropType<IPostData>,
-    required: true,
-  },
-})
 
 const Discussion = defineAsyncComponent(() => import('@giscus/vue'))
 
@@ -135,15 +127,7 @@ onMounted(() => {
   })
 })
 
-const frontmatter = computed<IPostData>(() => ({
-  ...props.frontmatter,
-  createdAt: props.frontmatter.createdAt && new Date(props.frontmatter.createdAt),
-  updatedAt: props.frontmatter.updatedAt && new Date(props.frontmatter.updatedAt),
-  langs: route.value.meta.frontmatter.langs,
-  get description(): string | undefined {
-    return props.frontmatter.description || props.frontmatter?.abstract || props.frontmatter?.excerpt
-  },
-}))
+const frontmatter = computed<IPostData>(() => route.value.meta.frontmatter)
 
 useHead({
   title: `${frontmatter.value.title} %sep %site.name`,
