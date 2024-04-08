@@ -2,28 +2,34 @@
 import { onMounted, ref, watch } from 'vue'
 import { isDark } from '~/logics'
 
+const props = defineProps({
+  isMermaid: { type: Boolean, required: false, default: false },
+})
+
 const isOverlayOpen = ref(false)
 const zoomLevel = ref(1)
 const position = ref({ x: 0, y: 0 })
 let isPanning = false
 const start = { x: 0, y: 0 }
 
-onMounted(() => {
-  import('mermaid').then(({ default: mermaid }) => {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: isDark.value ? 'dark' : 'default',
-    })
-
-    watch(isOverlayOpen, (newVal) => {
+if (props.isMermaid) {
+  onMounted(() => {
+    import('mermaid').then(({ default: mermaid }) => {
       mermaid.initialize({
         startOnLoad: false,
-        theme: newVal ? 'dark' : 'default',
+        theme: isDark.value ? 'dark' : 'default',
       })
-      mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
+
+      watch(isOverlayOpen, (newVal) => {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: newVal ? 'dark' : 'default',
+        })
+        mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
+      })
     })
   })
-})
+}
 
 function openOverlay() {
   isOverlayOpen.value = true

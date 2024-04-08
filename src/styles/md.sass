@@ -20,41 +20,102 @@ html
         display: block
         height: 100%
 
-  pre.shiki
-    // horizontal scroll
-    overflow: hidden
-    width: 100%
+  div.code-container
+    position: relative
+    border-radius: 12px
 
-    padding: 0.75em 1.5em 0.75em 1.25em
-    margin: 0
-    line-height: 1.25em
-    -webkit-text-size-adjust: none
+    --shiki-float-hover-visible: 0
+    --shiki-float-hover-hidden: 1
+    --shiki-float-hover-visible-display: 0
+    --shiki-float-hover-hidden-display: unset
 
-    .highlighted
-      background: v.$code-highlight-color
-      display: block
-      margin: 0 -2em 0 -1.7em
-      padding: 0 2em 0 1.7em
+    &:hover
+      --shiki-float-hover-visible: 1
+      --shiki-float-hover-hidden: 0
+      --shiki-float-hover-visible-display: unset
+      --shiki-float-hover-hidden-display: 0
 
-    code, code[v-pre]
-      overflow-x: auto
-      overflow-y: hidden
-      display: flex
-      flex-direction: column
-      font-family: "JetBrains Mono", monospace
-      font-weight: normal
-      // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
-      counter-reset: step
-      counter-increment: step calc(var(--start, 1) - 1)
+    [class*="shiki-extra-f"]
+      position: absolute
 
-      & .line::before
-        content: counter(step)
-        counter-increment: step
-        width: 1em
-        display: inline-block
-        text-align: right
-        color: rgba(115, 138, 148, .4)
-        margin-right: 1.2em
+    .shiki-extra-container
+      @apply: flex flex-row align-center gap-2 z-20
+      --shiki-extra-container-transparency: 0.8
+
+    --float-margin: 8px
+
+    .shiki-extra-f-top
+      top: var(--float-margin)
+
+    .shiki-extra-f-right
+      right: var(--float-margin)
+
+    .shiki-extra-f-bottom
+      bottom: var(--float-margin)
+
+    .shiki-extra-f-left
+      left: var(--float-margin)
+
+    .shiki-extra-before:not(:empty), .shiki-extra-after:not(:empty)
+      padding: 0.5em 1em 0 1em
+      width: 100%
+
+    .shiki-extra-before:not(:empty)
+      border-top-left-radius: 12px
+      border-top-right-radius: 12px
+
+    .shiki-extra-after:not(:empty)
+      border-bottom-left-radius: 12px
+      border-bottom-right-radius: 12px
+
+    .shiki-float-hover-visible
+      opacity: var(--shiki-float-hover-visible)
+      height: var(--shiki-float-hover-visible-display)
+      transition: opacity 0.3s
+
+    .shiki-float-hover-hidden
+      opacity: var(--shiki-float-hover-hidden)
+      height: var(--shiki-float-hover-hidden-display)
+      transition: opacity 0.3s
+
+    pre.shiki
+      // horizontal scroll
+      overflow: hidden
+      width: 100%
+
+      padding: 0.75em 1em 0.75em 1em
+      margin: 0
+      line-height: 1.25em
+      -webkit-text-size-adjust: none
+
+      border-bottom-left-radius: 12px
+      border-bottom-right-radius: 12px
+
+      .highlighted
+        background: v.$code-highlight-color
+        display: block
+        margin: 0 -2em 0 -1.7em
+        padding: 0 2em 0 1.7em
+
+      code, code[v-pre]
+        overflow-x: auto
+        overflow-y: hidden
+        display: flex
+        flex-direction: column
+        font-family: "JetBrains Mono", monospace
+        font-weight: normal
+        // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
+        counter-reset: step
+        counter-increment: step calc(var(--start, 1) - 1)
+
+        & .line::before
+          content: counter(step)
+          counter-increment: step
+          width: 1em
+          display: inline-block
+          text-align: right
+          color: rgba(115, 138, 148, .4)
+          margin-right: 1.2em
 
   mark
     background: linear-gradient(to right, rgba(255, 225, 0, .1), rgba(255, 225, 0, .8) 4%, rgba(255, 225, 0, .3)) 0 0
@@ -72,9 +133,27 @@ html
     color: v.$katex-error-color
 
 html:not(.dark)
+  pre.shiki
+    background-color: var(--shiki-light-bg)
+
   .shiki, .shiki span
     color: var(--shiki-light, inherit)
 
+  .shiki-extra-container
+    background-color: rgba(var(--shiki-light-bg), var(--shiki-extra-container-transparency))
+
+  .shiki-extra-before:not(:empty), .shiki-extra-after:not(:empty)
+    background-color: var(--shiki-light-bg)
+
 html.dark
+  pre.shiki
+    background-color: var(--shiki-dark-bg)
+
   .shiki, .shiki span
     color: var(--shiki-dark, inherit)
+
+  .shiki-extra-container
+    background-color: rgba(var(--shiki-dark-bg), var(--shiki-extra-container-transparency))
+
+  .shiki-extra-before:not(:empty), .shiki-extra-after:not(:empty)
+    background-color: var(--shiki-dark-bg)
