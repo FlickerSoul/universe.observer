@@ -117,22 +117,24 @@ onMounted(() => {
 
 // handle mermaid graphing
 onMounted(() => {
-  import('mermaid').then(({ default: mermaid }) => {
-    mermaid.initialize({
-      startOnLoad: false,
-      theme: isDark.value ? 'dark' : 'default',
-    })
-
-    mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
-
-    watch(isDark, (newVal) => {
+  if (document.querySelectorAll('pre.mermaid-content').length > 0) {
+    import('mermaid').then(({ default: mermaid }) => {
       mermaid.initialize({
         startOnLoad: false,
-        theme: newVal ? 'dark' : 'default',
+        theme: isDark.value ? 'dark' : 'default',
       })
+
       mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
+
+      watch(isDark, (newVal) => {
+        mermaid.initialize({
+          startOnLoad: false,
+          theme: newVal ? 'dark' : 'default',
+        })
+        mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
+      })
     })
-  })
+  }
 })
 
 const frontmatter = computed<IPostData>(() => {
