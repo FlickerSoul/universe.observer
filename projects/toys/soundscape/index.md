@@ -182,27 +182,34 @@ beats; the audio data source serves the bytes of the track that's currently
 playing and starts to serve the bytes of the next track when the end of a beat
 is reached.
 
-This is a on-axis audio, a positive sound representing facing the right
-direction:
+<details>
+<summary>Audio Samples</summary>
 
-<audio controls loop>
-<source src="https://github.com/soundscape-community/soundscape/raw/main/apps/ios/GuideDogs/Assets/Sounds/Beacons/Classic/Classic_OnAxis.wav" type="audio/wav">
-</audio>
+> [!Note]
+> This is a on-axis audio, a positive sound representing facing the right
+> direction:
+>
+> <audio controls loop>
+> <source src="https://github.com/soundscape-community/soundscape/raw/main/apps/ios/GuideDogs/Assets/Sounds/Beacons/Classic/Classic_OnAxis.wav" type="audio/wav">
+> </audio>
+>
+> And this is an off-axis audio, a less positive sound representing facing a
+> less
+> accurate direction:
+>
+> <audio controls loop>
+> <source src="https://github.com/soundscape-community/soundscape/raw/main/apps/ios/GuideDogs/Assets/Sounds/Beacons/Classic/Classic_OffAxis.wav" type="audio/wav"/>
+> </audio>
+>
+>And together, when facing in different directions, you can experience the
+> transitions between on-axis and off-axis sounds. Make sure you wear your
+> headphones for the best experience.
+>
+> <audio controls loop>
+> <source src="./transition-sound.mp3" type="audio/mp3"/>
+> </audio>
 
-And this is an off-axis audio, a less positive sound representing facing a less
-accurate direction:
-
-<audio controls loop>
-<source src="https://github.com/soundscape-community/soundscape/raw/main/apps/ios/GuideDogs/Assets/Sounds/Beacons/Classic/Classic_OffAxis.wav" type="audio/wav"/>
-</audio>
-
-And together, when facing in different directions, you can experience the
-transitions between on-axis and off-axis sounds. Make sure you wear your
-headphones for the best experience.
-
-<audio controls loop>
-<source src="./transition-sound.mp3" type="audio/mp3"/>
-</audio>
+</details>
 
 ### ACT II: The Players
 
