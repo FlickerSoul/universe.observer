@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@giscus/vue':
-    specifier: ^2.4.0
-    version: 2.4.0(vue@3.4.21)
+    specifier: ^3.0.0
+    version: 3.0.0(vue@3.4.21)
   '@iconify-json/mdi':
     specifier: ^1.1.66
     version: 1.1.66
@@ -862,8 +862,8 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     dev: true
 
-  /@giscus/vue@2.4.0(vue@3.4.21):
-    resolution: {integrity: sha512-QOxKHgsMT91myyQagP2v20YYAei1ByZuc3qcaYxbHx4AwOeyVrybDIuRFwG9YDv6OraC86jYnU4Ixd37ddC/0A==}
+  /@giscus/vue@3.0.0(vue@3.4.21):
+    resolution: {integrity: sha512-ZoSUmlc3ee2a+kdumCaXFDZaB4h9b1BYWzsmmRP7zoGEQKYopdAnzGvJK7RdvrYGAzNqZtGUxI0NnBl8/UA6bQ==}
     peerDependencies:
       vue: '>=3.2.0'
     dependencies:

@@ -206,7 +206,7 @@ useHead({
       <hr>
       <Discussion
         id="giscus-comments"
-        host="https://giscus.app"
+        host="https://giscus.universe.observer"
         repo="flickersoul/universe.observer"
         repo-id="R_kgDOI6RsMA"
         category="General"
