@@ -66,7 +66,7 @@ const LINKS = {
   ],
 } as const
 
-const frontmatter = { title: 'Friends\' Links', createdAt: '2023-04-12', updatedAt: '2023-04-12' } as const
+const frontmatter = { title: 'Friends\' Links', createdAt: '2023-04-12', updatedAt: '2024-04-08' } as const
 
 onMounted(() => {
   cursor.value = document.querySelector('#cursor') as HTMLDivElement
