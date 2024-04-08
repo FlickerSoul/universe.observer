@@ -108,6 +108,9 @@ html
         counter-reset: step
         counter-increment: step calc(var(--start, 1) - 1)
 
+        & .line
+          overflow-x: auto
+
         & .line::before
           content: counter(step)
           counter-increment: step
