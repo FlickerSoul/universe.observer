@@ -38,7 +38,28 @@ const isTOCToggled = ref<boolean>(false)
 // handle i18n language control
 const route = router.currentRoute
 
-function handleLanguageChange(lang: SupportedLangs) {
+function handleTranslation() {
+  const preferredLang = navigator.languages
+
+  console.log('preferredLang', preferredLang)
+
+  router.push({
+    path: route.value.path,
+    replace: true,
+    query: {
+      translation: preferredLang[0] || 'en',
+    },
+  })
+}
+
+function handleLanguageChange(lang: SupportedLangs | undefined) {
+  if (lang === undefined || lang === SupportedLangs.__translate)
+    handleTranslation()
+  else
+    handleRegularLanguages(lang)
+}
+
+function handleRegularLanguages(lang: SupportedLangs) {
   const { path, meta: { frontmatter: { langs } } } = route.value
   if (!langs?.includes(lang) || !(lang in SupportedLangs))
     return
@@ -170,7 +191,7 @@ useHead({
           :class="lang === frontmatter.lang ? ['cursor-not-allowed', 'opacity-50'] : []"
           @click="lang === frontmatter.lang ? undefined : handleLanguageChange(lang as SupportedLangs)"
         />
-        <LangIndicator lang="__translate" class="cursor-pointer" />
+        <LangIndicator lang="__translate" class="cursor-pointer" @click="handleLanguageChange()" />
       </div>
     </div>
 

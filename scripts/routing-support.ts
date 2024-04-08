@@ -66,7 +66,7 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
     for (const route of langMap.values()) {
       route.meta.frontmatter.display = false
       route.meta.frontmatter.lang = undefined
-      route.meta.frontmatter.langs = [...langs]
+      route.meta.frontmatter.langs = [...langs as SupportedLangs[]]
     }
 
     const newRoute: RouteRecordRaw = {
@@ -78,7 +78,7 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
         frontmatter: {
           ...defaultRoute.meta.frontmatter,
           display: true,
-          langs: [...langs],
+          langs: [...langs as SupportedLangs[]],
         },
         defaultLang,
       },
@@ -87,7 +87,7 @@ function addRedirectToRoutes(routes: RouteRecordRaw[], mapping: Map<string, Map<
         const path = ensureSlashEnding(to.path)
 
         let lang
-        if (to.meta.frontmatter.langs.includes(to.query.lang as string))
+        if (to.meta.frontmatter.langs.includes(to.query.lang as SupportedLangs))
           lang = to.query.lang
         else
           lang = to.meta.defaultLang

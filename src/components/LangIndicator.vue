@@ -4,7 +4,7 @@ import { computed } from 'vue'
 import type { LangType } from '~/components/types'
 
 const { lang } = defineProps({
-  lang: { type: Object as PropType<LangType> },
+  lang: { type: String as PropType<LangType> },
 })
 
 const langDisplay = computed(() => {
