@@ -3,22 +3,34 @@ import { ref } from 'vue'
 import { useClipboard } from '@vueuse/core'
 
 const parent = ref<HTMLDivElement>()
+const copyStatus = ref<boolean | undefined>(undefined)
 
 function copyParentText() {
   const codeNode: HTMLPreElement | null | undefined
     = parent.value?.parentElement?.parentElement?.querySelector('pre.shiki')
   if (codeNode?.textContent) {
     const { isSupported, copy } = useClipboard()
-    copy(codeNode.textContent)
-    if (!isSupported)
+    if (!isSupported) {
       window.alert('Clipboard copying is not supported on this device.')
+      copyStatus.value = false
+    }
+
+    copy(codeNode.textContent)
+    copyStatus.value = true
   }
+
+  setTimeout(() => {
+    copyStatus.value = undefined
+  }, 1000)
 }
 </script>
 
 <template>
   <div ref="parent" class="copy-button cursor-pointer" @click="copyParentText">
-    <div class="i-mdi-content-copy" />
+    <div
+      class="copy-icon"
+      :class="[copyStatus === undefined ? 'i-mdi-content-copy' : (copyStatus ? 'i-mdi-check' : 'i-mdi-error')]"
+    />
   </div>
 </template>
 
