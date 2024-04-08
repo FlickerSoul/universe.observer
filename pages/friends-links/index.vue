@@ -62,6 +62,7 @@ const LINKS = {
     { name: 'DIYgod', url: 'https://diygod.me/' },
     { name: '宇宙よりも遠い場所', url: 'https://kirainmoe.com/' },
     { name: '乌云压顶是吧', url: 'https://wyydsb.xin/' },
+    { name: 'Anthony Fu', url: 'https://antfu.me' },
   ],
 } as const
 
