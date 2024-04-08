@@ -50,6 +50,9 @@ dependencies:
   markdown-it-anchor:
     specifier: ^8.6.7
     version: 8.6.7(@types/markdown-it@12.2.3)(markdown-it@13.0.2)
+  markdown-it-github-alerts:
+    specifier: ^0.3.0
+    version: 0.3.0(markdown-it@13.0.2)
   markdown-it-link-attributes:
     specifier: ^4.0.1
     version: 4.0.1
@@ -4658,6 +4661,14 @@ packages:
       markdown-it: '*'
     dependencies:
       '@types/markdown-it': 12.2.3
+      markdown-it: 13.0.2
+    dev: false
+
+  /markdown-it-github-alerts@0.3.0(markdown-it@13.0.2):
+    resolution: {integrity: sha512-qyIuDyfdrVGHhY+E/44yMyNA3ZnayaT/KKT2VgkIz1nmrgiuPkdgPUh4YBZwgJ9VKEGJvGd82Ndrc4oGftrJWg==}
+    peerDependencies:
+      markdown-it: ^14.0.0
+    dependencies:
       markdown-it: 13.0.2
     dev: false
 

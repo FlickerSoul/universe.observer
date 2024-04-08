@@ -26,6 +26,7 @@ import {
   transformerNotationErrorLevel,
   transformerNotationHighlight,
 } from '@shikijs/transformers'
+import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
 import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import { customFenceWrapper, retainMermaid } from './scripts/markdown-custom-fences'
@@ -166,6 +167,7 @@ export default defineConfig({
         md.use(customFenceWrapper)
         md.use(retainMermaid)
         md.use(wrapMagnifier)
+        md.use(MarkdownItGitHubAlerts)
       },
     }),
     components({
