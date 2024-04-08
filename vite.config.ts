@@ -144,7 +144,7 @@ export default defineConfig({
         md.use(anchor, {
           slugify,
           permalink: anchor.permalink.linkInsideHeader({
-            symbol: '#',
+            symbol: '🔗',
             renderAttrs: () => ({ 'aria-hidden': 'true' }),
           }),
         })
