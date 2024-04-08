@@ -30,6 +30,11 @@ const LINKS = {
       about: ['A passionate iOS Dev!'],
     },
     {
+      name: 'Jeremiah Shizuki',
+      url: 'https://artsreview.su',
+      about: ['The Burden to Write'],
+    },
+    {
       name: 'Huggy',
       url: 'https://blog.huggy.moe/',
     },
