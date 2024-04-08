@@ -1,3 +1,7 @@
+import type { SupportedLangs } from '../../scripts/lang'
+
+export type LangType = keyof typeof SupportedLangs
+
 export interface IPostData {
   // title of the post
   title?: string
@@ -12,8 +16,8 @@ export interface IPostData {
   // path of the post
   tags?: string[]
   // languages of this post
-  lang?: string
-  langs?: string[]
+  lang?: LangType
+  langs?: LangType[]
   // display this post in the list without title
   display?: boolean
   // whether this post is hidden

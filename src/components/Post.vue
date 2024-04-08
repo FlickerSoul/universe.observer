@@ -156,22 +156,28 @@ useHead({
 
 <template>
   <div v-show="frontmatter.title || frontmatter.display" class="post-wrapper post-center">
-    <h1 class="post-meta title mb-4">
-      {{ frontmatter.title }}
-    </h1>
+    <div class="flex justify-center items-center flex-row">
+      <h1 class="title">
+        {{ frontmatter.title }}
+      </h1>
+      <div style="flex: 1" />
+      <div class="text-sm flex gap-3 h-min">
+        <LangIndicator
+          v-for="lang in [...(frontmatter.langs || [])].sort().reverse()"
+          :key="lang"
+          :lang="lang"
+          class="cursor-pointer"
+          :class="lang === frontmatter.lang ? ['cursor-not-allowed', 'opacity-50'] : []"
+          @click="lang === frontmatter.lang ? undefined : handleLanguageChange(lang as SupportedLangs)"
+        />
+        <LangIndicator lang="__translate" class="cursor-pointer" />
+      </div>
+    </div>
+
     <div v-if="frontmatter.subtitle" class="post-meta">
       {{ frontmatter.subtitle }}
     </div>
-    <div v-if="frontmatter.langs" class="post-meta text-sm mb-1 flex gap-3">
-      <LangIndicator
-        v-for="lang in [...frontmatter.langs].sort().reverse()"
-        :key="lang"
-        :lang="lang"
-        class="cursor-pointer"
-        :class="lang === frontmatter.lang ? ['cursor-not-allowed', 'opacity-50'] : []"
-        @click="lang === frontmatter.lang ? undefined : handleLanguageChange(lang as SupportedLangs)"
-      />
-    </div>
+
     <div class="post-meta post-date-wrapper">
       <PostDate
         :created-at="frontmatter.createdAt"

@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { computed } from 'vue'
+import type { LangType } from '~/components/types'
 
 const { lang } = defineProps({
-  lang: { type: String },
+  lang: { type: Object as PropType<LangType> },
 })
 
 const langDisplay = computed(() => {
@@ -11,6 +13,8 @@ const langDisplay = computed(() => {
       return 'EN'
     case 'zh':
       return '简'
+    case '__translate':
+      return '💬'
     default:
       return '??'
   }
