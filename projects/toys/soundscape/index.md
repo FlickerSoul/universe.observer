@@ -345,4 +345,64 @@ loop_cond -->|on stop|looper_initialized
 
 ## Some Lessons
 
-(To be continued)
+This project was my first time working with a large group of people in a large
+codebase. The experience has been unique and very different from working on
+projects myself or with few close friends.
+
+The main difference comes from communication. As the number of people increases,
+the effort for communication increases factorially (which is essentially
+exponential). We had four teams working on four features in parallel and it
+becomes hard to communicate what one's wish for the application to become. I'm a
+good engineer and my working habits lures me to completes the work until
+perfection, even though the responsibility may belong to other people. I force
+myself communicate my idea and try to convince other people it is a good idea,
+instead of jumping on the problem and solve it directly. This kinda of
+communication often happens during code reviews, making it particular hard
+because I don't want my wording to be discouraging while still provide
+suggestions and ideas, and I don't want to sound underestimating their good
+work.
+
+I also experience the challenge of managing a large codebase in which parallel
+works happen relative frequent. We sort of followed agile methodology and met
+with our client once a week to report our progress and adjust our goals. As a
+result, people tended to work in the first half of a sprint and merge their
+contributions near the end of the sprint. It was fine most of the time because
+the teams worked in different components that didn't have much clash most of the
+time. But when it did, merging was difficult. There were three things I
+remembered the most.
+
+- **Automated tools like linting, testing, and building**: we didn't start with
+  a automatic style checking setup such
+  as pre-commit. I, in charge of most of the DevOps, investigated a bit and
+  didn't find a suitable linter for Android projects. As a result, when people
+  forget to turn on formatting on save or optimizing imports on save, reviewing
+  and merging turns into hell, since you don't know what are the actual changes
+  and what should be accepted or safely deleted.
+
+  I was lucky that I could setup functioning testing and building CICD for the
+  project. Passing the checks has been like lullaby, comforting and reassuring.
+  The CICD also allows us to share the artifacts with our client easily, since
+  our repository was set to private to avoid conflicts and piracy on our work.
+
+- **Structural changes**: they are expensive and can be devastating to the
+  teams' goal and speed. In the middle of the project, we decided to add hilt to
+  enable dependency injection and support our development. The transition to
+  hilt took Raimund almost two weeks, if I remember correctly. The change was
+  huge and we were all scared of introducing breaking changes that can be hard
+  to fix and hog our development. Moreover, I remember I had some time off
+  because I needed to wait for the dependency inject to be merge before some of
+  the audio stuff can be started. In the end, the structural change did
+  introduce some breaking change that took us non-trivial amount work to fix,
+  which was luckily not on the expensive side and did bring ease to later
+  developments.
+
+- **Best practices and inner peace**: there are so many best practices I learnt,
+  ranging from management to git to kotlin and Android specifics. However, not
+  everyone follows them and some of the code did make me a bit mad. I'm always
+  pursuing for perfection and this aspect I can't control made me a bit nervous
+  and drove me a bit crazy (just a bit, I promise). I ended up improving some of
+  the content and set peace with myself to accept the imperfect parts in the
+  project.
+
+For now, theses are the thoughts that are on top of my mind. I'll keep update
+with anything I can think of.
