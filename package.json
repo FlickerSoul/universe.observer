@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@akiravoid/markdown-it-sup": "^1.0.2",
-    "@antfu/eslint-config": "^0.35.3",
+    "@antfu/eslint-config": "^0.43.1",
     "@shikijs/markdown-it": "^1.2.4",
     "@shikijs/transformers": "^1.2.4",
     "@types/dat.gui": "^0.7.13",
