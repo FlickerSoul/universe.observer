@@ -174,6 +174,7 @@ export default defineConfig({
       extensions: ['vue', 'md'],
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
+      globs: ['**/components/*.vue'],
     }),
     process.env.NODE_ENV === 'production' ? null : Inspect(),
   ],
