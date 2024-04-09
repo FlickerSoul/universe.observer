@@ -209,24 +209,25 @@ would experience.
 > the iOS version.
 >
 > <audio controls loop>
-> <source src="transition-sound-ios.mp3" type="audio/mp3" />
+> <source src="./transition-sound-ios.mp3" type="audio/mp3" />
 > </audio>
 >
 > And this is a sample recorded from our Android version
 >
 > <audio controls loop>
-> <source src="transition-sound-android.mp3" type="audio/mp3" />
+> <source src="./transition-sound-android.mp3" type="audio/mp3" />
 > </audio>
 >
 > <details>
 > <summary>previous attempt</summary>
 >
 > The following was a recording from our previous attempt. We did not do
-> anything more than just facing different directions, same as what's been down in
+> anything more than just facing different directions, same as what's been down
+> in
 > previous recordings.
 >
 > <audio controls loop>
-> <source src="transition-sound-bad-android.mp3" type="audio/mp3" />
+> <source src="./transition-sound-bad-android.mp3" type="audio/mp3" />
 > </audio>
 > </details>
 
