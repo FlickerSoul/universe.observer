@@ -171,19 +171,19 @@ batch action: turn up the volume of one track and turn down that of the other,
 one has to do this one by one, which incurs delays in between the changes and
 breaking the continuity of what the user would hear. We then wrote our own batch
 action and achieved a better effect, although it is still not perfect. We are
-currently experimenting a beat system, mimicking wha's been done on the iOS
+eventually moved to a beat system, mimicking what's been done on the iOS
 side. Essentially, each sound cue had number of beats and these beats are marks
 of spots on which changing tracks wont be noticeable. This also means all of the
 tracks of the cue have the same number of beats, meaning even though the
-currently playing track can be changed at any time, we only change it on the
-best, creating a seamless transition. To do so efficiently, we are creating a
-audio data source that's aware of the bytes of all tracks and the number of
-beats; the audio data source serves the bytes of the track that's currently
-playing and starts to serve the bytes of the next track when the end of a beat
-is reached.
+currently playing track can be changed at any time, we only change what's been
+played on the beat, creating a seamless transition.
+To do so efficiently, we are creating a audio data source that's aware of the
+bytes of all tracks and the number of beats; the audio data source serves
+the bytes of the track that's currently playing and starts to serve the bytes
+of the next track when the end of a beat is reached.
 
-<details>
-<summary>Audio Samples</summary>
+I attached several audio samples below for you to get an understand of what you
+would experience.
 
 > [!Note]
 > This is a on-axis audio, a positive sound representing facing the right
@@ -201,15 +201,34 @@ is reached.
 > <source src="https://github.com/soundscape-community/soundscape/raw/main/apps/ios/GuideDogs/Assets/Sounds/Beacons/Classic/Classic_OffAxis.wav" type="audio/wav"/>
 > </audio>
 >
->And together, when facing in different directions, you can experience the
+> And together, when facing in different directions, you can experience the
 > transitions between on-axis and off-axis sounds. Make sure you wear your
 > headphones for the best experience.
 >
+> The following is a sample recorded from
+> the iOS version.
+>
 > <audio controls loop>
-> <source src="./transition-sound.mp3" type="audio/mp3"/>
+> <source src="transition-sound-ios.mp3" type="audio/mp3" />
 > </audio>
-
-</details>
+>
+> And this is a sample recorded from our Android version
+>
+> <audio controls loop>
+> <source src="transition-sound-android.mp3" type="audio/mp3" />
+> </audio>
+>
+> <details>
+> <summary>previous attempt</summary>
+>
+> The following was a recording from our previous attempt. We did not do
+> anything more than just facing different directions, same as what's been down in
+> previous recordings.
+>
+> <audio controls loop>
+> <source src="transition-sound-bad-android.mp3" type="audio/mp3" />
+> </audio>
+> </details>
 
 ### ACT II: The Players
 
