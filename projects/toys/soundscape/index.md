@@ -1,7 +1,7 @@
 ---
 title: Soundscape
 #subtitle: 
-abstract: An Android application providing hands-free navigation using spatial audio,  empowering visually impaired people to navigate the world at ease. This project is brought to you by 8 UCL Software Systems Engineering students.
+abstract: An Android application providing hands-free navigation using spatial audio, empowering visually impaired people to navigate the world at ease. This project is brought to you by 8 UCL Software Systems Engineering students.
 lang: en
 #langs: 
 tags:
@@ -90,7 +90,8 @@ settings.
 
 ### The Audio Team
 
-I worked in the audio team, along with Raimund, because I think the audio part
+I worked in the audio team, along with Raimund, because I think the audio part,
+being one of the key components in the app,
 is the most challenging and interesting component of the app. It turned put to
 be true, because unlike iOS which provides many AMAZING high-level and yet
 POWERFUL audio APIs and access to AirPods' head tracking sensors, Android has
@@ -255,79 +256,41 @@ manually do the hassle of checking if the job is canceled. Luckily, we have
 testing to help us ensure the players are working as expected and the
 development of players was mostly smooth.
 
-<!-- FIXME: chart sizing -->
-
 ```mermaid
-stateDiagram-v2
-    state "Continuous Player (for audio beacon)" as CP {
-[*] --> STOPPED: by initializing continuous player
-STOPPED --> PAUSED: by preparing the audio source
-PLAYING --> PAUSED: by pausing the audio
-PAUSED --> PLAYING: by resuming the audio
-PAUSED --> STOPPED: by stopping the audio
-PLAYING --> STOPPED: by stopping the audio
+graph
+    subgraph CP ["Player (for audio beacon and callouts)"]
+        direction TB
+        PLAYING -->|pausing the audio| PAUSED
+        PLAYING -->|finishing the current playing and exhausting the play queue| STOPPED
+        PLAYING -->|stopping the audio| STOPPED
+        PAUSED -->|resuming the audio| PLAYING
+        PAUSED -->|stopping the audio| STOPPED
+        STOPPED -->|preparing the audio source| PAUSED
 
-state STOPPED {
-direction LR
-state "🚫 Location update" as s1
-state "🚫 Orientation update" as s2
-state "🚫 Playing coroutine job" as s3
-state "🚫 Audio resources" as s4
-}
+        subgraph STOPPED
+            direction LR
+            s1["🚫 Location update"]
+            s2["🚫 Orientation update"]
+            s3["🚫 Playing coroutine job"]
+            s4["🚫 Audio resources"]
+        end
 
-state PLAYING {
-direction LR
-state "✅ Location update" as pl1
-state "✅ Orientation update" as pl2
-state "✅ Playing coroutine job" as pl3
-state "✅ Audio resources" as pl4
-}
+        subgraph PLAYING
+            direction LR
+            pl1["✅ Location update"]
+            pl2["✅ Orientation update"]
+            pl3["✅ Playing coroutine job"]
+            pl4["✅ Audio resources"]
+        end
 
-state PAUSED {
-direction LR
-state "🚫 Location update" as pu1
-state "🚫 Orientation update" as pu2
-state "🚫 Playing coroutine job" as pu3
-state "✅ Audio resources" as pu4
-}
- }
-```
-
-```mermaid
-stateDiagram-v2
-    state "Discrete Player (for callouts)" as DP {
-[*] --> STOPPED: by initializing continuous player
-STOPPED --> PAUSED: by scheduling audio sources
-PLAYING --> PAUSED: by pausing the audio
-PAUSED --> PLAYING: by resuming the audio
-PAUSED --> STOPPED: by stopping the audio
-PLAYING --> STOPPED: by stopping the audio
-PLAYING --> STOPPED: by finishing the current playing and exhausting the play queue
-
-state STOPPED {
-direction LR
-state "🚫 Location update" as s1
-state "🚫 Orientation update" as s2
-state "🚫 Playing coroutine job" as s3
-state "🚫 Audio resources" as s4
-}
-
-state PLAYING {
-direction LR
-state "✅ Location update" as pl1
-state "✅ Orientation update" as pl2
-state "✅ Playing coroutine job" as pl3
-state "✅ Audio resources" as pl4
-}
-
-state PAUSED {
-direction LR
-state "🚫 Location update" as pu1
-state "🚫 Orientation update" as pu2
-state "🚫 Playing coroutine job" as pu3
-state "✅ Audio resources" as pu4
-}
- }
+        subgraph PAUSED
+            direction LR
+            pu1["🚫 Location update"]
+            pu2["🚫 Orientation update"]
+            pu3["🚫 Playing coroutine job"]
+            pu4["✅ Audio resources"]
+        end
+    end
 ```
 
 ### ACT III: The Audio Service, Commander, and the Callout Looper
