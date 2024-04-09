@@ -27,11 +27,10 @@ import {
   transformerNotationHighlight,
 } from '@shikijs/transformers'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
-import { matchMultiLangBase, slugify } from './scripts/routing-support'
+import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import { customFenceWrapper, retainMermaid } from './scripts/markdown-custom-fences'
 import wrapMagnifier from './scripts/markdown-img-wrapper'
-import { SupportedLangs } from './scripts/lang'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -114,31 +113,6 @@ export default defineConfig({
             return true
           }),
         })
-
-        const cleanRoutes = routes.map((route) => {
-          const multiLang = matchMultiLangBase(route.path)
-          return [multiLang ? multiLang[1] : route.path, route]
-        }).reduce((acc, [multiLang, route]: [string, RouteRecordRaw]) => {
-          if (acc[multiLang] === undefined)
-            acc[multiLang] = route
-          return acc
-        }, {} as { string: RouteRecordRaw })
-
-        const additionalRoutes = Object.entries(cleanRoutes).map(([path, route]) => {
-          return {
-            ...route,
-            path: path.endsWith('/') ? `${path}${SupportedLangs.__translate}` : `${path}/${SupportedLangs.__translate}`,
-            name: `${route.name.toString()}${SupportedLangs.__translate}`,
-            meta: {
-              ...route.meta,
-              frontmatter: {
-                ...route.meta.frontmatter,
-              },
-            },
-          }
-        })
-
-        const allRoutes = routes.concat(additionalRoutes)
 
         return routes
       },
