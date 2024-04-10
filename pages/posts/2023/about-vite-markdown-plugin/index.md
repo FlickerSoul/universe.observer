@@ -1,7 +1,7 @@
 ---
-title: About Vite Markdown Plugin
+title: Dissect Vite Markdown Plugin
 createdAt: 2023-03-25
-updatedAt: 2023-04-04
+updatedAt: 2024-04-10
 tags:
   - vue
   - vite
@@ -345,4 +345,59 @@ export default function MarkdownImageWrapper(
     },
   }
 }
+```
+
+Another easy thing we can do immediately is loading files as strings directly
+using imports. For example, the following code just loads the specified files
+passing the filter and provides it as strings when using import. For example, I
+can use `import Shader from './compute_shader.wgsl?raw'` directly and use it as
+a string in WebGPU.
+
+```ts
+import type {Plugin} from 'vite'
+import {createFilter} from 'vite'
+import {dataToEsm} from '@rollup/pluginutils'
+
+export type MinifyFactory = (content: string) => Promise<string> | string
+
+interface Options {
+  include: string[]
+  minify: boolean | MinifyFactory
+}
+
+export type UserOptions = Partial<Options>
+
+function defaultMinify(content: string): string {
+  return content
+}
+
+function resolveConfig(options: UserOptions): Options {
+  return {
+    ...options,
+    include: [
+      '**/*.wgsl',
+    ],
+    minify: true,
+  }
+}
+
+export default function (userOptions: UserOptions = {}): Plugin {
+  const options = resolveConfig(userOptions)
+  const minify = options.minify === true ? defaultMinify : options.minify
+  const filter = createFilter(options.include)
+
+  return {
+    name: 'vite-plugin-load-string',
+    async transform(source, id) {
+      if (!filter(id))
+        return
+
+      return {
+        code: dataToEsm(minify ? await minify(source) : source),
+        map: null,
+      }
+    },
+  }
+}
+
 ```
