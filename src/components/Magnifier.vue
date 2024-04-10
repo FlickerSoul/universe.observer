@@ -109,7 +109,7 @@ function handleWheel(event: WheelEvent) {
 
 <style scoped lang="sass">
 .image-wrapper
-  cursor: pointer
+  cursor: zoom-in
 
 .img-overlay
   position: fixed
