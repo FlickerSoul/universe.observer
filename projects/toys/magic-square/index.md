@@ -1,7 +1,7 @@
 ---
 title: La Sagrada Familia and Magic Square
 #subtitle: 
-abstract: Inspired by the square in La Sagrada Familia
+abstract: A sketch inspired by La Sagrada Familia
 lang: en
 #langs: 
 tags:
