@@ -1,0 +1,1 @@
+../../../../projects/toys/magic-square/index.md
