@@ -13,7 +13,7 @@ if (process.env.TINY_PNG_API_KEY) {
 }
 
 const WORKING_DIR = cwd()
-const PAGE_DIR = path.join(WORKING_DIR, 'pages')
+const PAGE_DIRS = ['pages', 'projects'].map(dir => path.join(WORKING_DIR, dir))
 const IMAGE_EXTENSIONS = new Set(['.png', '.jpg', '.webp', '.jpeg'])
 const ORIGINAL_REGEX = /(.*)-original.(.*)$/
 
@@ -64,7 +64,8 @@ async function shrinkImagesInDir(dirPath: string) {
   }
 }
 
-await shrinkImagesInDir(PAGE_DIR)
+for (const pageDir of PAGE_DIRS)
+  await shrinkImagesInDir(pageDir)
 
 if (compressed.length > 0) {
   console.error('New Files Compressed. Aborting git commit...')
