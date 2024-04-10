@@ -136,6 +136,9 @@ devDependencies:
   '@antfu/eslint-config':
     specifier: ^0.43.1
     version: 0.43.1(eslint@8.57.0)(typescript@4.9.5)
+  '@rollup/pluginutils':
+    specifier: ^5.1.0
+    version: 5.1.0
   '@shikijs/markdown-it':
     specifier: ^1.2.4
     version: 1.2.4
