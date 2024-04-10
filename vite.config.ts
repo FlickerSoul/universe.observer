@@ -31,6 +31,7 @@ import { slugify } from './scripts/routing-support'
 import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import { customFenceWrapper, retainMermaid } from './scripts/markdown-custom-fences'
 import wrapMagnifier from './scripts/markdown-img-wrapper'
+import ViteLoadString from './scripts/vite-load-string'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -176,6 +177,7 @@ export default defineConfig({
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
       globs: ['**/components/*.vue'],
     }),
+    ViteLoadString(),
     process.env.NODE_ENV === 'production' ? null : Inspect(),
   ],
   build: {
