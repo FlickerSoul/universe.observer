@@ -56,7 +56,7 @@ export const contentItems: IContentItem[] = [
       'Teamed up with 7 other peers at UCL, we brought the 3D audio navigation to Android in 12 weeks',
       'I worked in the audio team, implementing the 3D audio rendering using C++ '
       + 'with <a href="https://github.com/jarikomppa/soloud">SoLoud</a> and bridging it to Kotlin with JNI.',
-      'More to see in <a href="http://localhost:5173/posts/2024/soundscape">my blog post</a>',
+      'More to see in <a href="/posts/2024/soundscape">my blog post</a>',
     ],
     techStack: [
       TechItems.Kotlin,
@@ -95,6 +95,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Programming Language Theory and Compiler',
     descriptions: [
+      'Developed a tokenizer generator in Swift using Swift Macros. More to see in <a href="/posts/2023/kaleidoscope">my blog post</a>',
       'Developed a Lambda Calculus parser and interpreter in Python and SML to demonstrate a deep understanding of functional programming concepts',
       'Designed and implemented a type checker for Lambda Calculus to ensure type safety',
       'Developed a tokenizer, parser, and interpreter for a subset of Python using <code>flex</code>, <code>bison</code>, and <code>c++</code> to demonstrate proficiency in compiler design',
