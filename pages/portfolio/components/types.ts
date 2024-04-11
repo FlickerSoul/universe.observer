@@ -26,7 +26,7 @@ export enum TechItems {
   ORM = 'ORM',
   PostgreSQL = 'PostgreSQL',
   Jupyter = 'Jupyter Notebook',
-  CPP = 'C/++',
+  CPP = 'C/C++',
   Rust = 'Rust',
   GLSL = 'GLSL',
   WebGL = 'WebGL',
@@ -35,6 +35,9 @@ export enum TechItems {
   Latex = 'Latex',
   GitHubCICD = 'GitHub CICD',
   Communication = 'Communication',
+  Kotlin = 'Kotlin',
+  Hilt = 'Hilt',
+  Jetpack = 'Jetpack Compose',
 }
 
 interface _IContentItem {

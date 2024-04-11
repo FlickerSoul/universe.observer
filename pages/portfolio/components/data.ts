@@ -23,7 +23,7 @@ export const infoItems: IInfoItem[] = [
   {
     icon: 'i-mdi-linkedin',
     name: 'LinkedIn',
-    value: 'Larry Z.',
+    value: 'Heyuan (Larry) Zeng',
     url: 'https://www.linkedin.com/in/larry-zeng-heyuan/',
   },
 ]
@@ -35,26 +35,46 @@ export const contentItems: IContentItem[] = [
     url: 'https://graphery.reedcompbio.org',
     descriptions: [
       'Built the backend from scratch with Django and Python, supporting GraphQL API and PostgreSQL',
-      'Built the frontend from scratch with Vue and TypeScript, supporing i18n, markdown rendering, graph visualiztaion',
+      'Built the frontend from scratch with Vue and TypeScript, supporting i18n, markdown rendering, graph visualization',
       'Visualize any Python code on provided biological networks with a debugger like web interface',
       'Graph algorithm tutorials are translated into multiple languages including Chinese and Spanish',
-      'Published paper at NAR: <a href="https://academic.oup.com/nar/article/49/W1/W257/6284175">GRAPHERY: interactive tutorials for biological network algorithms</a>',
+      'Published paper at NAR: '
+      + '<a href="https://academic.oup.com/nar/article/49/W1/W257/6284175">GRAPHERY: interactive tutorials for biological network algorithms</a>',
     ],
     techStack: [
       TechItems.Vue,
       TechItems.TypeScript,
       TechItems.Python,
       TechItems.Django,
+      TechItems.ORM,
     ],
   },
-
+  {
+    title: 'Soundscape Android: 3D Audio Navigation For The Blind ',
+    role: 'Software Engineer',
+    descriptions: [
+      'Teamed up with 7 other peers at UCL, we brought the 3D audio navigation to Android in 12 weeks',
+      'I worked in the audio team, implementing the 3D audio rendering using C++ '
+      + 'with <a href="https://github.com/jarikomppa/soloud">SoLoud</a> and bridging it to Kotlin with JNI.',
+      'More to see in <a href="http://localhost:5173/posts/2024/soundscape">my blog post</a>',
+    ],
+    techStack: [
+      TechItems.Kotlin,
+      TechItems.CPP,
+      TechItems.Jetpack,
+      TechItems.Hilt,
+      TechItems.GitHubCICD,
+      TechItems.Communication,
+    ],
+  },
   {
     title: 'Personal Blog',
     role: 'Designer & Developer',
     url: 'https://universe.observer',
     descriptions: [
-      'Built with Vue and Vite, deployed on Vercel with GitHub Actions',
-      'Supports i18n, markdown rendering, SSR, and dark mode',
+      'I built it with Vue 3 and Vite, deploying it on Vercel with GitHub Actions',
+      'It is a static site supporting, i18n, markdown rendering, SSR, and dark mode',
+      'I host my personal experiences, projects, and thoughts here',
     ],
     techStack: [
       TechItems.Vue,
@@ -62,18 +82,16 @@ export const contentItems: IContentItem[] = [
       TechItems.TypeScript,
     ],
   },
-
   {
-    title: 'AGA: autograder for gradescope',
+    title: 'gapper: autograder for gradescope',
     role: 'Software Engineer',
-    url: 'https://github.com/nihilistkitten/aga',
+    url: 'https://github.com/FlickerSoul/gapper/',
     descriptions: [
-      'Autograder infrastructure for <a href="https://gradescope.com/">gradescope</a>',
+      'Autograder infrastructure for <a href="https://gradescope.com/">gradescope</a>, saving TA and professors tons of time!',
       'Automated testing with GitHub Actions',
     ],
     techStack: [TechItems.Python, TechItems.GitHubCICD],
   },
-
   {
     title: 'Programming Language Theory and Compiler',
     descriptions: [
@@ -87,7 +105,9 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Toy Renderers and Scenes in WebGL',
     descriptions: [
-      'Developed a ray-casting mirror scene using GLSL, showcasing proficiency in shader programming and rendering techniques. Project is available online at <a href="https://flickersoul.github.io/bezier-funhouse/" target="_blank">here</a>',
+      'Developed a ray-casting mirror scene using GLSL, '
+      + 'showcasing proficiency in shader programming and rendering techniques. '
+      + 'Project is available online at <a href="https://flickersoul.github.io/bezier-funhouse/" target="_blank">here</a>',
       'Created a cloth physics simulation scene in WebGL, demonstrating expertise in physics simulation and real-time graphics',
     ],
     techStack: [TechItems.WebGL, TechItems.GLSL, TechItems.JavaScript],
@@ -118,8 +138,9 @@ export const skillSets: ISkillSection[] = [
     skills: [
       { name: 'Python' },
       { name: 'C++' },
-      { name: 'TypeScript' },
+      { name: 'Kotlin' },
       { name: 'Swift' },
+      { name: 'TypeScript' },
       { name: 'Rust' },
       { name: 'Haskell' },
       { name: 'R' },
@@ -134,8 +155,11 @@ export const skillSets: ISkillSection[] = [
     skills: [
       { name: 'Vim/NeoVim' },
       { name: 'JetBrains IDE' },
+      { name: 'Android Studio' },
+      { name: 'XCode' },
       { name: 'Git' },
       { name: 'GitHub' },
+      { name: 'Github Actions' },
       { name: 'Docker' },
       { name: 'Linux/Unix' },
       { name: 'Vue' },
