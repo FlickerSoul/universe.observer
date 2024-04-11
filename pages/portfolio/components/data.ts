@@ -32,7 +32,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Graphery: Interactive Graph Algorithm Tutorial Website',
     role: 'Software Engineer',
-    url: 'https://graphery.reedcompbio.org',
+    url: { url: 'https://graphery.reedcompbio.org', text: 'GitHub' },
     descriptions: [
       'Built the backend from scratch with Django and Python, supporting GraphQL API and PostgreSQL',
       'Built the frontend from scratch with Vue and TypeScript, supporting i18n, markdown rendering, graph visualization',
@@ -52,6 +52,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Soundscape Android: 3D Audio Navigation For The Blind ',
     role: 'Software Engineer',
+    url: { url: 'https://github.com/Soundscape-Project-UCL/Soundscape', text: 'GitHub' },
     descriptions: [
       'Teamed up with 7 other peers at UCL, we brought the 3D audio navigation to Android in 12 weeks',
       'I worked in the audio team, implementing the 3D audio rendering using C++ '
@@ -70,7 +71,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Personal Blog',
     role: 'Designer & Developer',
-    url: 'https://universe.observer',
+    url: { url: 'https://github.com/FlickerSoul/universe.observer', text: 'GitHub' },
     descriptions: [
       'I built it with Vue 3 and Vite, deploying it on Vercel with GitHub Actions',
       'It is a static site supporting, i18n, markdown rendering, SSR, and dark mode',
@@ -85,7 +86,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'gapper: autograder for gradescope',
     role: 'Software Engineer',
-    url: 'https://github.com/FlickerSoul/gapper/',
+    url: { url: 'https://github.com/FlickerSoul/gapper/', text: 'GitHub' },
     descriptions: [
       'Autograder infrastructure for <a href="https://gradescope.com/">gradescope</a>, saving TA and professors tons of time!',
       'Automated testing with GitHub Actions',
@@ -95,7 +96,7 @@ export const contentItems: IContentItem[] = [
   {
     title: 'Programming Language Theory and Compiler',
     descriptions: [
-      'Developed a tokenizer generator in Swift using Swift Macros. More to see in <a href="/posts/2023/kaleidoscope">my blog post</a>',
+      'Developed <a href="https://github.com/FlickerSoul/Kaleidoscope/" target="_blank">a tokenizer generator in Swift</a> using Swift Macros. More to see in <a href="/posts/2023/kaleidoscope">my blog post</a>',
       'Developed a Lambda Calculus parser and interpreter in Python and SML to demonstrate a deep understanding of functional programming concepts',
       'Designed and implemented a type checker for Lambda Calculus to ensure type safety',
       'Developed a tokenizer, parser, and interpreter for a subset of Python using <code>flex</code>, <code>bison</code>, and <code>c++</code> to demonstrate proficiency in compiler design',

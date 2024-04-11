@@ -43,7 +43,7 @@ export enum TechItems {
 interface _IContentItem {
   title: string
   role?: string
-  url?: string
+  url?: { url: string; text?: string }
   descriptions: string[] | string
   techStack?: TechItems[]
   startDate?: string
