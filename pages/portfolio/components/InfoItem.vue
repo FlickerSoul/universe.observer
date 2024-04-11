@@ -17,4 +17,7 @@ const { info } = defineProps<{
 <style scoped lang="sass">
 a
   color: inherit
+
+icons
+  @apply i-mdi-email i-mdi-linkedin i-mdi-github i-mdi-key
 </style>
