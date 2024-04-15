@@ -183,8 +183,11 @@ bytes of all tracks and the number of beats; the audio data source serves
 the bytes of the track that's currently playing and starts to serve the bytes
 of the next track when the end of a beat is reached.
 
-I attached several audio samples below for you to get an understand of what you
-would experience.
+We also swapped out the deprecated OpenSL ES audio backend to the modern AAudio
+to ensure the longevity of this product.
+
+I attached several audio samples below for you to get an understanding of what
+you would experience.
 
 > [!Note]
 > This is a on-axis audio, a positive sound representing facing the right
