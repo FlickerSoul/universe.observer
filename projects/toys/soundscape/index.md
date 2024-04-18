@@ -18,14 +18,17 @@ updatedAt: 2024-04-07
 
 ## Introduction
 
+It's finally live [here](https://github.com/Soundscape-Project-UCL/Soundscape)!
+
 The idea of using Spatial Audio to navigate isn't new. Soundscape was originally
-incubated and developed on iOS by Microsoft Research. The app serves spatial
-audio to indicate the user's destination and surroundings as if the sound comes
-from th ose places, by leveraging the global position and orientation obtained
-from AirPods' the head tracking sensors and other sensors from user's phones (
-such as GPS and magnetometer). The app, designed with visually impaired people
-in mind, provides a hands-free navigation experience, allowing users to navigate
-the world and get familiar with their surroundings.
+incubated and
+developed [on iOS by Microsoft Research](https://github.com/microsoft/soundscape).
+The app serves spatial audio to indicate the user's destination and surroundings
+as if the sound comes from th ose places, by leveraging the global position and
+orientation obtained from AirPods' the head tracking sensors and other sensors
+from user's phones (such as GPS and magnetometer). The app, designed with
+visually impaired people in mind, provides a hands-free navigation experience,
+allowing users to navigate the world and get familiar with their surroundings.
 
 However, the app is only available on iOS, which has only a relatively small
 market share, compared to its competitor, Android. Therefore, the cofonder of
@@ -411,7 +414,9 @@ remembered the most.
 
 - **Best practices and inner peace**: there are so many best practices I learnt,
   ranging from management to git to kotlin and Android specifics. However, not
-  everyone follows them and some of the code did make me a bit mad. I'm always
+  everyone follows them and some of the code did make me a bit mad. For example,
+  we have database that doesn't have a migration setup, meaning we could run
+  into trouble when we change our schema. I'm always
   pursuing for perfection and this aspect I can't control made me a bit nervous
   and drove me a bit crazy (just a bit, I promise). I ended up improving some of
   the content and set peace with myself to accept the imperfect parts in the
