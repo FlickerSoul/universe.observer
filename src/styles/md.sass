@@ -26,6 +26,8 @@ html
   div.code-container
     position: relative
     border-radius: 12px
+    overflow: auto
+    transition: background-color 0.5s
 
     --shiki-float-hover-visible: 0
     --shiki-float-hover-hidden: 1
@@ -81,35 +83,34 @@ html
       transition: opacity 0.3s
 
     pre.shiki
-      // horizontal scroll
-      overflow: hidden
-      width: 100%
-
       padding: 0.75em 0 0.75em 0
-      margin: 0
+      margin: 0 1.2em
       line-height: 1.25em
       -webkit-text-size-adjust: none
 
       border-bottom-left-radius: 12px
       border-bottom-right-radius: 12px
 
-      .highlighted
-        background: v.$code-highlight-color
-        display: block
 
       code, code[v-pre]
-        overflow-x: auto
-        overflow-y: hidden
-        display: flex
-        flex-direction: column
+        display: block
+        width: fit-content
+        min-width: 100%
+        transition: color 0.5s
         font-family: "JetBrains Mono", monospace
         font-weight: normal
         // line number https://github.com/shikijs/shiki/issues/3#issuecomment-830564854
         counter-reset: step
         counter-increment: step calc(var(--start, 1) - 1)
 
+        .highlighted
+          background: v.$code-highlight-color
+          margin: 0 -1.2em
+          padding: 0 1.2em
+          width: 100%
+
         & .line
-          overflow-x: auto
+          display: inline-block
 
         & .line::before
           content: counter(step)
@@ -119,8 +120,6 @@ html
           text-align: right
           color: rgba(115, 138, 148, .4)
           margin-right: 1.2em
-          margin-left: -3em
-          padding-left: 4.2em
 
   mark
     background: linear-gradient(to right, rgba(255, 225, 0, .1), rgba(255, 225, 0, .8) 4%, rgba(255, 225, 0, .3)) 0 0
