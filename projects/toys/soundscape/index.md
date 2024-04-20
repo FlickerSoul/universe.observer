@@ -415,7 +415,7 @@ fun doughProcessing(flour: String, water: String): String {
     return "dough = $flour + $water"
 }
 
-Class SomeViewModel : ViewModel() {
+class SomeViewModel : ViewModel() {
     // usually provided by some other dependencies
     val flourFlow = (0 until 5).map { "flour" }.asFlow()
     val waterFlow = (0 until 5).map { "water" }.asFlow()
@@ -444,7 +444,7 @@ fun doughProcessing(flour: String, water: String): String {
     return "dough = $flour + $water"
 }
 
-Class SomeViewModel : ViewModel() {
+class SomeViewModel : ViewModel() {
     // usually provided by some other dependencies
     val flourFlow = (0 until 5).map { "flour" }.asFlow()
     val waterFlow = (0 until 5).map { "water" }.asFlow()
