@@ -36,22 +36,22 @@
     "mermaid": "^10.9.0",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
-    "sass": "^1.74.1",
+    "sass": "^1.75.0",
     "shiki": "^1.3.0",
     "svgdom": "^0.1.19",
     "three": "^0.163.0",
     "ts-node": "^10.9.2",
-    "unocss": "^0.59.0",
+    "unocss": "^0.59.4",
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
-    "unplugin-vue-markdown": "^0.26.0",
-    "vite": "^5.2.8",
+    "unplugin-vue-markdown": "^0.26.2",
+    "vite": "^5.2.10",
     "vite-plugin-pages": "^0.32.1",
     "vite-plugin-pages-sitemap": "^1.6.1",
     "vite-ssg": "^0.23.6",
-    "vue": "^3.4.21",
-    "vue-router": "^4.3.0",
-    "vue-tsc": "^2.0.11"
+    "vue": "^3.4.23",
+    "vue-router": "^4.3.2",
+    "vue-tsc": "^2.0.13"
   },
   "devDependencies": {
     "@akiravoid/markdown-it-sup": "^1.0.2",
@@ -65,13 +65,13 @@
     "@types/node": "^20.12.7",
     "@types/nprogress": "^0.2.3",
     "@types/three": "^0.149.0",
-    "@unhead/vue": "^1.9.4",
+    "@unhead/vue": "^1.9.7",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "markdown-it": "^14.1.0",
     "tinify": "^1.7.1",
     "typescript": "^4.9.5",
-    "vite-plugin-inspect": "^0.8.3"
+    "vite-plugin-inspect": "^0.8.4"
   }
 }
