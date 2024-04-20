@@ -1,6 +1,7 @@
 import { useDark } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { nextTick } from 'vue'
+import type { Mermaid } from 'mermaid'
 
 export function formatDate(date: string | Date) {
   const day = dayjs(date)
@@ -60,15 +61,30 @@ export function toggleDark(event: MouseEvent) {
     })
 }
 
-export async function renderMermaid() {
-  if (document.querySelectorAll('pre.mermaid-content').length === 0)
-    return
-
-  const { default: mermaid } = await import('mermaid')
+function initMermaid(mermaid: Mermaid) {
   mermaid.initialize({
     startOnLoad: false,
     theme: isDark.value ? 'dark' : 'default',
   })
+}
+
+export async function renderMermaidInPlace() {
+  if (document.querySelectorAll('pre.mermaid-content').length === 0)
+    return
+
+  const { default: mermaid } = await import('mermaid')
+
+  initMermaid(mermaid)
 
   await mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
+}
+
+export async function renderMermaidToElement(id: string, content: string): Promise<string> {
+  const { default: mermaid } = await import('mermaid')
+
+  initMermaid(mermaid)
+
+  const { svg } = await mermaid.render(id, content)
+
+  return svg
 }

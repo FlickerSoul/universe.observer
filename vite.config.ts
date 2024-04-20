@@ -120,8 +120,16 @@ export default defineConfig({
       },
     }),
     markdown({
-      wrapperComponent: 'Post',
-      wrapperClasses: 'post-md-content',
+      wrapperComponent: (id) => {
+        if (id.includes('components'))
+          return 'div'
+        return 'Post'
+      },
+      wrapperClasses: (id) => {
+        if (id.includes('components'))
+          return ''
+        return 'post-md-content'
+      },
       markdownItOptions: {
         linkify: true,
         quotes: '""\'\'',
