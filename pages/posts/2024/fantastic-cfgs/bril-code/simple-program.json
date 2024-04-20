@@ -1,0 +1,151 @@
+{
+  "functions": [
+    {
+      "name": "main",
+      "instrs": [
+        {
+          "op": "const",
+          "value": 1,
+          "dest": "v0",
+          "type": "float"
+        },
+        {
+          "op": "id",
+          "dest": "i",
+          "type": "float",
+          "args": [
+            "v0"
+          ]
+        },
+        {
+          "op": "const",
+          "value": 0,
+          "dest": "v2",
+          "type": "float"
+        },
+        {
+          "op": "id",
+          "dest": "j",
+          "type": "float",
+          "args": [
+            "v2"
+          ]
+        },
+        {
+          "label": "for.cond.1"
+        },
+        {
+          "op": "id",
+          "dest": "v3",
+          "type": "float",
+          "args": [
+            "j"
+          ]
+        },
+        {
+          "op": "const",
+          "value": 10,
+          "dest": "v4",
+          "type": "float"
+        },
+        {
+          "op": "flt",
+          "dest": "v5",
+          "type": "bool",
+          "args": [
+            "v3",
+            "v4"
+          ]
+        },
+        {
+          "op": "br",
+          "args": [
+            "v5"
+          ],
+          "labels": [
+            "for.body.1",
+            "for.end.1"
+          ]
+        },
+        {
+          "label": "for.body.1"
+        },
+        {
+          "op": "id",
+          "dest": "v6",
+          "type": "float",
+          "args": [
+            "i"
+          ]
+        },
+        {
+          "op": "id",
+          "dest": "v7",
+          "type": "float",
+          "args": [
+            "j"
+          ]
+        },
+        {
+          "op": "fadd",
+          "dest": "v8",
+          "type": "float",
+          "args": [
+            "v6",
+            "v7"
+          ]
+        },
+        {
+          "op": "id",
+          "dest": "i",
+          "type": "float",
+          "args": [
+            "v8"
+          ]
+        },
+        {
+          "op": "id",
+          "dest": "v9",
+          "type": "float",
+          "args": [
+            "j"
+          ]
+        },
+        {
+          "op": "const",
+          "value": 1,
+          "dest": "v10",
+          "type": "float"
+        },
+        {
+          "op": "fadd",
+          "dest": "v11",
+          "type": "float",
+          "args": [
+            "v9",
+            "v10"
+          ]
+        },
+        {
+          "op": "id",
+          "dest": "j",
+          "type": "float",
+          "args": [
+            "v11"
+          ]
+        },
+        {
+          "op": "jmp",
+          "args": [],
+          "labels": [
+            "for.cond.1"
+          ]
+        },
+        {
+          "label": "for.end.1"
+        }
+      ],
+      "args": []
+    }
+  ]
+}
