@@ -61,7 +61,6 @@ html
 
     .shiki-extra-before:not(:empty), .shiki-extra-after:not(:empty)
       padding: 0.5em 1em 0 1em
-      width: 100%
 
     .shiki-extra-before:not(:empty)
       border-top-left-radius: 12px
@@ -86,7 +85,7 @@ html
       overflow: hidden
       width: 100%
 
-      padding: 0.75em 1em 0.75em 1em
+      padding: 0.75em 0 0.75em 0
       margin: 0
       line-height: 1.25em
       -webkit-text-size-adjust: none
@@ -122,6 +121,8 @@ html
           text-align: right
           color: rgba(115, 138, 148, .4)
           margin-right: 1.2em
+          margin-left: -3em
+          padding-left: 4em
 
   mark
     background: linear-gradient(to right, rgba(255, 225, 0, .1), rgba(255, 225, 0, .8) 4%, rgba(255, 225, 0, .3)) 0 0
@@ -142,6 +143,9 @@ html:not(.dark)
   pre.shiki
     background-color: var(--shiki-light-bg)
 
+  .code-container
+    background-color: var(--shiki-light-bg)
+
   .shiki, .shiki span
     color: var(--shiki-light, inherit)
 
@@ -153,6 +157,9 @@ html:not(.dark)
 
 html.dark
   pre.shiki
+    background-color: var(--shiki-dark-bg)
+
+  .code-container
     background-color: var(--shiki-dark-bg)
 
   .shiki, .shiki span
