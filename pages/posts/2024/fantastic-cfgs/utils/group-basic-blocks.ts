@@ -3,36 +3,48 @@ import type { Instruction, Program } from './types'
 export interface BasicBlock {
   instrs: Instruction[]
   label: string
+  next: string[]
 }
 
 export const START_LABEL = 'start'
 
-export function groupBasicBlocks(program: Program): BasicBlock[] {
-  const basicBlocks: BasicBlock[] = []
-  let currentBlock: BasicBlock = { label: START_LABEL, instrs: [] }
+export interface FuncBlockMapping {
+  [funcName: string]: BasicBlock[]
+}
 
-  program.functions.forEach((func, funcIndex) => {
+export function groupBasicBlocks(program: Program): FuncBlockMapping {
+  const result: FuncBlockMapping = {}
+
+  program.functions.forEach((func) => {
+    const basicBlocks: BasicBlock[] = result[func.name] = []
+    let currentBlock: BasicBlock = { label: `${func.name}.${START_LABEL}`, instrs: [], next: [] }
+
     func.instrs.forEach((instr, instrIndex) => {
       if ('label' in instr) {
         if (currentBlock.instrs.length > 0)
           basicBlocks.push(currentBlock)
 
-        currentBlock = { label: instr.label, instrs: [] }
+        currentBlock.next.push(instr.label)
+
+        currentBlock = { label: instr.label, instrs: [], next: [] }
       } else {
         if (instr.op === 'br' || instr.op === 'jmp' || instr.op === 'ret') {
+          if (instr.op === 'br' || instr.op === 'jmp')
+            currentBlock.next.push(instr.labels[0])
+
           currentBlock.instrs.push(instr)
           basicBlocks.push(currentBlock)
-          const inlineLabel = `${'\u200B'.repeat(funcIndex)}.${'\u200B'.repeat(instrIndex)}`
-          currentBlock = { label: inlineLabel, instrs: [] }
+          const inlineLabel = `${func.name}.l${instrIndex + 1}`
+          currentBlock = { label: inlineLabel, instrs: [], next: [] }
         } else {
           currentBlock.instrs.push(instr)
         }
       }
     })
+
+    if (currentBlock.instrs.length > 0)
+      basicBlocks.push(currentBlock)
   })
 
-  if (currentBlock.instrs.length > 0)
-    basicBlocks.push(currentBlock)
-
-  return basicBlocks
+  return result
 }

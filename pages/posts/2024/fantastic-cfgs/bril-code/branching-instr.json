@@ -39,10 +39,34 @@
           "label": "branching"
         },
         {
+          "args": [
+            "foo",
+            "y"
+          ],
+          "op": "call"
+        },
+        {
           "op": "ret"
         }
       ],
       "name": "main"
+    },
+    {
+      "args": [
+        {
+          "name": "x",
+          "type": "int"
+        }
+      ],
+      "instrs": [
+        {
+          "args": [
+            "x"
+          ],
+          "op": "print"
+        }
+      ],
+      "name": "foo"
     }
   ]
 }

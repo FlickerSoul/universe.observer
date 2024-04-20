@@ -1,5 +1,5 @@
 import type { Program } from './types'
-import type { BasicBlock } from './group-basic-blocks'
+import type { BasicBlock, FuncBlockMapping } from './group-basic-blocks'
 import { brilInstructionToText } from './bril-txt'
 
 export function loadBril(content: string | any): Program {
@@ -12,89 +12,95 @@ export function loadBril(content: string | any): Program {
 interface Arrow {
   from: string
   to: string
+  type?: 'dotted' | 'solid'
 }
 
-export function synthesizeSimpleMermaid(basicBlocks: BasicBlock[]): string {
-  const mermaidStart = `stateDiagram-v2
-  direction TB
-  `
+function synArrows(blocks: BasicBlock[]): Arrow[] {
+  const funcArrows: Arrow[] = []
 
-  const globalArrows: Arrow[] = []
-
-  basicBlocks.forEach((block, blockIndex) => {
-    if (block.instrs.length > 0) {
-      const lastInstr = block.instrs[block.instrs.length - 1]
-      if (lastInstr['op'] === 'br') {
-        globalArrows.push({ from: block.label, to: lastInstr['labels'][0] })
-        globalArrows.push({ from: block.label, to: lastInstr['labels'][1] })
-      } else if (lastInstr['op'] === 'jmp') {
-        globalArrows.push({ from: block.label, to: lastInstr['labels'][0] })
-      } else {
-        if (blockIndex < basicBlocks.length - 1)
-          globalArrows.push({ from: block.label, to: basicBlocks[blockIndex + 1].label })
+  blocks.forEach((block) => {
+    for (const next of block.next) {
+      const arrow = {
+        from: block.label,
+        to: next,
       }
+      funcArrows.push(arrow)
     }
   })
 
-  const globalArrowDef = globalArrows
+  return funcArrows
+}
+
+function arrowsToDef(arrows: Arrow[]): string {
+  return arrows
     .map(({
       from,
       to,
-    }) => `${from} --> ${to}`)
+      type,
+    }) => {
+      if (type === 'dotted')
+        return `${from} --> ${to}`
+      else
+        return `${from} --> ${to}`
+    })
     .join('\n')
-
-  return `${mermaidStart}\n${globalArrowDef}`
 }
 
-export function synthesizeMermaid(basicBlocks: BasicBlock[], arrowStyle: 'block' | 'instr' = 'block'): string {
+export function synthesizeSimpleMermaid(blockMapping: FuncBlockMapping): string {
   const mermaidStart = `stateDiagram-v2
   direction TB
   `
-  const globalArrows: Arrow[] = []
 
-  const stateDef = basicBlocks.map((block, blockIndex) => {
-    const head = `state ${block.label} {`
-    const tail = '}'
+  const body = Object.entries(blockMapping).map(([funcName, basicBlocks]) => {
+    const funcHead = `state ${funcName} {`
+    const funcTail = '}'
 
-    const body = block.instrs
-      .map((instr, index) => {
-        const stateLabel = `${block.label}.${index}`
-        return `state "${brilInstructionToText(instr)}" as ${stateLabel}`
-      })
-      .join('\n')
+    const funcArrows: Arrow[] = synArrows(basicBlocks)
 
-    const innerArrows = block.instrs.reduce((acc, instr, index) => {
-      if (index === 0)
-        return acc
-      return `${acc}\n${block.label}.${index - 1} --> ${block.label}.${index}`
-    }, '')
+    let funcArrowDef: string
+    if (funcArrows.length === 0)
+      funcArrowDef = basicBlocks[0].label
+    else
+      funcArrowDef = arrowsToDef(funcArrows)
 
-    if (block.instrs.length > 0) {
-      const instrIndex = block.instrs.length - 1
-      const lastInstr = block.instrs[instrIndex]
-      const instrLabel = `${block.label}.${instrIndex}`
-      const fromLabel = arrowStyle === 'block' ? block.label : instrLabel
-
-      if (lastInstr['op'] === 'br') {
-        globalArrows.push({ from: fromLabel, to: lastInstr['labels'][0] })
-        globalArrows.push({ from: fromLabel, to: lastInstr['labels'][1] })
-      } else if (lastInstr['op'] === 'jmp') {
-        globalArrows.push({ from: fromLabel, to: lastInstr['labels'][0] })
-      } else {
-        if (blockIndex < basicBlocks.length - 1)
-          globalArrows.push({ from: fromLabel, to: basicBlocks[blockIndex + 1].label })
-      }
-    }
-
-    return `${head}\n${body}\n${innerArrows}\n${tail}\n`
+    return `${funcHead}\n${funcArrowDef}\n${funcTail}`
   }).join('\n')
 
-  const globalArrowDef = globalArrows
-    .map(({
-      from,
-      to,
-    }) => `${from} --> ${to}`)
-    .join('\n')
+  return `${mermaidStart}\n${body}`
+}
 
-  return `${mermaidStart}\n${stateDef}\n${globalArrowDef}`
+export function synthesizeMermaid(blockMapping: FuncBlockMapping): string {
+  const mermaidStart = `stateDiagram-v2
+  direction TB
+  `
+  const funcDef = Object.entries(blockMapping).map(([funcName, basicBlocks]) => {
+    const funcHead = `state func_${funcName} {`
+    const funcTail = '}'
+
+    const stateDef = basicBlocks.map((block) => {
+      const head = `state ${block.label} {`
+      const tail = '}'
+
+      const body = block.instrs
+        .map((instr, instrIndex) => {
+          const stateLabel = `${block.label}.${instrIndex}`
+          return `state "${brilInstructionToText(instr)}" as ${stateLabel}`
+        })
+        .join('\n')
+
+      const innerArrows = block.instrs.reduce((acc, instr, index) => {
+        if (index === 0)
+          return acc
+        return `${acc}\n${block.label}.${index - 1} --> ${block.label}.${index}`
+      }, '')
+
+      return `${head}\n${body}\n${innerArrows}\n${tail}\n`
+    }).join('\n')
+
+    const funcArrowDef = arrowsToDef(synArrows(basicBlocks))
+
+    return `${funcHead}\n${stateDef}\n${funcArrowDef}\n${funcTail}`
+  }).join('\n')
+
+  return `${mermaidStart}\n${funcDef}`
 }
