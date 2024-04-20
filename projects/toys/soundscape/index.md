@@ -422,7 +422,7 @@ class SomeViewModel : ViewModel() {
 
     val doughFlow = MutableStateFlow<String?>(null)
 
-    init {
+    init {  // [!code focus:10]
         viewModelScope.launch {
             flourFlow.collect { flour ->
                 waterFlow.collect { water ->
@@ -449,7 +449,7 @@ class SomeViewModel : ViewModel() {
     val flourFlow = (0 until 5).map { "flour" }.asFlow()
     val waterFlow = (0 until 5).map { "water" }.asFlow()
 
-    val doughFlow = flourFlow
+    val doughFlow = flourFlow  // [!code focus:5]
         .combine(waterFlow) { flour, water ->
             doughProcessing(flour, water)
         }
