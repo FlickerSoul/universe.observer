@@ -34,7 +34,8 @@ export function groupBasicBlocks(program: Program): FuncBlockMapping {
 
           currentBlock.instrs.push(instr)
           basicBlocks.push(currentBlock)
-          const inlineLabel = `${func.name}.l${instrIndex + 1}`
+          // + 1 because of index, and another +1 because the label is in the next line
+          const inlineLabel = `${func.name}.l${instrIndex + 2}`
           currentBlock = { label: inlineLabel, instrs: [], next: [] }
         } else {
           currentBlock.instrs.push(instr)
