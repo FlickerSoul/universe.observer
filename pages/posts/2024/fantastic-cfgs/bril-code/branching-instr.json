@@ -1,0 +1,48 @@
+{
+  "functions": [
+    {
+      "instrs": [
+        {
+          "dest": "x",
+          "op": "const",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "dest": "five",
+          "op": "const",
+          "type": "int",
+          "value": 5
+        },
+        {
+          "args": [
+            "x",
+            "five"
+          ],
+          "dest": "y",
+          "op": "add",
+          "type": "int"
+        },
+        {
+          "labels": [
+            "branching"
+          ],
+          "op": "jmp"
+        },
+        {
+          "dest": "z",
+          "op": "const",
+          "type": "int",
+          "value": 0
+        },
+        {
+          "label": "branching"
+        },
+        {
+          "op": "ret"
+        }
+      ],
+      "name": "main"
+    }
+  ]
+}

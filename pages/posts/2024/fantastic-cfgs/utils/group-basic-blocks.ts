@@ -11,18 +11,25 @@ export function groupBasicBlocks(program: Program): BasicBlock[] {
   const basicBlocks: BasicBlock[] = []
   let currentBlock: BasicBlock = { label: START_LABEL, instrs: [] }
 
-  for (const func of program.functions) {
-    for (const instr of func.instrs) {
+  program.functions.forEach((func, funcIndex) => {
+    func.instrs.forEach((instr, instrIndex) => {
       if ('label' in instr) {
         if (currentBlock.instrs.length > 0)
           basicBlocks.push(currentBlock)
 
         currentBlock = { label: instr.label, instrs: [] }
       } else {
-        currentBlock.instrs.push(instr)
+        if (instr.op === 'br' || instr.op === 'jmp' || instr.op === 'ret') {
+          currentBlock.instrs.push(instr)
+          basicBlocks.push(currentBlock)
+          const inlineLabel = `${'\u200B'.repeat(funcIndex)}.${'\u200B'.repeat(instrIndex)}`
+          currentBlock = { label: inlineLabel, instrs: [] }
+        } else {
+          currentBlock.instrs.push(instr)
+        }
       }
-    }
-  }
+    })
+  })
 
   if (currentBlock.instrs.length > 0)
     basicBlocks.push(currentBlock)

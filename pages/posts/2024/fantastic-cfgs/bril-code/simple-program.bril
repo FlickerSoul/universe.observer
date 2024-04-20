@@ -1,4 +1,3 @@
-```bril
 @main {
     i: int = const 0;
     x: int = const 1;
@@ -17,4 +16,3 @@
     print x;
     ret zero;
 }
-```

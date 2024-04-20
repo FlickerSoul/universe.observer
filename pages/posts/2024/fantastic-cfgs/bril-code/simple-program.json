@@ -1,151 +1,110 @@
 {
   "functions": [
     {
-      "name": "main",
       "instrs": [
         {
-          "op": "const",
-          "value": 1,
-          "dest": "v0",
-          "type": "float"
-        },
-        {
-          "op": "id",
           "dest": "i",
-          "type": "float",
-          "args": [
-            "v0"
-          ]
-        },
-        {
           "op": "const",
-          "value": 0,
-          "dest": "v2",
-          "type": "float"
+          "type": "int",
+          "value": 0
         },
         {
-          "op": "id",
-          "dest": "j",
-          "type": "float",
-          "args": [
-            "v2"
-          ]
-        },
-        {
-          "label": "for.cond.1"
-        },
-        {
-          "op": "id",
-          "dest": "v3",
-          "type": "float",
-          "args": [
-            "j"
-          ]
-        },
-        {
+          "dest": "x",
           "op": "const",
-          "value": 10,
-          "dest": "v4",
-          "type": "float"
+          "type": "int",
+          "value": 1
         },
         {
-          "op": "flt",
-          "dest": "v5",
-          "type": "bool",
-          "args": [
-            "v3",
-            "v4"
-          ]
+          "dest": "term",
+          "op": "const",
+          "type": "int",
+          "value": 5
         },
         {
-          "op": "br",
+          "dest": "zero",
+          "op": "const",
+          "type": "int",
+          "value": 0
+        },
+        {
+          "dest": "one",
+          "op": "const",
+          "type": "int",
+          "value": 1
+        },
+        {
+          "label": "loop.enter"
+        },
+        {
           "args": [
-            "v5"
+            "term",
+            "i"
+          ],
+          "dest": "y",
+          "op": "sub",
+          "type": "int"
+        },
+        {
+          "args": [
+            "y",
+            "zero"
+          ],
+          "dest": "cond",
+          "op": "gt",
+          "type": "bool"
+        },
+        {
+          "args": [
+            "cond"
           ],
           "labels": [
-            "for.body.1",
-            "for.end.1"
-          ]
+            "loop.body",
+            "loop.end"
+          ],
+          "op": "br"
         },
         {
-          "label": "for.body.1"
+          "label": "loop.body"
         },
         {
-          "op": "id",
-          "dest": "v6",
-          "type": "float",
           "args": [
-            "i"
-          ]
+            "x",
+            "x"
+          ],
+          "dest": "x",
+          "op": "add"
         },
         {
-          "op": "id",
-          "dest": "v7",
-          "type": "float",
           "args": [
-            "j"
-          ]
-        },
-        {
-          "op": "fadd",
-          "dest": "v8",
-          "type": "float",
-          "args": [
-            "v6",
-            "v7"
-          ]
-        },
-        {
-          "op": "id",
+            "i",
+            "one"
+          ],
           "dest": "i",
-          "type": "float",
-          "args": [
-            "v8"
-          ]
+          "op": "add"
         },
         {
-          "op": "id",
-          "dest": "v9",
-          "type": "float",
-          "args": [
-            "j"
-          ]
-        },
-        {
-          "op": "const",
-          "value": 1,
-          "dest": "v10",
-          "type": "float"
-        },
-        {
-          "op": "fadd",
-          "dest": "v11",
-          "type": "float",
-          "args": [
-            "v9",
-            "v10"
-          ]
-        },
-        {
-          "op": "id",
-          "dest": "j",
-          "type": "float",
-          "args": [
-            "v11"
-          ]
-        },
-        {
-          "op": "jmp",
-          "args": [],
           "labels": [
-            "for.cond.1"
-          ]
+            "loop.enter"
+          ],
+          "op": "jmp"
         },
         {
-          "label": "for.end.1"
+          "label": "loop.end"
+        },
+        {
+          "args": [
+            "x"
+          ],
+          "op": "print"
+        },
+        {
+          "args": [
+            "zero"
+          ],
+          "op": "ret"
         }
       ],
-      "args": []
+      "name": "main"
     }
   ]
 }
