@@ -175,6 +175,9 @@ useHead({
       <span class="mr2">Tags: </span>
       <PostTag v-for="tag in frontmatter.tags" :key="tag" :tag="tag" class="mr-4 post-tag" />
     </div>
+    <div v-if="frontmatter.wip" class="post-meta">
+      <span>🚧 This post is not finished yet!</span>
+    </div>
 
     <div class="mb-12" />
 

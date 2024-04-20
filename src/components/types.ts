@@ -28,6 +28,8 @@ export interface IPostData {
   excerpt?: string
   // description of the post
   description?: string
+  // is this working in progress
+  wip?: boolean
 }
 
 export type IListedPostData =

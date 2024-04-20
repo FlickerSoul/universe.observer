@@ -29,6 +29,9 @@ function handleClick(e: MouseEvent) {
         >
           <LangIndicator :lang="lang" />
         </router-link>
+        <span v-if="post.wip">
+          🚧
+        </span>
       </div>
       <div
         class="post-body inline cursor-pointer opacity-50 hover:opacity-100 ml-0.4em
@@ -40,6 +43,7 @@ function handleClick(e: MouseEvent) {
             <span class="post-title text-1.4em inline-block">
               {{ post.title }}
             </span>
+
             <div style="flex-grow: 1;" />
             <span v-if="post.subtitle" class="post-title inline-block">
               {{ post.subtitle }}
