@@ -16,11 +16,11 @@ updatedAt: 2024-04-07
 
 [[TOC]]
 
-## Introduction
-
 The code is finally
 live [here](https://github.com/Soundscape-Project-UCL/Soundscape)! You can hear
 part of the audio experience in [this section](#beacon-expr-demo) of the post.
+
+## Introduction
 
 The idea of using Spatial Audio to navigate isn't new. Soundscape was originally
 incubated and
@@ -396,17 +396,17 @@ easily.
 
 During my UI integration, I found several places where
 Kotlin [flows](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)
-are abused. Because it was the first many using Kotlin for many of us in the
+are abused. Because it was the first time of using Kotlin for many of us in the
 team, learning all bits of the language wasn't easy. My implementation of the
 event bus helped me gain extra understanding
 towards [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
 and thus the usages of flows.
 
-A common mistake made was piping and transforming data from one flow to another.
-Suppose there are two flows (or pipelines), one for bags of flour and the other
-one for buckets of waters, and we want to create a flow of dough out of the
-flour and water from the flow. It is tempting to create an empty flow and an "
-actor" who picks out one bag of flour and and one bucket of water, put it
+A common mistake made was when piping and transforming data from one flow to
+another. Suppose there are two flows (or pipelines), one for bags of flour and
+the other one for buckets of waters, and we want to create a flow of dough out
+of the flour and water from the flow. It is tempting to create an empty flow and
+an "actor" who picks out one bag of flour and and one bucket of water, put it
 through some processing, and then drop the processed dough to the new empty
 flow (shown in the highlight).
 
