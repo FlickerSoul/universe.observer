@@ -10,9 +10,7 @@ const { post } = defineProps<{ post: IListedPostData }>()
 <template>
   <li>
     <div class="post-item font-mono no-underline ">
-      <div
-        class="align-middle px-1 md:ml--10.5 mr1.5 inline-flex gap-2 flex-row-reverse md:w-25px"
-      >
+      <div class="align-middle md:ml--10.5 mr-0.6em inline-flex gap-2 flex-row-reverse md:w-25px">
         <router-link
           v-for="lang in (post.langs || [post.lang]).sort()"
           :key="lang"
@@ -22,12 +20,23 @@ const { post } = defineProps<{ post: IListedPostData }>()
           <LangIndicator :lang="lang" />
         </router-link>
       </div>
-      <router-link :to="post.path" class="post-body border-none hover:border-none opacity-50 hover:opacity-75">
-        <span class="post-title md:inline-block block align-middle text-1.4em ml-0.4em">
-          {{ post.title }}
-        </span>
-        <PostDate v-bind="post" class="post-dates post-meta" />
-        <PostAbstract v-if="post.description" :abstract="post.description" class="post-abstract post-meta" />
+      <router-link
+        :to="post.path"
+        class="post-body border-none hover:border-none opacity-50 hover:opacity-75 ml-0.4em"
+      >
+        <div class="md:inline-block block align-middle w-100%">
+          <div class="flex md:flex-row flex-col md:place-items-center">
+            <span class="post-title text-1.4em inline-block">
+              {{ post.title }}
+            </span>
+            <div style="flex-grow: 1;" />
+            <span v-if="post.subtitle" class="post-title inline-block">
+              {{ post.subtitle }}
+            </span>
+          </div>
+        </div>
+        <PostDate v-bind="post" class="post-dates w-100%" />
+        <PostAbstract v-if="post.description" :abstract="post.description" class="post-abstract w-100%" />
       </router-link>
     </div>
   </li>
