@@ -1,0 +1,133 @@
+{
+  "name": "bril",
+  "scopeName": "source.bril",
+  "fileTypes": [
+    "bril"
+  ],
+  "patterns": [
+    {
+      "match": "#.*$",
+      "name": "comment.line.number-sign.bril"
+    },
+    {
+      "match": "\\b(true|false)\\b",
+      "name": "constant.language.boolean.bril"
+    },
+    {
+      "match": "\\b-?\\d+\\b",
+      "name": "constant.numeric.bril"
+    },
+    {
+      "match": "\\b(int|bool|float|char)\\b",
+      "name": "storage.type.bril"
+    },
+    {
+      "match": "\\b(jmp|br|ret|print|nop|speculate|guard|commit)\\b",
+      "name": "keyword.control.bril"
+    },
+    {
+      "match": "\\b(id|const|add|mul|sub|div|eq|lt|gt|le|ge|not|and|or)\\b",
+      "name": "keyword.operator.bril"
+    },
+    {
+      "begin": "^(.\\w+:)",
+      "end": "$",
+      "name": "entity.name.label.bril",
+      "patterns": [
+        {
+          "match": "\\w+",
+          "name": "variable.label.bril"
+        }
+      ]
+    },
+    {
+      "begin": "(\\b\\w+\\b)\\s*:\\s*(int|bool|float|char)",
+      "end": ";",
+      "name": "meta.instruction.value.bril",
+      "patterns": [
+        {
+          "match": "\\b\\w+\\b",
+          "name": "variable.other.bril"
+        },
+        {
+          "match": "(int|bool|float|char)",
+          "name": "storage.type.bril"
+        }
+      ]
+    },
+    {
+      "begin": "^(\\b\\w+\\b)\\s*\\{",
+      "end": "\\}",
+      "name": "meta.function.bril",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#label"
+        },
+        {
+          "include": "#value_instruction"
+        },
+        {
+          "include": "#branch_instruction"
+        },
+        {
+          "include": "#effect_instruction"
+        }
+      ]
+    }
+  ],
+  "repository": {
+    "comment": {
+      "patterns": [
+        {
+          "match": "#.*$",
+          "name": "comment.line.number-sign.bril"
+        }
+      ]
+    },
+    "label": {
+      "patterns": [
+        {
+          "begin": "^.(\\w+:)",
+          "end": "$",
+          "name": "entity.name.label.bril",
+          "patterns": [
+            {
+              "match": "\\w+",
+              "name": "variable.label.bril"
+            }
+          ]
+        }
+      ]
+    },
+    "value_instruction": {
+      "patterns": [
+        {
+          "begin": "(\\b\\w+\\b)\\s*:\\s*(int|bool|float|char)",
+          "end": ";",
+          "name": "meta.instruction.value.bril"
+        }
+      ]
+    },
+    "branch_instruction": {
+      "patterns": [
+        {
+          "begin": "\\bbr\\b",
+          "end": ";",
+          "name": "meta.instruction.branch.bril"
+        }
+      ]
+    },
+    "effect_instruction": {
+      "patterns": [
+        {
+          "begin": "\\b(jmp|br|ret|print|nop|speculate|guard|commit)\\b",
+          "end": ";",
+          "name": "meta.instruction.effect.bril"
+        }
+      ]
+    }
+  }
+}

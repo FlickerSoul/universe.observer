@@ -138,21 +138,26 @@ export default defineConfig({
       exportFrontmatter: false,
       frontmatter: true,
       async markdownItSetup(md) {
-        md.use(await MarkdownItShiki({
-          themes: {
-            dark: 'nord',
-            light: 'rose-pine-dawn',
-          },
-          defaultColor: false,
-          cssVariablePrefix: '--shiki-',
-          transformers: [
-            transformerMetaHighlight(),
-            transformerNotationDiff(),
-            transformerNotationErrorLevel(),
-            transformerNotationHighlight(),
-            transformerNotationFocus(),
-          ],
-        }))
+        md.use(await (async () => {
+          const bril = JSON.parse(fs.readFileSync('./scripts/bril-textmate.json', 'utf8'))
+
+          return MarkdownItShiki({
+            themes: {
+              dark: 'nord',
+              light: 'rose-pine-dawn',
+            },
+            langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', bril],
+            defaultColor: false,
+            cssVariablePrefix: '--shiki-',
+            transformers: [
+              transformerMetaHighlight(),
+              transformerNotationDiff(),
+              transformerNotationErrorLevel(),
+              transformerNotationHighlight(),
+              transformerNotationFocus(),
+            ],
+          })
+        })())
         md.use(anchor, {
           slugify,
           permalink: anchor.permalink.linkInsideHeader({
