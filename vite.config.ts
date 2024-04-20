@@ -1,5 +1,5 @@
-import { resolve } from 'path'
-import * as fs from 'fs'
+import { resolve } from 'node:path'
+import * as fs from 'node:fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
@@ -24,6 +24,7 @@ import {
   transformerMetaHighlight,
   transformerNotationDiff,
   transformerNotationErrorLevel,
+  transformerNotationFocus,
   transformerNotationHighlight,
 } from '@shikijs/transformers'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
@@ -141,6 +142,7 @@ export default defineConfig({
             transformerNotationDiff(),
             transformerNotationErrorLevel(),
             transformerNotationHighlight(),
+            transformerNotationFocus(),
           ],
         }))
         md.use(anchor, {

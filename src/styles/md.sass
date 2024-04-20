@@ -91,6 +91,12 @@ html
       border-bottom-left-radius: 12px
       border-bottom-right-radius: 12px
 
+      &.has-focused .line:not(.focused)
+        filter: blur(.095rem)
+        transition: filter 0.5s
+
+      &.has-focused:hover .line:not(.focused)
+        filter: blur(0)
 
       code, code[v-pre]
         display: block
