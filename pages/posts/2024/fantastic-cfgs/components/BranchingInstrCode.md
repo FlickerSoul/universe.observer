@@ -6,7 +6,11 @@
     jmp .branching;
     z: int = const 0;
 .branching:
+    call foo y;
     ret;
 }
 
+@foo(x: int) {
+    print x;
+}
 ```
