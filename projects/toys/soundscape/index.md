@@ -18,7 +18,9 @@ updatedAt: 2024-04-07
 
 ## Introduction
 
-It's finally live [here](https://github.com/Soundscape-Project-UCL/Soundscape)!
+The code is finally
+live [here](https://github.com/Soundscape-Project-UCL/Soundscape)! You can hear
+part of the audio experience in [this section](#beacon-expr-demo) of the post.
 
 The idea of using Spatial Audio to navigate isn't new. Soundscape was originally
 incubated and
@@ -89,7 +91,12 @@ people who need it.
 We decided to use Kotlin (with JNI) for developmemt, Jetpack Compose for UI,
 Room for persistence, and, latter in the course, hilt (dagger) for dependency
 injection and proto DataStore for lightweight data persistence duch as values in
-settings.
+settings. We also used GitHub Actions as the CI/CD provider for testing,
+building, and delivering the artifacts to our client.
+
+I had no previous experience with Android nor Kotlin. However, my past
+development on iOS allowed me to understand the design and pick up Android
+specific things pretty quickly.
 
 ### The Audio Team
 
@@ -190,7 +197,8 @@ We also swapped out the deprecated OpenSL ES audio backend to the modern AAudio
 to ensure the longevity of this product.
 
 I attached several audio samples below for you to get an understanding of what
-you would experience.
+you would experience. <span id="beacon-expr-demo" />
+_**Make sure you wear your headphones for the best experience!**_
 
 > [!Note]
 > This is a on-axis audio, a positive sound representing facing the right
@@ -209,8 +217,7 @@ you would experience.
 > </audio>
 >
 > And together, when facing in different directions, you can experience the
-> transitions between on-axis and off-axis sounds. Make sure you wear your
-> headphones for the best experience.
+> transitions between on-axis and off-axis sounds.
 >
 > The following is a sample recorded from
 > the iOS version.
@@ -357,6 +364,97 @@ dup_cond -->|yes, skip|queue_empty
 dup_cond -->|no, callout| callout[submit callout data to the discrete player]
 callout --> queue_empty
 loop_cond -->|on stop|looper_initialized
+```
+
+### Some Miscellaneous Stuff
+
+Surprise, surprise! I also did quite a lot other stuff than being in the the
+audio team.
+
+#### CI/CD
+
+I'm a big fan of automation so I did the CI/CD pipelines: one for building the
+project and uploading the signed artifact to an Google Drive for sharing with
+our client, the other one for instrumented testing and unit testing during
+pushing and PRs.
+
+#### Documentation
+
+Since I'm in charge of the CI/CD pipeline, which covers most of the building and
+testing process, I wrote the documentations to explain all the processes to make
+future contributions smooth.
+
+#### Some UI and Optimization
+
+Part of integration of the audio stuff required me to write some UI, such as
+selectors for different types of beacon tones. We used Jetpack Compose,
+declarative type of UI composition similar to SwiftUI and Vue, which is quite
+convenient and my past experience in web developement and Swift UI development
+helped a lot. Dependency injection and MVVM model was used extensively in those
+UIs and allowed to me manage the UI and sync the UI with settings and audio part
+easily.
+
+During my UI integration, I found several places where
+Kotlin [flows](https://kotlinlang.org/api/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/-flow/)
+are abused. Because it was the first many using Kotlin for many of us in the
+team, learning all bits of the language wasn't easy. My implementation of the
+event bus helped me gain extra understanding
+towards [Kotlin coroutines](https://kotlinlang.org/docs/coroutines-overview.html)
+and thus the usages of flows.
+
+A common mistake made was piping and transforming data from one flow to another.
+Suppose there are two flows (or pipelines), one for bags of flour and the other
+one for buckets of waters, and we want to create a flow of dough out of the
+flour and water from the flow. It is tempting to create an empty flow and an "
+actor" who picks out one bag of flour and and one bucket of water, put it
+through some processing, and then drop the processed dough to the new empty
+flow (shown in the highlight).
+
+```kotlin {12-21}
+fun doughProcessing(flour: String, water: String): String {
+    return "dough = $flour + $water"
+}
+
+Class SomeViewModel : ViewModel() {
+    // usually provided by some other dependencies
+    val flourFlow = (0 until 5).map { "flour" }.asFlow()
+    val waterFlow = (0 until 5).map { "water" }.asFlow()
+
+    val doughFlow = MutableStateFlow<String?>(null)
+
+    init {
+        viewModelScope.launch {
+            flourFlow.collect { flour ->
+                waterFlow.collect { water ->
+                    val dough = doughProcessing(flour, water)
+                    doughFlow.value = dough
+                }
+            }
+        }
+    }
+}
+```
+
+This way of working with flow is both verbose and not efficient (and incorrect
+sometimes). It makes more sense to transform and pipe data using flow operators,
+just like functional programming:
+
+```kotlin {10-14}
+fun doughProcessing(flour: String, water: String): String {
+    return "dough = $flour + $water"
+}
+
+Class SomeViewModel : ViewModel() {
+    // usually provided by some other dependencies
+    val flourFlow = (0 until 5).map { "flour" }.asFlow()
+    val waterFlow = (0 until 5).map { "water" }.asFlow()
+
+    val doughFlow = flourFlow
+        .combine(waterFlow) { flour, water ->
+            doughProcessing(flour, water)
+        }
+        .stateIn(viewModelScope, SharingStarted.Eagerly, null)
+}
 ```
 
 ## Some Lessons
