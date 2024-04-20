@@ -54,15 +54,22 @@ come in.
 
 A CFG is a direct graph representing the flow of an algorithm, illustrated in
 the graph below. We call the (big) nodes of the graph basic blocks (You can use
-the [detail toggle](#simple-example) to see more things)
+the [detail toggle](#simple-example) to see more things). Each basic block,
+identified by a unique label, is a sequence of instructions. In the following
+discussion, when we refer to **local analysis**, we mean the analysis within a
+basic block; when we refer to **global analysis**, we mean the analysis within a
+function. For example, the analysis within the `start` block is local analysis,
+while the analysis on the entire `main` function is global analysis.
 
-Each basic block, identified by a unique label, is a sequence of instructions.
-The arrows from pointing from block A to block B indicates that the program may
-start executing block B after executing block A.
+When looking at function calls and relationships among functions, we refer as
+**interprocedural analysis**. For example, the `call foo` instruction in `main`
+function invokes the `foo` function and the analysis using both `main` and `foo`
+is interprocedural analysis.
 
 <BranchingInstr id="simple-example"/>
 
-It is possible and actually quite often for a CFG to have a loop, roughly
-corresponding to the loops in the actual program.
+## Local Analysis
 
-To be continued
+## Global Analysis
+
+## Interprocedural Analysis
