@@ -32,7 +32,9 @@ export function customFenceWrapper(md: MarkdownIt) {
 
     return `<div class="code-container" style="${matchedPreStyles.groups.styleContent}">
     ${containers}
+    <div class="code-container-wrapper">
     ${rendered}
+    </div>
     </div>`
   }
 }
