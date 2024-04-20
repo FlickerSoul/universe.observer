@@ -14,11 +14,11 @@ updatedAt: 2024-04-20
 wip: true
 ---
 
-I have been following
+I have been following and finished
 the [CS6120](https://www.cs.cornell.edu/courses/cs6120/2023fa/), a self-guided
 online course for topics in compilers. It was a great journey following along
-the course and the exercises. This post will be the first of my learning note
-series of this course.
+the course and the exercises. This post will be the first of my dump of learning
+notes for this course.
 <!-- more -->
 
 [[TOC]]
