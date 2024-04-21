@@ -20,6 +20,27 @@ function next() {
 function prev() {
   index.value = (index.value - 1 + props.progs.length) % props.progs.length
 }
+
+const isFlickering = ref(false)
+
+function triggerFlicker() {
+  if (isFlickering.value)
+    return
+
+  isFlickering.value = true
+  setTimeout(() => {
+    isFlickering.value = false // Turn off the flicker after the animation completes
+  }, 1500) // Ensure this duration matches the total animation time
+}
+
+function display(number: number) {
+  index.value = number
+  triggerFlicker()
+}
+
+defineExpose({
+  display,
+})
 </script>
 
 <template>
@@ -29,7 +50,7 @@ function prev() {
         ⬅️
       </div>
       <div>
-        {{ index + 1 }} / {{ props.progs.length }}
+        <span :class="{ flicker: isFlickering }">{{ index + 1 }}</span> / {{ props.progs.length }}
       </div>
       <div class="cursor-pointer" @click.stop="next">
         ➡️
@@ -40,3 +61,19 @@ function prev() {
     </div>
   </div>
 </template>
+
+<style scoped lang="sass">
+@keyframes flickerAnimation
+  0%
+    opacity: 1
+  50%
+    opacity: 0
+  100%
+    opacity: 1
+
+.flicker
+  animation-name: flickerAnimation
+  animation-duration: 1s
+  animation-iteration-count: 4
+  animation-timing-function: ease-in-out
+</style>
