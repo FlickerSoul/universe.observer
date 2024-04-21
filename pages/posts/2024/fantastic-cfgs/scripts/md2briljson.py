@@ -43,7 +43,9 @@ def convert(file_path: str, auto_write: bool) -> str | None:
     json_content = to_json(content)
     if auto_write:
         file_path = pathlib.Path(file_path)
-        write_path = file_path.parent / 'code' / f'{camel_to_kebab(file_path.stem)}.json'
+        write_folder = file_path.parent / 'code'
+        write_folder.mkdir(exist_ok=True)
+        write_path = write_folder / f'{camel_to_kebab(file_path.stem)}.json'
         with open(write_path, 'w') as file:
             file.write(json_content)
     else:
