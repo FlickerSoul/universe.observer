@@ -31,29 +31,6 @@ from Bril.
 
 ## Introduction
 
-<!-- script for the whole md -->
-<script setup lang="ts">
-import DCERedef from './components/programs/local/DCERedef.vue';
-import DCEUnused from './components/programs/local/DCEUnused.vue';
-import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
-import C from "./components/c.vue";
-import {ref} from 'vue'; 
-
-const local = ref(null);
-const cycleMapping = {
-    'local': local
-};
-
-const cycleCompMapping = {
-    'local': [DCERedef, DCEUnused]
-};
-
-function browseCycle(cycle: keyof cycleMapping, count: number) {
-    const cycleComp = cycleMapping[cycle].value;
-    cycleComp.display(count - 1);
-}
-</script>
-
 It takes many stages to compile a piece of code: first the code needs to be
 parsed from pure strings into defined
 [lexical tokens](https://www.wikiwand.com/en/Lexical_token); then tokens are
@@ -88,6 +65,29 @@ When looking at function calls and relationships among functions, we refer as
 **interprocedural analysis**. For example, the `call foo` instruction in `main`
 function invokes the `foo` function and the analysis using both `main` and `foo`
 is interprocedural analysis.
+
+
+<script setup>
+import DCERedef from './components/programs/local/DCERedef.vue';
+import DCEUnused from './components/programs/local/DCEUnused.vue';
+import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
+import C from "./components/c.vue";
+import {ref} from 'vue'; 
+
+const local = ref(null);
+const cycleMapping = {
+    'local': local
+};
+
+const cycleCompMapping = {
+    'local': [DCERedef, DCEUnused]
+};
+
+function browseCycle(cycle, count) {
+    const cycleComp = cycleMapping[cycle].value;
+    cycleComp.display(count - 1);
+}
+</script>
 
 <BranchingInstr id="simple-example" />
 
