@@ -146,7 +146,7 @@ export default defineConfig({
               dark: 'nord',
               light: 'rose-pine-dawn',
             },
-            langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', bril],
+            langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', 'kotlin', bril],
             defaultColor: false,
             cssVariablePrefix: '--shiki-',
             transformers: [

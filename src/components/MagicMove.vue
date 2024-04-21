@@ -58,7 +58,7 @@ const bril = JSON.parse(brilJson)
 
 const highlighter = await getHighlighter({
   themes: ['nord', 'rose-pine-dawn'],
-  langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', bril],
+  langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', 'kotlin', bril],
 })
 </script>
 
