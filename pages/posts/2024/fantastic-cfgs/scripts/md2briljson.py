@@ -13,8 +13,8 @@ def arg_parse() -> argparse.Namespace:
     parser.add_argument(
         '--auto-write',
         '-w',
-        action='store_true',
-        default=False,
+        type=str,
+        default='code',
         help='Automatically write the JSON output to a file.'
     )
     args = parser.parse_args()
@@ -43,7 +43,7 @@ def convert(file_path: str, auto_write: bool) -> str | None:
     json_content = to_json(content)
     if auto_write:
         file_path = pathlib.Path(file_path)
-        write_folder = file_path.parent / 'code'
+        write_folder = file_path.parent / auto_write
         write_folder.mkdir(exist_ok=True)
         write_path = write_folder / f'{camel_to_kebab(file_path.stem)}.json'
         with open(write_path, 'w') as file:

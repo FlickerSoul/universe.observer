@@ -18,6 +18,8 @@ export type PrimType = 'int' | 'bool' | 'float' | 'char'
  */
 export interface ParamType {
   ptr: Type
+
+  [key: string]: Type
 }
 
 /**

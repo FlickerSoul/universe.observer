@@ -2,7 +2,7 @@
  * Convert a Bril instruction to a human-readable string.
  * Credit: https://github.com/sampsyo/bril/blob/main/bril-txt/briltxt.py
  */
-import type { Instruction, Label, Type, Value } from './types'
+import type { Argument, IFunction, Instruction, Label, Type, Value } from './types'
 
 const controlChars = {
   '\\0': 0,
@@ -16,7 +16,7 @@ const controlChars = {
 }
 
 function labelToText(label: Label): string {
-  return `.${label.label}`
+  return `.${label.label}:`
 }
 
 function instrToString(instr: Instruction) {
@@ -43,12 +43,14 @@ function instrToString(instr: Instruction) {
   }
 }
 
-function typeToStr(type: Type) {
+function typeToStr(type: Type): string {
   if (typeof type === 'object' && type !== null) {
     const keys = Object.keys(type)
     if (keys.length === 1) {
       const key = keys[0]
       return `${key}<${typeToStr(type[key])}>`
+    } else {
+      throw new Error(`Invalid type: ${type}`)
     }
   } else {
     return type
@@ -72,4 +74,31 @@ export function brilInstructionToText(instr: Instruction | Label): string {
     return labelToText(instr)
   else
     return instrToString(instr)
+}
+
+function argsToString(args: Argument[]) {
+  if (args && args.length > 0) {
+    const argsStr = args.map(arg => `${arg.name}: ${typeToStr(arg.type)}`).join(', ')
+    return `(${argsStr})`
+  } else {
+    return ''
+  }
+}
+
+function brilFuncsToText(funcs: IFunction[]): string {
+  return funcs.map((func) => {
+    const funcType = func.type
+      ? `: ${typeToStr(func.type)}`
+      : ''
+    const funcHeader = `@${func['name']}${argsToString(func.args ?? [])}${funcType} {`
+    const funcEnd = '}'
+    const body = func.instrs.map((instr) => {
+      if ('label' in instr)
+        return labelToText(instr)
+      else
+        return `  ${instrToString(instr)}`
+    }).join('\n')
+
+    return `${funcHeader}\n${body}\n${funcEnd}`
+  }).join('\n')
 }
