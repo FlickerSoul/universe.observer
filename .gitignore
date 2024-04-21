@@ -41,3 +41,5 @@ scripts/image-minify.js
 public/sitemap.xml
 
 vite.config.ts.*.mjs
+
+__pycache__/
