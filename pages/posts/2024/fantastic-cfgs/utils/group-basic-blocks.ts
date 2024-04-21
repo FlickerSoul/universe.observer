@@ -31,7 +31,9 @@ export function groupBasicBlocks(program: Program): FuncBlockMapping {
         if (instr.op === 'br' || instr.op === 'jmp' || instr.op === 'ret') {
           if (instr.op === 'br' || instr.op === 'jmp') {
             const labels = instr.labels as string[]
-            currentBlock.next.push(labels[0])
+
+            for (const label of labels)
+              currentBlock.next.push(label)
           }
 
           currentBlock.instrs.push(instr)
