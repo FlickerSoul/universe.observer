@@ -31,6 +31,28 @@ from Bril.
 
 ## Introduction
 
+<!-- script for the whole md -->
+<script setup lang="ts">
+import DCERedef from './components/programs/local/DCERedef.vue';
+import DCEUnused from './components/programs/local/DCEUnused.vue';
+import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
+import {ref} from 'vue'; 
+
+const local = ref(null);
+const cycleMapping = {
+    'local': local
+};
+
+const cycleCompMapping = {
+    'local': [DCERedef, DCEUnused]
+};
+
+function browseCycle(cycle: keyof cycleMapping, count: number) {
+    const cycleComp = cycleMapping[cycle].value;
+    cycleComp.display(count - 1);
+}
+</script>
+
 It takes many stages to compile a piece of code: first the code needs to be
 parsed from pure strings into defined
 [lexical tokens](https://www.wikiwand.com/en/Lexical_token); then tokens are
@@ -70,43 +92,27 @@ is interprocedural analysis.
 
 It is possible to have cycles in the graph. [continue here]
 
-<!-- script for the whole md -->
-<script setup lang="ts">
-import DCERedef from './components/programs/local/DCERedef.vue';
-import DCEUnused from './components/programs/local/DCEUnused.vue';
-import {ref} from 'vue';
-
-const local = ref(null);
-const cycleMapping = {
-    'local': local
-};
-
-const cycleCompMapping = {
-    'local': [DCERedef, DCEUnused]
-};
-
-function showExInCycle(cycle: keyof cycleMapping, count: number) {
-    const cycleComp = cycleMapping[cycle].value;
-    cycleComp.display(count - 1);
-}
-</script>
-
-<style scoped lang="sass">
-.cycle-anchor
-    @apply cursor-pointer inline-block border border-dotted border-rounded px-1
-</style>
-
 ## Local Analysis
-
-### Dead Code Elimination
 
 When looking at a sequence of instructions, without any cycles, it is straight
 forward to see what is needed and what isn't.
 
-<ProgCycle :progs="cycleCompMapping['local']" ref="local"/>
+We will discuss [dead Code](https://www.wikiwand.com/en/Dead_code) elimination.
 
-In the <span class="cycle-anchor" @click="showExInCycle('local', 1)">
-first</span> example,
+### Dead Code Elimination
+
+There are two common examples of dead code.
+
+In the <c @click="browseCycle('local', 1)">first</c> example, the
+highlighted line defines `a`, which invalidates the previous unused definition
+of `a`. This means the first definition of `a` is useless and can be counted as
+dead code.
+
+In the <c @click="browseCycle('local', 2)">second</c> example, the highlighted
+line defines `c` which isn't used anywhere after its definition. This can be
+counted as dead code as well.
+
+<ProgCycle :progs="cycleCompMapping['local']" ref="local"/>
 
 ## Global Analysis
 

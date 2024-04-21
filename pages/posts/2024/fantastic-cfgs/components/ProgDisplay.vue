@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue'
+import { computed, defineProps, onMounted, ref } from 'vue'
 import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
 import { groupBasicBlocks } from '../utils/group-basic-blocks'
 import { renderMermaidToElement } from '~/logics'
+import Magnifier from '~/components/Magnifier.vue'
 
 const { prog, initView } = defineProps<{
   prog: string
@@ -28,22 +29,28 @@ const nextState = computed(() => states[nextStateIndex.value])
 </script>
 
 <template>
-  <div>
+  <div class="">
     <div
-      class="cursor-pointer border border-solid border-current inline-block border-rounded px-2 mb-4"
+      class="cursor-pointer mb-2 flex justify-center"
       @click="viewToggle = nextStateIndex"
     >
-      {{ `See ${nextState}` }}
+      <span class="border border-solid border-current border-rounded inline-block px-2">
+        {{ `See ${nextState}` }}
+      </span>
     </div>
 
-    <TransitionGroup>
+    <div>
       <div v-if="viewToggle === 0">
         <slot />
       </div>
 
-      <div v-else-if="viewToggle === 1" v-html="simplifiedProgMermaid" />
+      <Magnifier v-else-if="viewToggle === 1">
+        <div class="flex justify-center" v-html="simplifiedProgMermaid" />
+      </Magnifier>
 
-      <div v-else-if="viewToggle === 2" v-html="progMermaid" />
-    </TransitionGroup>
+      <Magnifier v-else-if="viewToggle === 2">
+        <div class="flex justify-center" v-html="progMermaid" />
+      </Magnifier>
+    </div>
   </div>
 </template>

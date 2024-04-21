@@ -45,7 +45,7 @@ defineExpose({
 
 <template>
   <div>
-    <div class="flex flex-row gap-2 justify-center">
+    <div class="flex flex-row gap-2 justify-center mb-4">
       <div class="cursor-pointer" @click.stop="prev">
         ⬅️
       </div>
