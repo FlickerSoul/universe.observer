@@ -23,7 +23,7 @@ onMounted(async () => {
 })
 
 const states = ['Code', 'Full', 'Simplified']
-const viewToggle = ref(initView || 0)
+const viewToggle = ref(initView ?? 0)
 </script>
 
 <template>

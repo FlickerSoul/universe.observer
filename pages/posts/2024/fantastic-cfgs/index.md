@@ -36,6 +36,7 @@ from Bril.
 import DCERedef from './components/programs/local/DCERedef.vue';
 import DCEUnused from './components/programs/local/DCEUnused.vue';
 import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
+import C from "./components/c.vue";
 import {ref} from 'vue'; 
 
 const local = ref(null);
@@ -88,7 +89,7 @@ When looking at function calls and relationships among functions, we refer as
 function invokes the `foo` function and the analysis using both `main` and `foo`
 is interprocedural analysis.
 
-<BranchingInstr id="simple-example"/>
+<BranchingInstr id="simple-example" />
 
 It is possible to have cycles in the graph. [continue here]
 

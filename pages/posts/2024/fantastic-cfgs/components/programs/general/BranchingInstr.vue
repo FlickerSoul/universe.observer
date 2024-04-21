@@ -5,7 +5,7 @@ import ProgramCode from './BranchingInstrCode.md'
 </script>
 
 <template>
-  <ProgDisplay :prog="BranchingProgram" :init-view="2">
+  <ProgDisplay :prog="BranchingProgram" :init-view="1">
     <ProgramCode />
   </ProgDisplay>
 </template>
