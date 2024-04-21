@@ -1,0 +1,7 @@
+```bril
+@main {
+    a: int = const 1;
+    a: int = const 2;
+    ret a;
+}
+```
