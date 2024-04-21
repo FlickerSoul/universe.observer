@@ -41,9 +41,7 @@ const viewToggle = ref(initView || 0)
     </div>
 
     <div>
-      <div v-if="viewToggle === 0">
-        <slot />
-      </div>
+      <slot v-if="viewToggle === 0" />
 
       <Magnifier v-else-if="viewToggle === 1">
         <div class="flex justify-center" v-html="progMermaid" />

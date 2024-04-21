@@ -122,12 +122,12 @@ export default defineConfig({
     markdown({
       wrapperComponent: (id) => {
         if (id.includes('components'))
-          return 'div'
+          return undefined
         return 'Post'
       },
       wrapperClasses: (id) => {
         if (id.includes('components'))
-          return ''
+          return undefined
         return 'post-md-content'
       },
       markdownItOptions: {
