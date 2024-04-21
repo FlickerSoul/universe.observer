@@ -1,4 +1,4 @@
-```bril
+```bril {4}
 @main {
     a: int = const 1;
     b: int = const 2;
