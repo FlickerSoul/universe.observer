@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, defineProps, onMounted, ref } from 'vue'
+import { defineProps, onMounted, ref } from 'vue'
 import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
 import { groupBasicBlocks } from '../utils/group-basic-blocks'
 import { renderMermaidToElement } from '~/logics'
@@ -22,20 +22,21 @@ onMounted(async () => {
   simplifiedProgMermaid.value = await renderMermaidToElement('simple-prog-simplified', synthesizeSimpleMermaid(blocks))
 })
 
-const states = ['Code', 'Simplified', 'Full']
+const states = ['Code', 'Full', 'Simplified']
 const viewToggle = ref(initView || 0)
-const nextStateIndex = computed(() => (viewToggle.value + 1) % states.length)
-const nextState = computed(() => states[nextStateIndex.value])
 </script>
 
 <template>
   <div class="">
     <div
-      class="cursor-pointer mb-2 flex justify-center"
-      @click="viewToggle = nextStateIndex"
+      class="mb-2 flex justify-center"
     >
-      <span class="border border-solid border-current border-rounded inline-block px-2">
-        {{ `See ${nextState}` }}
+      <span
+        v-for="(state, idx) in states" :key="state"
+        class="border border-solid border-current border-rounded inline-block px-2 mx-1 cursor-pointer"
+        @click="viewToggle = idx"
+      >
+        {{ `See ${state}` }}
       </span>
     </div>
 
@@ -45,11 +46,11 @@ const nextState = computed(() => states[nextStateIndex.value])
       </div>
 
       <Magnifier v-else-if="viewToggle === 1">
-        <div class="flex justify-center" v-html="simplifiedProgMermaid" />
+        <div class="flex justify-center" v-html="progMermaid" />
       </Magnifier>
 
       <Magnifier v-else-if="viewToggle === 2">
-        <div class="flex justify-center" v-html="progMermaid" />
+        <div class="flex justify-center" v-html="simplifiedProgMermaid" />
       </Magnifier>
     </div>
   </div>
