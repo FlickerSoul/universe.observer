@@ -68,7 +68,21 @@ is interprocedural analysis.
 
 <BranchingInstr id="simple-example"/>
 
+It is possible to have cycles in the graph. [continue here]
+
 ## Local Analysis
+
+### Dead Code Elimination
+
+When looking at a sequence of instructions, without any cycles, it is straight
+forward to see what is needed and what isn't.
+
+<script setup lang="ts">
+import DCERedef from './components/programs/local/DCERedef.vue';
+import DCEUnused from './components/programs/local/DCEUnused.vue';
+</script>
+
+<ProgCycle :progs="[DCERedef, DCEUnused]" />
 
 ## Global Analysis
 
