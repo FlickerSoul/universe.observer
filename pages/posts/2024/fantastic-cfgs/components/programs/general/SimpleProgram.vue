@@ -6,7 +6,7 @@ import SimpleProgramCode from './SimpleProgramCode.md'
 </script>
 
 <template>
-  <ProgDisplay :prog="SimpleProgram" :init-view="ProgramDisplayType.CFG_BASIC_BLOCKS">
+  <ProgDisplay :prog="SimpleProgram" :init-view="ProgramDisplayType.PROGRAM">
     <SimpleProgramCode />
   </ProgDisplay>
 </template>

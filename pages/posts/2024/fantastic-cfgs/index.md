@@ -54,7 +54,7 @@ come in.
 
 A CFG is a direct graph representing the flow of an algorithm, illustrated in
 the graph below. We call the (big) nodes of the graph basic blocks (You can use
-the [detail toggle](#simple-example) to see more things). Each basic block,
+the [detail toggle](#branching-instr) to see more things). Each basic block,
 identified by a unique label, is a sequence of instructions. In the following
 discussion, when we refer to **local analysis**, we mean the analysis within a
 basic block; when we refer to **global analysis**, we mean the analysis within a
@@ -66,55 +66,67 @@ When looking at function calls and relationships among functions, we refer as
 function invokes the `foo` function and the analysis using both `main` and `foo`
 is interprocedural analysis.
 
-
-<script setup>
+<script setup lang="ts">
 import DCERedef from './components/programs/local/DCERedef.vue';
 import DCEUnused from './components/programs/local/DCEUnused.vue';
+import DCENative from './components/programs/local/DCENative.vue';
+
 import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
+import SimpleProgram from "./components/programs/general/SimpleProgram.vue";
 import C from "./components/c.vue";
+
 import {ref} from 'vue'; 
 
-const local = ref(null);
+const dce = ref<HTMLElement | null>(null);
 const cycleMapping = {
-    'local': local
+    'dce': dce
 };
 
 const cycleCompMapping = {
-    'local': [DCERedef, DCEUnused]
+    'dce': [DCERedef, DCEUnused, DCENative]
 };
 
 function browseCycle(cycle, count) {
     const cycleComp = cycleMapping[cycle].value;
     cycleComp.display(count - 1);
 }
+
+function browseDCE(count) {
+    browseCycle('dce', count)
+}
 </script>
 
-<BranchingInstr id="simple-example" />
+<BranchingInstr id="branching-instr" />
 
-It is possible to have cycles in the graph. [continue here]
+It is possible to have cycles in the graph, corresponding to loops in the
+program. For example, the program below
 
-## Local Analysis
-
-When looking at a sequence of instructions, without any cycles, it is straight
-forward to see what is needed and what isn't.
-
-We will discuss [dead Code](https://www.wikiwand.com/en/Dead_code) elimination.
+<SimpleProgram />
 
 ### Dead Code Elimination
 
-There are two common examples of dead code.
+We will discuss [dead code](https://www.wikiwand.com/en/Dead_code) elimination
+in this section. Dead code can be loosely understood as code that's not
+reachable or executed in runtime. The first kind of dead code is dead
+assignment.
 
-In the <c @click="browseCycle('local', 1)">first</c> example, the
-highlighted line defines `a`, which invalidates the previous unused definition
-of `a`. This means the first definition of `a` is useless and can be counted as
-dead code.
+In the <c @click="browseDCE(1)">first</c> example, the
+highlighted line defines `a`, which invalidates a re-definition of `a` in the
+next line. This means the highlighted `a` is never going to be used and can be
+counted as dead code.
 
-In the <c @click="browseCycle('local', 2)">second</c> example, the highlighted
+In the <c @click="browseDCE(2)">second</c> example, the highlighted
 line defines `c` which isn't used anywhere after its definition. This can be
 counted as dead code as well.
 
-<ProgCycle :progs="cycleCompMapping['local']" ref="local"/>
+However, if we natively check if an assignment happens again before the variable
+is used, we could be wrong. In the <c @click="browseDCE(3)">third</c> example,
+the variable `a` defined in line 2 is redefined but not used in line 7, and thus
+can be counted as dead code and eliminated. However, if we look at the code more
+carefully, it we can see that the redefinition happens conditionally, and it is
+unclear at compile time which path the program is going to take. This means it
+is possible to use both definition of `a` at line 12.
 
-## Global Analysis
+<ProgCycle :progs="cycleCompMapping['dce']" ref="dce"/>
 
-## Interprocedural Analysis
+Well, how can we optimize them?

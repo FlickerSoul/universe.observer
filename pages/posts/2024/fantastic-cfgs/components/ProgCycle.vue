@@ -33,8 +33,11 @@ function triggerFlicker() {
   }, 1500) // Ensure this duration matches the total animation time
 }
 
+const el = ref<HTMLDivElement | null>(null)
+
 function display(number: number) {
   index.value = number
+  el.value?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
   triggerFlicker()
 }
 
@@ -44,7 +47,7 @@ defineExpose({
 </script>
 
 <template>
-  <div>
+  <div ref="el">
     <div class="flex flex-row gap-2 justify-center mb-4">
       <div class="cursor-pointer" @click.stop="prev">
         ⬅️

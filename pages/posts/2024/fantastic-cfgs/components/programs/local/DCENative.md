@@ -1,0 +1,15 @@
+```bril {2,7}
+@main {
+    a: int = add x y;
+    zero: int = const 0;
+    cond: bool = lt a zero;
+    br cond .b1 .b2;
+.b1:
+    a: int = add a a;
+    jmp .end;
+.b2:
+    print cond;
+.end:
+    print a;
+}
+```
