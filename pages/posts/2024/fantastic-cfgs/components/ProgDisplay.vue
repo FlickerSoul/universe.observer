@@ -2,12 +2,13 @@
 import { defineProps, onMounted, ref } from 'vue'
 import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
 import { groupBasicBlocks } from '../utils/group-basic-blocks'
+import { ProgramDisplayType, programDisplayTypeToName } from './utils'
 import { renderMermaidToElement } from '~/logics'
 import Magnifier from '~/components/Magnifier.vue'
 
 const { prog, initView } = defineProps<{
   prog: string
-  initView?: number
+  initView?: ProgramDisplayType
 }>()
 
 const simpleBrilProg = loadBril(prog)
@@ -22,8 +23,9 @@ onMounted(async () => {
   simplifiedProgMermaid.value = await renderMermaidToElement('simple-prog-simplified', synthesizeSimpleMermaid(blocks))
 })
 
-const states = ['Code', 'Full', 'Simplified']
-const viewToggle = ref(initView ?? 0)
+const states = Object.values(ProgramDisplayType)
+  .filter(v => typeof v === 'string') as (keyof typeof ProgramDisplayType)[]
+const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRAM)
 </script>
 
 <template>
@@ -32,11 +34,11 @@ const viewToggle = ref(initView ?? 0)
       class="mb-2 flex justify-center"
     >
       <span
-        v-for="(state, idx) in states" :key="state"
+        v-for="state in states" :key="state"
         class="border border-solid border-current border-rounded inline-block px-2 mx-1 cursor-pointer"
-        @click="viewToggle = idx"
+        @click="viewToggle = ProgramDisplayType[state]"
       >
-        {{ `See ${state}` }}
+        {{ `See ${programDisplayTypeToName(ProgramDisplayType[state])}` }}
       </span>
     </div>
 

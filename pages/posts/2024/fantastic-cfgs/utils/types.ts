@@ -136,13 +136,15 @@ export interface Argument {
   type: Type
 }
 
+export type FuncInstruction = Instruction | Label
+
 /**
  * A function consists of a sequence of instructions.
  */
 export interface IFunction {
   name: Ident
   args?: Argument[]
-  instrs: (Instruction | Label)[]
+  instrs: (FuncInstruction)[]
   type?: Type
   pos?: Position
 }
