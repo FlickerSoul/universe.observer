@@ -66,7 +66,7 @@ When looking at function calls and relationships among functions, we refer as
 function invokes the `foo` function and the analysis using both `main` and `foo`
 is interprocedural analysis.
 
-<script setup lang="ts">
+<script setup>
 import DCERedef from './components/programs/local/DCERedef.vue';
 import DCEUnused from './components/programs/local/DCEUnused.vue';
 import DCENative from './components/programs/local/DCENative.vue';
@@ -77,7 +77,7 @@ import C from "./components/c.vue";
 
 import {ref} from 'vue'; 
 
-const dce = ref<HTMLElement | null>(null);
+const dce = ref(null);
 const cycleMapping = {
     'dce': dce
 };
@@ -129,4 +129,10 @@ is possible to use both definition of `a` at line 12.
 
 <ProgCycle :progs="cycleCompMapping['dce']" ref="dce"/>
 
-Well, how can we optimize them?
+Well, how can we optimize dead code assignment properly? It is clear that using
+local information within one basic block isn't enough, because we cannot know
+for sure if the variable defined in one basic block is going to be used anywhere
+later in the program. This judgement urges us to use global analysis, looking
+among all the basic blocks and all of the instructions within one function. 
+
+
