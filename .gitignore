@@ -43,3 +43,5 @@ public/sitemap.xml
 vite.config.ts.*.mjs
 
 __pycache__/
+
+.vite-ssg-temp/
