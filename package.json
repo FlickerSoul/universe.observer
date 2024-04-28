@@ -22,7 +22,7 @@
     "@vueuse/core": "^10.9.0",
     "@vueuse/head": "^2.0.0",
     "dat.gui": "^0.7.9",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "diacritics": "^1.3.0",
     "gray-matter": "^4.0.3",
     "katex": "^0.16.10",
@@ -49,10 +49,10 @@
     "vite": "^5.2.10",
     "vite-plugin-pages": "^0.32.1",
     "vite-plugin-pages-sitemap": "^1.6.1",
-    "vite-ssg": "^0.23.6",
-    "vue": "^3.4.23",
+    "vite-ssg": "^0.23.7",
+    "vue": "^3.4.25",
     "vue-router": "^4.3.2",
-    "vue-tsc": "^2.0.13"
+    "vue-tsc": "^2.0.14"
   },
   "devDependencies": {
     "@akiravoid/markdown-it-sup": "^1.0.2",
