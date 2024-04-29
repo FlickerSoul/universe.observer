@@ -31,15 +31,6 @@
         },
         {
           "args": [
-            "b",
-            "c"
-          ],
-          "dest": "y",
-          "op": "add",
-          "type": "int"
-        },
-        {
-          "args": [
             "x"
           ],
           "op": "ret"
