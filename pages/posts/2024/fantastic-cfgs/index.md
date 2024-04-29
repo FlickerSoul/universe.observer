@@ -70,6 +70,7 @@ is interprocedural analysis.
 import DCERedef from './components/programs/local/DCERedef.vue';
 import DCEUnused from './components/programs/local/DCEUnused.vue';
 import DCENative from './components/programs/local/DCENative.vue';
+import DCEMultiPass from './components/programs/local/DCEMultipass.vue';
 
 import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
 import SimpleProgram from "./components/programs/general/SimpleProgram.vue";
@@ -78,21 +79,17 @@ import C from "./components/c.vue";
 import {ref} from 'vue'; 
 
 const dce = ref(null);
-const cycleMapping = {
-    'dce': dce
-};
 
 const cycleCompMapping = {
-    'dce': [DCERedef, DCEUnused, DCENative]
+    'dce': [DCERedef, DCEUnused, DCENative, DCEMultiPass]
 };
 
-function browseCycle(cycle, count) {
-    const cycleComp = cycleMapping[cycle].value;
-    cycleComp.display(count - 1);
+function browseCycle(comp, count) {
+    comp.value.display(count - 1);
 }
 
 function browseDCE(count) {
-    browseCycle('dce', count)
+    browseCycle(dce, count)
 }
 </script>
 
@@ -132,7 +129,19 @@ is possible to use both definition of `a` at line 12.
 Well, how can we optimize dead code assignment properly? It is clear that using
 local information within one basic block isn't enough, because we cannot know
 for sure if the variable defined in one basic block is going to be used anywhere
-later in the program. This judgement urges us to use global analysis, looking
-among all the basic blocks and all of the instructions within one function. 
+later in the program. This judgement urges us to look at the program globally
+and use global analysis, looking among all the basic blocks and all the
+instructions within one function.
+
+We can formulate the identification of dead assignments to be the assignments
+that are not used in any path until the function ends or until it is been
+redefined.
+
+It is possible that an elimination of one variable can introduce more dead
+assignments. In the <c @click="browseDCE(4)">fourth</c> example, we can see that
+the variable `y` defined in line 6 is a dead assignment; removing the
+variable `y` makes the variable `c` a dead assignment, for `c` is only used when
+defining `y`. To solve this problem, we can simply run elimination for multiple
+passes until the result converges. 
 
 
