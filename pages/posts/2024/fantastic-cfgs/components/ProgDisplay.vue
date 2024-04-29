@@ -43,13 +43,13 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
     </div>
 
     <div>
-      <slot v-if="viewToggle === 0" />
+      <slot v-if="viewToggle === ProgramDisplayType.PROGRAM" />
 
-      <Magnifier v-else-if="viewToggle === 1">
+      <Magnifier v-else-if="viewToggle === ProgramDisplayType.CFG">
         <div class="flex justify-center" v-html="progMermaid" />
       </Magnifier>
 
-      <Magnifier v-else-if="viewToggle === 2">
+      <Magnifier v-else-if="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS">
         <div class="flex justify-center" v-html="simplifiedProgMermaid" />
       </Magnifier>
     </div>
