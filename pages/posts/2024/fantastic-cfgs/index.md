@@ -67,10 +67,10 @@ function invokes the `foo` function and the analysis using both `main` and `foo`
 is interprocedural analysis.
 
 <script setup>
-import DCERedef from './components/programs/local/DCERedef.vue';
-import DCEUnused from './components/programs/local/DCEUnused.vue';
-import DCENative from './components/programs/local/DCENative.vue';
-import DCEMultiPass from './components/programs/local/DCEMultipass.vue';
+import DCERedef from './components/programs/dce/DCERedef.vue';
+import DCEUnused from './components/programs/dce/DCEUnused.vue';
+import DCENative from './components/programs/dce/DCENative.vue';
+import DCEMultiPass from './components/programs/dce/DCEMultipass.vue';
 
 import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
 import SimpleProgram from "./components/programs/general/SimpleProgram.vue";
