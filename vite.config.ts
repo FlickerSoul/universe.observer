@@ -1,5 +1,6 @@
 import { resolve } from 'node:path'
 import * as fs from 'node:fs'
+import * as process from 'node:process'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
