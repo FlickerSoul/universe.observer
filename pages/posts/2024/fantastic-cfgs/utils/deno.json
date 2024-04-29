@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "/": "./",
+    "./": "./",
+    "./bril-txt": "./bril-txt.ts",
+    "./dce": "./dce.ts",
+    "./group-basic-blocks": "./group-basic-blocks.ts",
+    "./tools": "./tools.ts",
+    "./types": "./types.ts"
+  }
+}

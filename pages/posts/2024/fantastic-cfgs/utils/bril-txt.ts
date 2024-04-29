@@ -2,7 +2,9 @@
  * Convert a Bril instruction to a human-readable string.
  * Credit: https://github.com/sampsyo/bril/blob/main/bril-txt/briltxt.py
  */
-import type { Argument, IFunction, Instruction, Label, Type, Value } from './types'
+import type { Argument, FuncInstruction, IFunction, Instruction, Label, Position, Program, Type, Value } from './types'
+import type { BasicBlock } from './group-basic-blocks'
+import { START_LABEL } from './group-basic-blocks'
 
 const controlChars = {
   '\\0': 0,
@@ -85,20 +87,68 @@ function argsToString(args: Argument[]) {
   }
 }
 
-function brilFuncsToText(funcs: IFunction[]): string {
-  return funcs.map((func) => {
-    const funcType = func.type
-      ? `: ${typeToStr(func.type)}`
-      : ''
-    const funcHeader = `@${func['name']}${argsToString(func.args ?? [])}${funcType} {`
-    const funcEnd = '}'
-    const body = func.instrs.map((instr) => {
-      if ('label' in instr)
-        return labelToText(instr)
-      else
-        return `  ${instrToString(instr)}`
-    }).join('\n')
-
-    return `${funcHeader}\n${body}\n${funcEnd}`
+export function brilFuncToText(func: IFunction): string {
+  const funcType = func.type
+    ? `: ${typeToStr(func.type)}`
+    : ''
+  const funcHeader = `@${func['name']}${argsToString(func.args ?? [])}${funcType} {`
+  const funcEnd = '}'
+  const body = func.instrs.map((instr) => {
+    if ('label' in instr)
+      return labelToText(instr)
+    else
+      return `  ${instrToString(instr)}`
   }).join('\n')
+
+  return `${funcHeader}\n${body}\n${funcEnd}`
+}
+
+export function brilFuncsToText(funcs: IFunction[]): string {
+  return funcs.map((func) => {
+    return brilFuncToText(func)
+  }).join('\n')
+}
+
+export function basicBlockToInstructions(funcName: string, block: BasicBlock): FuncInstruction[] {
+  let label: string | undefined = block.label
+  const pattern = /^(?<funcName>[^.]+?)\.(?<suffix>[^.]+)$/
+  const match = label.match(pattern)
+
+  if (match && match.groups) {
+    const labelFuncName = match.groups.funcName
+    const suffix = match.groups.suffix
+
+    if (labelFuncName === funcName && (suffix === START_LABEL || suffix.startsWith('l')))
+      label = undefined
+  }
+
+  const instructions: FuncInstruction[] = []
+  if (label)
+    instructions.push({ label })
+
+  instructions.push(...block.instrs)
+
+  return instructions
+}
+
+export function funcBlocksToFunc(
+  funcName: string,
+  blocks: BasicBlock[],
+  args: undefined | Argument[] = undefined,
+  type: undefined | Type = undefined,
+  pos: undefined | Position = undefined,
+): IFunction {
+  return {
+    name: funcName,
+    instrs: blocks.reduce((left, block) => {
+      return left.concat(basicBlockToInstructions(funcName, block))
+    }, [] as FuncInstruction[]),
+    args,
+    type,
+    pos,
+  }
+}
+
+export function brilProgramToText(prog: Program): string {
+  return brilFuncsToText(prog.functions)
 }
