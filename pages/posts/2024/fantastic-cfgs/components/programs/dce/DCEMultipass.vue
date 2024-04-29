@@ -3,7 +3,7 @@ import ProgDisplay from '../../ProgDisplay.vue'
 import DCEMultiPassProgram from './code/dce-multipass.json?raw'
 import DCEMultiPass from './DCEMultipass.md'
 
-import DCEMultipassPasses from './dce-passes/dce-multipass'
+import DCEMultipassPasses from './op-passes/multipass/dce-multipass'
 </script>
 
 <template>
