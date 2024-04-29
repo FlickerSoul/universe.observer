@@ -2,10 +2,12 @@
 import ProgDisplay from '../../ProgDisplay.vue'
 import DCEMultiPassProgram from './code/dce-multipass.json?raw'
 import DCEMultiPass from './DCEMultipass.md'
+
+import DCEMultipassPasses from './dce-passes/dce-multipass'
 </script>
 
 <template>
-  <ProgDisplay :prog="DCEMultiPassProgram">
+  <ProgDisplay :prog="DCEMultiPassProgram" :optionals="{ dce: DCEMultipassPasses }">
     <DCEMultiPass />
   </ProgDisplay>
 </template>

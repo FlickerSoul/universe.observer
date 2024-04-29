@@ -2,13 +2,16 @@
 import { defineProps, onMounted, ref } from 'vue'
 import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
 import { groupBasicBlocks } from '../utils/group-basic-blocks'
-import { ProgramDisplayType, programDisplayTypeToName } from './utils'
+import type { OptionalDisplays } from './utils'
+import { ProgramDisplayType, addDisplays, programDisplayTypeToName } from './utils'
+import PassDisplay from './PassDisplay.vue'
 import { renderMermaidToElement } from '~/logics'
 import Magnifier from '~/components/Magnifier.vue'
 
-const { prog, initView } = defineProps<{
+const { prog, initView, optionals } = defineProps<{
   prog: string
   initView?: ProgramDisplayType
+  optionals?: OptionalDisplays
 }>()
 
 const simpleBrilProg = loadBril(prog)
@@ -23,8 +26,11 @@ onMounted(async () => {
   simplifiedProgMermaid.value = await renderMermaidToElement('simple-prog-simplified', synthesizeSimpleMermaid(blocks))
 })
 
-const states = Object.values(ProgramDisplayType)
-  .filter(v => typeof v === 'string') as (keyof typeof ProgramDisplayType)[]
+const states = addDisplays(
+  [ProgramDisplayType.PROGRAM, ProgramDisplayType.CFG, ProgramDisplayType.CFG_BASIC_BLOCKS],
+  optionals,
+)
+
 const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRAM)
 </script>
 
@@ -36,9 +42,9 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
       <span
         v-for="state in states" :key="state"
         class="border border-solid border-current border-rounded inline-block px-2 mx-1 cursor-pointer"
-        @click="viewToggle = ProgramDisplayType[state]"
+        @click="viewToggle = state"
       >
-        {{ `See ${programDisplayTypeToName(ProgramDisplayType[state])}` }}
+        {{ `See ${programDisplayTypeToName(state)}` }}
       </span>
     </div>
 
@@ -52,6 +58,8 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
       <Magnifier v-else-if="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS">
         <div class="flex justify-center" v-html="simplifiedProgMermaid" />
       </Magnifier>
+
+      <PassDisplay v-else-if="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
     </div>
   </div>
 </template>

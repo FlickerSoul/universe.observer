@@ -92,7 +92,7 @@ const highlighter = await getHighlighter({
 <style lang="sass">
 @import "shiki-magic-move/dist/style.css"
 .shiki-magic-move-container
-  @apply w-fit of-hidden border-rounded-12px font-mono h-max px-1.2em py-0.5em box-border min-w-100%
+  @apply w-fit of-hidden border-rounded-12px font-mono h-max px-1.2em py-0.5em box-border min-w-100% m0
 </style>
 
 <style scoped lang="sass">
