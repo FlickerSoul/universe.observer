@@ -20,7 +20,7 @@ const props = withDefaults(defineProps<{
 
 const DEFAULT_OPTIONS = {
   lineNumbers: 'on',
-  duration: 750,
+  duration: 500,
   stagger: 10,
   enhanceMatching: true,
   animationContainer: true,
@@ -38,16 +38,18 @@ const usedTheme = computed(() => isDark.value ? 'nord' : 'rose-pine-dawn')
 const index = ref(props.defaultIndex)
 const code = computed(() => props.codes[index.value])
 
+const canPrev = computed(() => index.value > 0)
+const canNext = computed(() => index.value < props.codes.length - 1)
+
 function next() {
-  index.value = (index.value + 1) % props.codes.length
+  if (canNext.value)
+    index.value = (index.value + 1) % props.codes.length
 }
 
 function prev() {
-  index.value = (index.value - 1 + props.codes.length) % props.codes.length
+  if (canPrev.value)
+    index.value = (index.value - 1 + props.codes.length) % props.codes.length
 }
-
-const canPrev = computed(() => index.value > 0)
-const canNext = computed(() => index.value < props.codes.length - 1)
 
 defineExpose({
   next,

@@ -76,6 +76,8 @@ import BranchingInstr from "./components/programs/general/BranchingInstr.vue";
 import SimpleProgram from "./components/programs/general/SimpleProgram.vue";
 import C from "./components/c.vue";
 
+import DCEMultipassPasses from './components/programs/dce/dce-passes/dce-multipass.ts';
+
 import {ref} from 'vue'; 
 
 const dce = ref(null);
@@ -142,6 +144,6 @@ assignments. In the <c @click="browseDCE(4)">fourth</c> example, we can see that
 the variable `y` defined in line 6 is a dead assignment; removing the
 variable `y` makes the variable `c` a dead assignment, for `c` is only used when
 defining `y`. To solve this problem, we can simply run elimination for multiple
-passes until the result converges. 
+passes until the result converges.
 
-
+<PassDisplay :codePasses="DCEMultipassPasses"/>

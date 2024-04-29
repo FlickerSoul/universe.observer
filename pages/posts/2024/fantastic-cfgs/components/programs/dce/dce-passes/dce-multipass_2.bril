@@ -1,0 +1,6 @@
+@main {
+  a: int = const 1
+  b: int = const 2
+  x: int = add a b
+  ret x
+}
