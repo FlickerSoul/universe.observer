@@ -52,20 +52,6 @@ flow of the program, or how the program executes. This is where
 [control flow graphs (CFGs)](https://www.wikiwand.com/en/Control-flow_graph)
 come in.
 
-A CFG is a direct graph representing the flow of an algorithm, illustrated in
-the graph below. We call the (big) nodes of the graph basic blocks (You can use
-the [detail toggle](#branching-instr) to see more things). Each basic block,
-identified by a unique label, is a sequence of instructions. In the following
-discussion, when we refer to **local analysis**, we mean the analysis within a
-basic block; when we refer to **global analysis**, we mean the analysis within a
-function. For example, the analysis within the `start` block is local analysis,
-while the analysis on the entire `main` function is global analysis.
-
-When looking at function calls and relationships among functions, we refer as
-**interprocedural analysis**. For example, the `call foo` instruction in `main`
-function invokes the `foo` function and the analysis using both `main` and `foo`
-is interprocedural analysis.
-
 <script setup>
 import DCERedef from './components/programs/dce/DCERedef.vue';
 import DCEUnused from './components/programs/dce/DCEUnused.vue';
@@ -90,19 +76,45 @@ function browseDCE(count) {
 }
 </script>
 
+## CFG, Local | Global | Inter-procedural Optimization
+
+A CFG is a direct graph representing the flow of an algorithm, illustrated in
+the graph below. We call the (big) nodes of the graph basic blocks (You can use
+the [detail toggle](#branching-instr) to see more things). Each basic block,
+identified by a unique label, is a sequence of instructions. In the following
+discussion, when we refer to **local analysis**, we mean the analysis within a
+basic block; when we refer to **global analysis**, we mean the analysis within a
+function. For example, the analysis within the `start` block is local analysis,
+while the analysis on the entire `main` function is global analysis.
+
+When looking at function calls and relationships among functions, we refer as
+**interprocedural analysis**. For example, the `call foo` instruction in `main`
+function invokes the `foo` function and the analysis using both `main` and `foo`
+is interprocedural analysis.
+
 <BranchingInstr id="branching-instr" />
 
 It is possible to have cycles in the graph, corresponding to loops in the
-program. For example, the program below
+program. For example, the program below computes `2^n` in a loop. The graph of
+the basic blocks form a loop from the `.loop.enter` to `.loop.body` and then
+back to `.loop.enter`.
 
 <SimpleProgram />
 
-### Dead Code Elimination
+## Forward | Backward Analysis
 
-We will discuss [dead code](https://www.wikiwand.com/en/Dead_code) elimination
-in this section. Dead code can be loosely understood as code that's not
-reachable or executed in runtime. The first kind of dead code is dead
-assignment.
+Note that even though the control flow graphs are directed graphs, it is
+possible to
+[analyze the program from the beginning or from the end](https://www.wikiwand.com/en/Data-flow_analysis).
+They are called **forward analysis** and **backward analysis**, respectively.
+
+## Optimizations
+
+### Dead Assignment Elimination
+
+[Dead code](https://www.wikiwand.com/en/Dead_code)can be loosely understood as
+code that's not used or executed in runtime. In this section, we focus on
+assignments creating redundant variables that are not used in the program.
 
 In the <c @click="browseDCE(1)">first</c> example, the
 highlighted line defines `a`, which invalidates a re-definition of `a` in the
@@ -130,13 +142,21 @@ later in the program. This judgement urges us to look at the program globally
 and use global analysis, looking among all the basic blocks and all the
 instructions within one function.
 
-We can formulate the identification of dead assignments to be the assignments
-that are not used in any path until the function ends or until it is been
-redefined.
-
 It is possible that an elimination of one variable can introduce more dead
 assignments. In the <c @click="browseDCE(4)">fourth</c> example, we can see that
 the variable `y` defined in line 6 is a dead assignment; removing the
 variable `y` makes the variable `c` a dead assignment, for `c` is only used when
 defining `y`. To solve this problem, we can simply run elimination for multiple
 passes until the result converges.
+
+We can formulate algorithm into two steps:
+
+1. the identification of dead assignments: identify the assignments
+   that are not used in any path until the function ends or until it is
+   redefined.
+2. remove those assignments, repeat from previous step until no dead assignment
+   is found
+
+### Local Value Numbering
+
+Local value numbering comes in handy when we are dealing with aliases. 
