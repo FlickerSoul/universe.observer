@@ -7,36 +7,40 @@
   "patterns": [
     {
       "match": "#.*$",
-      "name": "comment.line.number-sign.bril"
+      "name": "comment.line"
     },
     {
       "match": "\\b(true|false)\\b",
-      "name": "constant.language.boolean.bril"
+      "name": "constant.boolean"
     },
     {
       "match": "\\b-?\\d+\\b",
-      "name": "constant.numeric.bril"
+      "name": "constant.numeric.int"
+    },
+    {
+      "match": "\\b([0-9]+\\.?[0-9]*)\\b",
+      "name": "constant.numeric.float"
     },
     {
       "match": "\\b(int|bool|float|char)\\b",
-      "name": "storage.type.bril"
+      "name": "storage.type"
     },
     {
       "match": "\\b(jmp|br|ret|print|nop|speculate|guard|commit)\\b",
-      "name": "keyword.control.bril"
+      "name": "keyword.operator"
     },
     {
       "match": "\\b(id|const|add|mul|sub|div|eq|lt|gt|le|ge|not|and|or)\\b",
-      "name": "keyword.operator.bril"
+      "name": "keyword.operator"
     },
     {
-      "begin": "^(.\\w+:)",
+      "begin": "^(\\w+:)",
       "end": "$",
-      "name": "entity.name.label.bril",
+      "name": "entity.name.tag",
       "patterns": [
         {
           "match": "\\w+",
-          "name": "variable.label.bril"
+          "name": "variable.argument"
         }
       ]
     },
@@ -47,11 +51,11 @@
       "patterns": [
         {
           "match": "\\b\\w+\\b",
-          "name": "variable.other.bril"
+          "name": "variable.language"
         },
         {
           "match": "(int|bool|float|char)",
-          "name": "storage.type.bril"
+          "name": "support.type"
         }
       ]
     },
@@ -83,20 +87,20 @@
       "patterns": [
         {
           "match": "#.*$",
-          "name": "comment.line.number-sign.bril"
+          "name": "comment.line"
         }
       ]
     },
     "label": {
       "patterns": [
         {
-          "begin": "^.(\\w+:)",
+          "begin": "^(\\w+:)",
           "end": "$",
-          "name": "entity.name.label.bril",
+          "name": "entity.name.tag",
           "patterns": [
             {
               "match": "\\w+",
-              "name": "variable.label.bril"
+              "name": "variable.other"
             }
           ]
         }
@@ -107,7 +111,17 @@
         {
           "begin": "(\\b\\w+\\b)\\s*:\\s*(int|bool|float|char)",
           "end": ";",
-          "name": "meta.instruction.value.bril"
+          "name": "meta.instruction.value.bril",
+          "patterns": [
+            {
+              "match": "\\b\\w+\\b",
+              "name": "variable.language"
+            },
+            {
+              "match": "(int|bool|float|char)",
+              "name": "support.type"
+            }
+          ]
         }
       ]
     },
@@ -116,7 +130,7 @@
         {
           "begin": "\\bbr\\b",
           "end": ";",
-          "name": "meta.instruction.branch.bril"
+          "name": "keyword.operator"
         }
       ]
     },
@@ -125,7 +139,7 @@
         {
           "begin": "\\b(jmp|br|ret|print|nop|speculate|guard|commit)\\b",
           "end": ";",
-          "name": "meta.instruction.effect.bril"
+          "name": "keyword.operator"
         }
       ]
     }
