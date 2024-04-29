@@ -72,10 +72,6 @@ import DCEUnused from './components/programs/dce/DCEUnused.vue';
 import DCENative from './components/programs/dce/DCENative.vue';
 import DCEMultiPass from './components/programs/dce/DCEMultipass.vue';
 
-import BranchingInstr from "./components/programs/general/BranchingInstr.vue"; 
-import SimpleProgram from "./components/programs/general/SimpleProgram.vue";
-import C from "./components/c.vue";
-
 
 import {ref} from 'vue'; 
 

@@ -90,7 +90,7 @@ export default defineConfig({
     pages({
       extensions: ['vue', 'md'],
       dirs: ['pages', 'projects'],
-      exclude: ['**/components/*.vue'],
+      exclude: ['**/components/**/*.vue'],
       extendRoute(route) {
         const path = resolve(__dirname, route.component.slice(1))
         const md = fs.readFileSync(path, 'utf-8')
@@ -191,7 +191,7 @@ export default defineConfig({
       extensions: ['vue', 'md'],
       dts: true,
       include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
-      globs: ['**/components/*.vue'],
+      globs: ['**/components/**/*.vue'],
     }),
     ViteLoadString(),
     process.env.NODE_ENV === 'production' ? null : Inspect(),
