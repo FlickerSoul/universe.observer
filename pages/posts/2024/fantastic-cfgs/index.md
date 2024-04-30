@@ -120,17 +120,17 @@ They are called **forward analysis** and **backward analysis**, respectively.
 
 ### Dead Assignment Elimination
 
-[Dead code](https://www.wikiwand.com/en/Dead_code)can be loosely understood as
+[Dead code](https://www.wikiwand.com/en/Dead_code) can be loosely understood as
 code that's not used or executed in runtime. In this section, we focus on
 assignments creating redundant variables that are not used in the program.
 
 In the <c @click="browseDCE(1)">first</c> example, the
-highlighted line defines `a`, which invalidates a re-definition of `a` in the
-next line. This means the highlighted `a` is never going to be used and can be
-counted as dead code.
+highlighted line defines `a`, which is invalidated by a re-definition of `a` in
+the next line. This means the highlighted `a` is never going to be used and can
+be counted as dead code.
 
 In the <c @click="browseDCE(2)">second</c> example, the highlighted
-line defines `c` which isn't used anywhere after its definition. This can be
+line defines `c`, which isn't used anywhere after its definition. This can be
 counted as dead code as well.
 
 However, if we natively check if an assignment happens again before the variable
@@ -147,8 +147,8 @@ Well, how can we optimize dead code assignment properly? It is clear that using
 local information within one basic block isn't enough, because we cannot know
 for sure if the variable defined in one basic block is going to be used anywhere
 later in the program. This judgement urges us to look at the program globally
-and use global analysis, looking among all the basic blocks and all the
-instructions within one function.
+and use global analysis, looking among all the basic blocks and the
+transitions (arrow) among them within one function.
 
 It is possible that an elimination of one variable can introduce more dead
 assignments. In the <c @click="browseDCE(4)">fourth</c> example, we can see that
@@ -169,7 +169,7 @@ We can formulate algorithm into two steps:
 
 Local value numbering comes in handy when we are dealing with aliases and
 identical values. To illustrate what the problems we are optimizing look like,
-consider the following examples.
+consider the following examples:
 
 In <c @click="browseLVN(1)">first</c> program below, we can quickly
 realize that the final return value, after being copied 3 times, is the same as
