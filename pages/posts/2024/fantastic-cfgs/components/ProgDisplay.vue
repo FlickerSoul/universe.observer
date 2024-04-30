@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from 'vue'
+import { defineProps, nextTick, onMounted, ref } from 'vue'
 import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
 import { groupBasicBlocks } from '../utils/group-basic-blocks'
 import type { OptionalDisplays } from './utils'
@@ -22,6 +22,7 @@ const progMermaid = ref('')
 const simplifiedProgMermaid = ref('')
 
 onMounted(async () => {
+  await nextTick()
   progMermaid.value = await renderMermaidToElement('simple-prog-full', synthesizeMermaid(blocks))
   simplifiedProgMermaid.value = await renderMermaidToElement('simple-prog-simplified', synthesizeSimpleMermaid(blocks))
 })

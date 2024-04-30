@@ -58,13 +58,17 @@ import DCEUnused from './components/programs/dce/DCEUnused.vue';
 import DCENative from './components/programs/dce/DCENative.vue';
 import DCEMultiPass from './components/programs/dce/DCEMultipass.vue';
 
+import LVNSimple from "./components/programs/lvn/LVNSimple.vue"; 
+import LVNDuplicated from "./components/programs/lvn/LVNDuplicated.vue"; 
 
 import {ref} from 'vue'; 
 
 const dce = ref(null);
+const lvn = ref(null);
 
 const cycleCompMapping = {
-    'dce': [DCERedef, DCEUnused, DCENative, DCEMultiPass]
+   'dce': [DCERedef, DCEUnused, DCENative, DCEMultiPass],
+   'lvn': [LVNSimple, LVNDuplicated]
 };
 
 function browseCycle(comp, count) {
@@ -73,6 +77,10 @@ function browseCycle(comp, count) {
 
 function browseDCE(count) {
     browseCycle(dce, count)
+}
+
+function browseLVN(count) {
+   browseCycle(lvn, count)
 }
 </script>
 
@@ -159,4 +167,26 @@ We can formulate algorithm into two steps:
 
 ### Local Value Numbering
 
-Local value numbering comes in handy when we are dealing with aliases. 
+Local value numbering comes in handy when we are dealing with aliases and
+identical values. To illustrate what the problems we are optimizing look like,
+consider the following examples.
+
+In <c @click="browseLVN(1)">first</c> program below, we can quickly
+realize that the final return value, after being copied 3 times, is the same as
+the variable `a`. It is wasteful to copy the same thing multiple times.
+Unfortunately, our dead assignment optimization cannot eliminate this because
+every variable is used: `a` is used for initializing `b`, `b` for `c`, `c`
+for `d`, and then `d` is eventually used in the `print` call. This problem is
+referred as copy propagation.
+
+In the <c @click="browseLVN(2)">second</c> program, we can see that the values
+of `temp1` and `temp2` are the same. The program works, but it is not efficient
+because the same computation yielding the same value happens twice. It would be
+nice to identify unique values and reduce duplicated computations. This problem
+is referred as common subexpression elimination.
+
+<ProgCycle :progs="cycleCompMapping['lvn']" ref="lvn"/>
+
+To provide these kinds of the optimizations, we can identify each value with a
+number instead of their canonical names, and point their canonical names to the
+numbers. 
