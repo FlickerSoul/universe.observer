@@ -197,10 +197,10 @@
             "1": {
               "patterns": [
                 {
-                  "include": "#variable"
+                  "include": "#constants"
                 },
                 {
-                  "include": "#constants"
+                  "include": "#variable"
                 },
                 {
                   "include": "#label"
@@ -215,10 +215,10 @@
             "2": {
               "patterns": [
                 {
-                  "include": "#variable"
+                  "include": "#constants"
                 },
                 {
-                  "include": "#constants"
+                  "include": "#variable"
                 },
                 {
                   "include": "#label"
