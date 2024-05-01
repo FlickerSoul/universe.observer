@@ -5,6 +5,10 @@
         {
           "dest": "a",
           "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 2
+          },
           "type": "int",
           "value": 2
         },
@@ -14,6 +18,10 @@
           ],
           "dest": "b",
           "op": "id",
+          "pos": {
+            "col": 5,
+            "row": 3
+          },
           "type": "int"
         },
         {
@@ -22,6 +30,10 @@
           ],
           "dest": "c",
           "op": "id",
+          "pos": {
+            "col": 5,
+            "row": 4
+          },
           "type": "int"
         },
         {
@@ -30,16 +42,28 @@
           ],
           "dest": "d",
           "op": "id",
+          "pos": {
+            "col": 5,
+            "row": 5
+          },
           "type": "int"
         },
         {
           "args": [
             "d"
           ],
-          "op": "print"
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 6
+          }
         }
       ],
-      "name": "main"
+      "name": "main",
+      "pos": {
+        "col": 1,
+        "row": 1
+      }
     }
   ]
 }
