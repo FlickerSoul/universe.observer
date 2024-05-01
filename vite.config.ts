@@ -141,11 +141,13 @@ export default defineConfig({
       async markdownItSetup(md) {
         md.use(await (async () => {
           const bril = JSON.parse(fs.readFileSync('./scripts/bril-textmate.json', 'utf8'))
+          const nord = JSON.parse(fs.readFileSync('./scripts/nord.json', 'utf8'))
+          const rosePineDawn = JSON.parse(fs.readFileSync('./scripts/rose-pine-dawn.json', 'utf8'))
 
           return MarkdownItShiki({
             themes: {
-              dark: 'nord',
-              light: 'rose-pine-dawn',
+              dark: nord,
+              light: rosePineDawn,
             },
             langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', 'kotlin', bril],
             defaultColor: false,

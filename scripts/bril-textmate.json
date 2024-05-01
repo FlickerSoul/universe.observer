@@ -89,7 +89,7 @@
     "arg_list": {
       "patterns": [
         {
-          "match": "(\\s*\\w+\\s*),\\s*",
+          "match": "\\s*(\\w+)\\s*,\\s*",
           "captures": {
             "1": {
               "name": "variable.parameter"
@@ -97,7 +97,7 @@
           }
         },
         {
-          "match": "(\\s*\\w+\\s*),\\s*((?:\\s*\\w+\\s*,\\s*)+)",
+          "match": "\\s*(\\w+)\\s*,\\s*(\\s*(?:\\w+)\\s*,\\s*)+)",
           "captures": {
             "1": {
               "name": "variable.parameter"
@@ -129,6 +129,7 @@
       "patterns": [
         {
           "match": "(\\.[\\w|\\.]+)",
+          "name": "meta.label.bril",
           "captures": {
             "1": {
               "name": "entity.name.class"
@@ -142,6 +143,7 @@
         {
           "begin": "^(\\.[\\w|\\.]+):\\s*",
           "end": "$",
+          "name": "meta.label.def.bril",
           "beginCaptures": {
             "1": {
               "name": "entity.name.class"
@@ -153,7 +155,16 @@
     "variable": {
       "patterns": [
         {
-          "match": "\\b\\w+\\b"
+          "match": "\\b\\w+\\b",
+          "name": "meta.variable.bril"
+        }
+      ]
+    },
+    "dest_variable": {
+      "patterns": [
+        {
+          "match": "\\b\\w+\\b",
+          "name": "meta.variable.dest.bril"
         }
       ]
     },
@@ -171,6 +182,13 @@
           "match": "\\s*(\\b\\w+\\b)\\s*(?::\\s*(\\w+))?\\s*=\\s*(.*);",
           "name": "meta.assignment.bril",
           "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#dest_variable"
+                }
+              ]
+            },
             "2": {
               "patterns": [
                 {
@@ -192,7 +210,20 @@
     "arg_slots": {
       "patterns": [
         {
+          "match": "([^;]*)(;)",
+          "captures": {
+            "1": {
+              "patterns": [
+                {
+                  "include": "#arg_slots"
+                }
+              ]
+            }
+          }
+        },
+        {
           "match": "\\s*([^\\s]+)\\s*",
+          "name": "meta.instruction.arg.bril",
           "captures": {
             "1": {
               "patterns": [
@@ -211,6 +242,7 @@
         },
         {
           "match": "((?:\\s*[^\\s]+\\s+)+)([^\\s]+)\\s*",
+          "name": "meta.instruction.args.bril",
           "captures": {
             "2": {
               "patterns": [
@@ -239,40 +271,38 @@
     "effect_instruction": {
       "patterns": [
         {
-          "match": "\\s*(jmp|br|ret|print|nop|speculate|guard|commit)\\s*(.*);",
+          "begin": "\\s*(jmp|br|ret|print|nop|speculate|guard|commit)\\s*",
+          "end": "$",
           "name": "meta.instruction.effect.bril",
-          "captures": {
+          "beginCaptures": {
             "1": {
               "name": "keyword"
-            },
-            "2": {
-              "patterns": [
-                {
-                  "include": "#arg_slots"
-                }
-              ]
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#arg_slots"
+            }
+          ]
         }
       ]
     },
     "value_instruction": {
       "patterns": [
         {
-          "match": "\\s*(id|const|add|mul|sub|div|eq|lt|gt|le|ge|not|and|or)\\s*(.*)",
+          "begin": "\\s*(id|const|add|mul|sub|div|eq|lt|gt|le|ge|not|and|or)\\s*",
+          "end": "$",
           "name": "meta.instruction.value.bril",
-          "captures": {
+          "beginCaptures": {
             "1": {
               "name": "keyword"
-            },
-            "2": {
-              "patterns": [
-                {
-                  "include": "#arg_slots"
-                }
-              ]
             }
-          }
+          },
+          "patterns": [
+            {
+              "include": "#arg_slots"
+            }
+          ]
         }
       ]
     }
