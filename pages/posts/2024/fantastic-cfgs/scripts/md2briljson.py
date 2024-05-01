@@ -24,7 +24,7 @@ def arg_parse() -> argparse.Namespace:
 def to_json(bril: str) -> str:
     """ Convert bril code to JSON format using bril2json. """
     try:
-        result = subprocess.run(['bril2json'], input=bril, capture_output=True, text=True)
+        result = subprocess.run(['bril2json', '-p'], input=bril, capture_output=True, text=True)
         result.check_returncode()
         return result.stdout
     except subprocess.CalledProcessError as e:
