@@ -34,6 +34,7 @@ import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
 import { customFenceWrapper, retainMermaid } from './scripts/markdown-custom-fences'
 import wrapMagnifier from './scripts/markdown-img-wrapper'
 import ViteLoadString from './scripts/vite-load-string'
+import { BrilTransformerFactory } from './scripts/BrilTransformer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -131,6 +132,7 @@ export default defineConfig({
           return undefined
         return 'post-md-content'
       },
+      escapeCodeTagInterpolation: false,
       markdownItOptions: {
         linkify: true,
         quotes: '""\'\'',
@@ -158,6 +160,7 @@ export default defineConfig({
               transformerNotationErrorLevel(),
               transformerNotationHighlight(),
               transformerNotationFocus(),
+              await BrilTransformerFactory(bril, nord, rosePineDawn),
             ],
           })
         })())

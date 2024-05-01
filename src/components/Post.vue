@@ -219,6 +219,10 @@ useHead({
   </div>
 </template>
 
+<style lang="sass">
+@import 'floating-vue/dist/style.css'
+</style>
+
 <style scoped lang="sass">
 @use 'src/styles/variables' as v
 
