@@ -185,8 +185,8 @@ because the same computation yielding the same value happens twice. It would be
 nice to identify unique values and reduce duplicated computations. This problem
 is referred as common subexpression elimination.
 
-<ProgCycle :progs="cycleCompMapping['lvn']" ref="lvn"/>
+<ProgCycle :progs="cycleCompMapping['lvn']" ref="lvn" />
 
 To provide these kinds of the optimizations, we can identify each value with a
 number instead of their canonical names, and point their canonical names to the
-numbers. 
+numbers.
