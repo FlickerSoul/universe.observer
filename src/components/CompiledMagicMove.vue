@@ -3,6 +3,8 @@ import { computed, defineExpose, ref } from 'vue'
 
 import type { KeyedTokensInfo } from 'shiki-magic-move/types'
 import { ShikiMagicMovePrecompiled } from 'shiki-magic-move/vue'
+import CycleOperator from '~/components/CycleOperator.vue'
+import HighlighterWrapper from '~/components/HighlighterWrapper.vue'
 
 const props = withDefaults(defineProps<{
   steps: KeyedTokensInfo[]
@@ -32,23 +34,16 @@ defineExpose({
 
 <template>
   <div>
-    <div class="flex gap-2 justify-center">
-      <div :class="{ 'control-button': canPrev }" @click="prev">
-        {{ canPrev ? '⬅️' : '⛔️' }}
-      </div>
-      <div>
-        <span>{{ step + 1 }}</span> / {{ props.steps.length }}
-      </div>
-      <div :class="{ 'control-button': canNext }" @click="next">
-        {{ canNext ? '➡️' : '⛔️' }}
-      </div>
-    </div>
-    <div class="of-auto">
+    <HighlighterWrapper lang="">
       <ShikiMagicMovePrecompiled
         :steps="steps"
         :step="step"
       />
-    </div>
+    </HighlighterWrapper>
+    <CycleOperator
+      class="mt-1"
+      :can-prev="canPrev" :next="next" :can-next="canNext" :prev="prev" :total-steps="steps.length" :step="step"
+    />
   </div>
 </template>
 
@@ -56,9 +51,4 @@ defineExpose({
 @import "shiki-magic-move/dist/style.css"
 .shiki-magic-move-container
   @apply w-fit of-hidden border-rounded-12px font-mono h-max px-1.2em py-0.5em box-border min-w-100%
-</style>
-
-<style scoped lang="sass">
-.control-button
-  @apply cursor-pointer
 </style>

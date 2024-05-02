@@ -6,6 +6,8 @@ import type { MagicMoveDifferOptions, MagicMoveRenderOptions } from 'shiki-magic
 import { CustomHighlighter as highlighter } from '~/logics/highlighter'
 
 import { isDark } from '~/logics'
+import CycleOperator from '~/components/CycleOperator.vue'
+import HighlighterWrapper from '~/components/HighlighterWrapper.vue'
 
 type Option = MagicMoveRenderOptions & MagicMoveDifferOptions
 
@@ -59,18 +61,7 @@ defineExpose({
 
 <template>
   <div>
-    <div class="flex gap-2 justify-center">
-      <div :class="{ 'control-button': canPrev }" @click="prev">
-        {{ canPrev ? '⬅️' : '⛔️' }}
-      </div>
-      <div>
-        <span>{{ index + 1 }}</span> / {{ props.codes.length }}
-      </div>
-      <div :class="{ 'control-button': canNext }" @click="next">
-        {{ canNext ? '➡️' : '⛔️' }}
-      </div>
-    </div>
-    <div class="of-auto">
+    <HighlighterWrapper :lang="lang">
       <ShikiMagicMove
         :highlighter="highlighter"
         :lang="lang"
@@ -78,7 +69,11 @@ defineExpose({
         :theme="usedTheme"
         :options="processedOptions"
       />
-    </div>
+    </HighlighterWrapper>
+    <CycleOperator
+      class="mt-1"
+      :can-prev="canPrev" :next="next" :can-next="canNext" :prev="prev" :total-steps="codes.length" :step="index"
+    />
   </div>
 </template>
 
@@ -86,9 +81,4 @@ defineExpose({
 @import "shiki-magic-move/dist/style.css"
 .shiki-magic-move-container
   @apply w-fit of-hidden border-rounded-12px font-mono h-max px-1.2em py-0.5em box-border min-w-100% m0
-</style>
-
-<style scoped lang="sass">
-.control-button
-  @apply cursor-pointer
 </style>
