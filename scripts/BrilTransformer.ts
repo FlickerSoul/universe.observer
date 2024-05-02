@@ -42,10 +42,10 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
   return {
     name: 'bril:lvn',
     preprocess(this, code) {
-      if (this.options.lang !== 'bril' || !this.options.meta.__raw.includes('transform-lvn')) {
-        this.meta.transformLvn = false
+      if (this.options.lang !== 'bril' || !this.options.meta.__raw.includes('transform-lvn'))
         return
-      }
+
+      this.meta.transformLvn = true
 
       this.meta.brilTokenExplanations = highlighter.codeToTokensBase(code, {
         lang: 'bril',
@@ -77,6 +77,8 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
         addClassToHast(hast, isVariable ? 'bril-variable' : isDestVariable ? 'bril-dest-variable' : '')
 
         if (isVariable || isDestVariable) {
+          // note: token col = bril json col - 1
+
           return <Element>{
             type: 'element',
             tagName: 'v-menu',
