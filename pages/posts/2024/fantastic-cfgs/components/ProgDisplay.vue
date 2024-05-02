@@ -37,7 +37,7 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
 </script>
 
 <template>
-  <div class="">
+  <div>
     <div
       class="mb-2 flex justify-center"
     >
@@ -53,17 +53,17 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
     <div>
       <slot v-if="viewToggle === ProgramDisplayType.PROGRAM" />
 
-      <Magnifier v-else-if="viewToggle === ProgramDisplayType.CFG">
+      <Magnifier v-if="viewToggle === ProgramDisplayType.CFG">
         <div class="flex justify-center" v-html="progMermaid" />
       </Magnifier>
 
-      <Magnifier v-else-if="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS">
+      <Magnifier v-if="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS">
         <div class="flex justify-center" v-html="simplifiedProgMermaid" />
       </Magnifier>
 
-      <PassDisplay v-else-if="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
+      <PassDisplay v-if="optionals?.dce" v-show="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
 
-      <LVNDisplay v-else-if="viewToggle === ProgramDisplayType.LVN" :prog="simpleBrilProg" />
+      <LVNDisplay v-if="optionals?.lvn" v-show="viewToggle === ProgramDisplayType.LVN" :prog="simpleBrilProg" />
     </div>
   </div>
 </template>
