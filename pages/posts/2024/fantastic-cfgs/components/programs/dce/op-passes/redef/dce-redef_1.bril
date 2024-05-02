@@ -1,4 +1,4 @@
 @main {
-  a: int = const 2
-  ret a
+  a: int = const 2;
+  ret a;
 }
