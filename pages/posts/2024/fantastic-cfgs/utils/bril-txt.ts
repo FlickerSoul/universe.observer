@@ -24,7 +24,7 @@ function labelToText(label: Label): string {
 function instrToString(instr: Instruction) {
   if (instr['op'] === 'const') {
     const tyann = 'type' in instr ? `: ${typeToStr(instr['type'])}` : ''
-    return `${instr['dest']}${tyann} = const ${valueToStr(instr['type'], instr['value'])}`
+    return `${instr['dest']}${tyann} = const ${valueToStr(instr['type'], instr['value'])};`
   } else {
     let rhs = instr['op']
     if ('funcs' in instr)
@@ -38,9 +38,9 @@ function instrToString(instr: Instruction) {
 
     if ('dest' in instr) {
       const tyann = 'type' in instr ? `: ${typeToStr(instr['type'])}` : ''
-      return `${instr['dest']}${tyann} = ${rhs}`
+      return `${instr['dest']}${tyann} = ${rhs};`
     } else {
-      return rhs
+      return `${rhs};`
     }
   }
 }
