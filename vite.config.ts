@@ -141,7 +141,7 @@ export default defineConfig({
       exportFrontmatter: false,
       frontmatter: true,
       async markdownItSetup(md) {
-        md.use(await (async () => {
+        const shikiPlugin = await (async () => {
           const bril = JSON.parse(fs.readFileSync('./scripts/bril-textmate.json', 'utf8'))
           const nord = JSON.parse(fs.readFileSync('./scripts/nord.json', 'utf8'))
           const rosePineDawn = JSON.parse(fs.readFileSync('./scripts/rose-pine-dawn.json', 'utf8'))
@@ -163,7 +163,9 @@ export default defineConfig({
               await BrilTransformerFactory(bril, nord, rosePineDawn),
             ],
           })
-        })())
+        })()
+
+        md.use(shikiPlugin)
         md.use(anchor, {
           slugify,
           permalink: anchor.permalink.linkInsideHeader({
@@ -203,6 +205,7 @@ export default defineConfig({
   ],
   build: {
     target: 'esnext',
+    minify: 'terser',
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
