@@ -1,17 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
   progs: object[]
 }>()
 
 const index = ref(0)
-const displayed = computed(() => {
-  if (props.progs.length === 0)
-    return null
-  else
-    return props.progs[index.value]
-})
 
 function next() {
   index.value = (index.value + 1) % props.progs.length
@@ -60,7 +54,7 @@ defineExpose({
       </div>
     </div>
     <div class="w-100%">
-      <component :is="displayed" />
+      <component :is="prog" v-for="(prog, i) in progs" v-show="index === i" :key="i" />
     </div>
   </div>
 </template>
