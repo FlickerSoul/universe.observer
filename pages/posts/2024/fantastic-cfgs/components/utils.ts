@@ -3,6 +3,7 @@ export enum ProgramDisplayType {
   CFG,
   CFG_BASIC_BLOCKS,
   DCE,
+  LVN,
 }
 
 export function programDisplayTypeToName(type: ProgramDisplayType): string {
@@ -15,16 +16,22 @@ export function programDisplayTypeToName(type: ProgramDisplayType): string {
       return 'Only Basic Blocks'
     case ProgramDisplayType.DCE:
       return 'DCE'
+    case ProgramDisplayType.LVN:
+      return 'LVN'
   }
 }
 
 export interface OptionalDisplays {
   dce?: string[]
+  lvn?: boolean
 }
 
 export function addDisplays(displays: ProgramDisplayType[], optionalDisplays: OptionalDisplays | undefined) {
   if (optionalDisplays?.dce)
     displays.push(ProgramDisplayType.DCE)
+
+  if (optionalDisplays?.lvn)
+    displays.push(ProgramDisplayType.LVN)
 
   return displays
 }

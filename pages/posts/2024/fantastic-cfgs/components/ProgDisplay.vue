@@ -5,6 +5,7 @@ import { groupBasicBlocks } from '../utils/group-basic-blocks'
 import type { OptionalDisplays } from './utils'
 import { ProgramDisplayType, addDisplays, programDisplayTypeToName } from './utils'
 import PassDisplay from './PassDisplay.vue'
+import LVNDisplay from './LVNDisplay.vue'
 import { renderMermaidToElement } from '~/logics'
 import Magnifier from '~/components/Magnifier.vue'
 
@@ -61,6 +62,8 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
       </Magnifier>
 
       <PassDisplay v-else-if="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
+
+      <LVNDisplay v-else-if="viewToggle === ProgramDisplayType.LVN" :prog="simpleBrilProg" />
     </div>
   </div>
 </template>
