@@ -202,6 +202,7 @@ export default defineConfig({
     process.env.NODE_ENV === 'production' ? null : Inspect(),
   ],
   build: {
+    target: 'esnext',
     rollupOptions: {
       output: {
         entryFileNames: 'assets/[name].js',
