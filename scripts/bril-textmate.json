@@ -21,13 +21,25 @@
         }
       ]
     },
+    "func_name": {
+      "patterns": [
+        {
+          "match": "@\\w+",
+          "name": "entity.name.function"
+        }
+      ]
+    },
     "function": {
       "patterns": [
         {
-          "begin": "^\\s*@(\\w+)(?:\\((?:(\\s*\\w+\\s*)(?:\\s*,\\s*)?)?\\))?\\s*\\{",
+          "begin": "^\\s*(@\\w+)(?:\\((?:(\\s*\\w+\\s*)(?:\\s*,\\s*)?)?\\))?\\s*\\{",
           "beginCaptures": {
             "1": {
-              "name": "entity.name.function"
+              "patterns": [
+                {
+                  "include": "#func_name"
+                }
+              ]
             },
             "2": {
               "name": "variable.parameter"
@@ -51,10 +63,14 @@
           ]
         },
         {
-          "begin": "^\\s*@(\\w+)\\(((?:\\s*\\w+\\s*,\\s*)+)(\\s*\\w+\\s*)(?:\\s*,\\s*)?\\)\\s*\\{",
+          "begin": "^\\s*(@\\w+)\\(((?:\\s*\\w+\\s*,\\s*)+)(\\s*\\w+\\s*)(?:\\s*,\\s*)?\\)\\s*\\{",
           "beginCaptures": {
             "1": {
-              "name": "entity.name.function"
+              "patterns": [
+                {
+                  "include": "#func_name"
+                }
+              ]
             },
             "2": {
               "patterns": [
@@ -231,10 +247,13 @@
                   "include": "#constants"
                 },
                 {
-                  "include": "#variable"
+                  "include": "#func_name"
                 },
                 {
                   "include": "#label"
+                },
+                {
+                  "include": "#variable"
                 }
               ]
             }
@@ -250,10 +269,13 @@
                   "include": "#constants"
                 },
                 {
-                  "include": "#variable"
+                  "include": "#func_name"
                 },
                 {
                   "include": "#label"
+                },
+                {
+                  "include": "#variable"
                 }
               ]
             },
