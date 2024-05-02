@@ -44,6 +44,11 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
       <span
         v-for="state in states" :key="state"
         class="border border-solid border-current border-rounded inline-block px-2 mx-1 cursor-pointer"
+        :class="{
+          'opacity-100%': viewToggle === state,
+          'hover:opacity-80%': viewToggle !== state,
+          'opacity-40%': viewToggle !== state,
+        }"
         @click="viewToggle = state"
       >
         {{ `See ${programDisplayTypeToName(state)}` }}
