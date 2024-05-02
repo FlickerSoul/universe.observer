@@ -6,8 +6,8 @@
     jmp .branching;
     z: int = const 0;
 .branching:
-    call foo y;
-    ret;
+    call @foo y;
+    ret y;
 }
 
 @foo(x: int) {

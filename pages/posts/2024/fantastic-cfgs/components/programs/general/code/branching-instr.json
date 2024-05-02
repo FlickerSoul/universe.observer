@@ -5,12 +5,20 @@
         {
           "dest": "x",
           "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 2
+          },
           "type": "int",
           "value": 1
         },
         {
           "dest": "five",
           "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 3
+          },
           "type": "int",
           "value": 5
         },
@@ -21,35 +29,68 @@
           ],
           "dest": "y",
           "op": "add",
+          "pos": {
+            "col": 5,
+            "row": 4
+          },
           "type": "int"
         },
         {
           "labels": [
             "branching"
           ],
-          "op": "jmp"
+          "op": "jmp",
+          "pos": {
+            "col": 5,
+            "row": 5
+          }
         },
         {
           "dest": "z",
           "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 6
+          },
           "type": "int",
           "value": 0
         },
         {
-          "label": "branching"
+          "label": "branching",
+          "pos": {
+            "col": 1,
+            "row": 7
+          }
         },
         {
           "args": [
-            "foo",
             "y"
           ],
-          "op": "call"
+          "funcs": [
+            "foo"
+          ],
+          "op": "call",
+          "pos": {
+            "col": 5,
+            "row": 8
+          }
         },
         {
-          "op": "ret"
+          "args": [
+            "y"
+          ],
+          "op": "ret",
+          "pos": {
+            "col": 5,
+            "row": 9
+          }
         }
       ],
-      "name": "main"
+      "name": "main",
+      "pos": {
+        "col": 1,
+        "row": 1
+      }
     },
     {
       "args": [
@@ -63,10 +104,18 @@
           "args": [
             "x"
           ],
-          "op": "print"
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 13
+          }
         }
       ],
-      "name": "foo"
+      "name": "foo",
+      "pos": {
+        "col": 1,
+        "row": 12
+      }
     }
   ]
 }
