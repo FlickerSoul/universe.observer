@@ -32,38 +32,7 @@
     "function": {
       "patterns": [
         {
-          "begin": "^\\s*(@\\w+)(?:\\((?:(\\s*\\w+\\s*)(?:\\s*,\\s*)?)?\\))?\\s*\\{",
-          "beginCaptures": {
-            "1": {
-              "patterns": [
-                {
-                  "include": "#func_name"
-                }
-              ]
-            },
-            "2": {
-              "name": "variable.parameter"
-            }
-          },
-          "end": "\\}",
-          "name": "meta.function.bril",
-          "patterns": [
-            {
-              "include": "#comment"
-            },
-            {
-              "include": "#label_def"
-            },
-            {
-              "include": "#effect_instruction"
-            },
-            {
-              "include": "#assignment"
-            }
-          ]
-        },
-        {
-          "begin": "^\\s*(@\\w+)\\(((?:\\s*\\w+\\s*,\\s*)+)(\\s*\\w+\\s*)(?:\\s*,\\s*)?\\)\\s*\\{",
+          "begin": "\\s*(@\\w+)(?:\\(([^\\)]*)\\))?\\s*\\{",
           "beginCaptures": {
             "1": {
               "patterns": [
@@ -78,9 +47,6 @@
                   "include": "#arg_list"
                 }
               ]
-            },
-            "3": {
-              "name": "variable.parameter"
             }
           },
           "end": "\\}",
@@ -105,20 +71,19 @@
     "arg_list": {
       "patterns": [
         {
-          "match": "\\s*(\\w+)\\s*,\\s*",
+          "match": "((?:\\s*[^,]+\\s*,\\s*)*)\\s*(\\w+)\\s*(?::\\s*(\\w+))?\\s*,?",
           "captures": {
-            "1": {
-              "name": "variable.parameter"
-            }
-          }
-        },
-        {
-          "match": "\\s*(\\w+)\\s*,\\s*(\\s*(?:\\w+)\\s*,\\s*)+)",
-          "captures": {
-            "1": {
-              "name": "variable.parameter"
+            "3": {
+              "patterns": [
+                {
+                  "include": "#types"
+                }
+              ]
             },
             "2": {
+              "name": "variable.parameter meta.variable.dest.bril"
+            },
+            "1": {
               "patterns": [
                 {
                   "include": "#arg_list"
