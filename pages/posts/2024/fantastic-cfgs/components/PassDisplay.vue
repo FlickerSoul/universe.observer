@@ -10,13 +10,9 @@ defineProps<{
 </script>
 
 <template>
-  <Suspense v-if="codePasses !== undefined">
-    <MagicMove lang="bril" :codes="codePasses" />
-  </Suspense>
+  <MagicMove v-if="codePasses !== undefined" lang="bril" :codes="codePasses" />
 
-  <Suspense v-else-if="compiledPasses !== undefined">
-    <CompiledMagicMove :steps="compiledPasses" />
-  </Suspense>
+  <CompiledMagicMove v-else-if="compiledPasses !== undefined" :steps="compiledPasses" />
 
   <div v-else>
     Error: No passes provided

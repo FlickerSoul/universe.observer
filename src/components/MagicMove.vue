@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ShikiMagicMove } from 'shiki-magic-move/vue'
-import { getHighlighter } from 'shiki'
 import { computed, defineExpose, ref } from 'vue'
 
 import type { MagicMoveDifferOptions, MagicMoveRenderOptions } from 'shiki-magic-move/types'
-import brilJson from '../../scripts/bril-textmate.json?raw'
+import { CustomHighlighter as highlighter } from '~/logics/highlighter'
+
 import { isDark } from '~/logics'
 
 type Option = MagicMoveRenderOptions & MagicMoveDifferOptions
@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
 })
 
 const DEFAULT_OPTIONS = {
-  lineNumbers: 'on',
+  lineNumbers: true,
   duration: 500,
   stagger: 10,
   enhanceMatching: true,
@@ -54,13 +54,6 @@ function prev() {
 defineExpose({
   next,
   prev,
-})
-
-const bril = JSON.parse(brilJson)
-
-const highlighter = await getHighlighter({
-  themes: ['nord', 'rose-pine-dawn'],
-  langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', 'kotlin', bril],
 })
 </script>
 
