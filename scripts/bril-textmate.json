@@ -271,7 +271,7 @@
     "effect_instruction": {
       "patterns": [
         {
-          "begin": "\\s*(jmp|br|ret|print|nop|speculate|guard|commit)\\s*",
+          "begin": "\\s*(call|jmp|br|ret|print|nop|speculate|guard|commit)\\s*",
           "end": "$",
           "name": "meta.instruction.effect.bril",
           "beginCaptures": {
