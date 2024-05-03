@@ -7,8 +7,8 @@ import DarkToggle from './DarkToggle.vue'
   <header class="header font-mono">
     <router-link class="" to="/">
       <div class="logo">
-        <img v-show="!isDark" src="/logo-black-lower.svg" alt="site logo">
-        <img v-show="isDark" src="/logo-white-lower.svg" alt="site logo">
+        <img v-show="!isDark" src="/logo-black-lower.svg" alt="site logo" height="64" width="64">
+        <img v-show="isDark" src="/logo-white-lower.svg" alt="site logo" height="64" width="64">
       </div>
     </router-link>
     <nav class="nav">
@@ -50,7 +50,8 @@ import DarkToggle from './DarkToggle.vue'
   position: absolute
   left: 1.5rem
   top: 1.5rem
-  &>img
+
+  & > img
     width: 64px
 
 .nav
@@ -59,6 +60,7 @@ import DarkToggle from './DarkToggle.vue'
   display: grid
   grid-template-columns: auto max-content
   box-sizing: border-box
+
   .nav-icon
     scale: 1.4
 </style>
