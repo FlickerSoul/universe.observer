@@ -1,35 +1,11 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { isDark } from '~/logics'
-
-const props = defineProps({
-  isMermaid: { type: Boolean, required: false, default: false },
-})
+import { ref } from 'vue'
 
 const isOverlayOpen = ref(false)
 const zoomLevel = ref(1)
 const position = ref({ x: 0, y: 0 })
 let isPanning = false
 const start = { x: 0, y: 0 }
-
-if (props.isMermaid) {
-  onMounted(() => {
-    import('mermaid').then(({ default: mermaid }) => {
-      mermaid.initialize({
-        startOnLoad: false,
-        theme: isDark.value ? 'dark' : 'default',
-      })
-
-      watch(isOverlayOpen, (newVal) => {
-        mermaid.initialize({
-          startOnLoad: false,
-          theme: newVal ? 'dark' : 'default',
-        })
-        mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
-      })
-    })
-  })
-}
 
 function openOverlay() {
   isOverlayOpen.value = true
@@ -80,7 +56,7 @@ function handleWheel(event: WheelEvent) {
     <slot />
   </div>
 
-  <div v-if="isOverlayOpen" class="img-overlay" @click.self="closeOverlay">
+  <div v-show="isOverlayOpen" class="img-overlay" @click.self="closeOverlay">
     <div class="controls ma flex gap-4">
       <div @click="zoomIn">
         <i class="i-mdi-zoom-in mag-icon" />
@@ -121,11 +97,12 @@ function handleWheel(event: WheelEvent) {
   justify-content: center
   align-items: center
   background-color: rgba(0, 0, 0, 0.8)
+  z-index: 1999
 
   .controls
     position: absolute
     top: 20px
-    z-index: 100
+    z-index: 2000
 
     div
       cursor: pointer

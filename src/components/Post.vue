@@ -11,7 +11,7 @@ import type { IPostData } from './types'
 import PostDate from './PostDate.vue'
 import PostTag from './PostTag.vue'
 import LangIndicator from './LangIndicator.vue'
-import { isDark, renderMermaidInPlace } from '~/logics'
+import { isDark } from '~/logics'
 
 const props = defineProps({
   customFrontmatter: {
@@ -113,15 +113,6 @@ onMounted(() => {
   useEventListener(content.value!, 'click', handleAnchors, { passive: false })
   navigate()
   setTimeout(navigate, 500)
-})
-
-// handle mermaid graphing
-onMounted(async () => {
-  await renderMermaidInPlace()
-})
-
-watch(isDark, async () => {
-  await renderMermaidInPlace()
 })
 
 const frontmatter = computed<IPostData>(() => {

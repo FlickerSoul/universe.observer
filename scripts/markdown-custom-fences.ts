@@ -65,6 +65,6 @@ export function retainMermaid(md: MarkdownIt) {
       return ''
     }
 
-    return `<Magnifier is-mermaid><div class="mermaid-container"><pre class='mermaid-content'>${token.content}</pre></div></Magnifier>`
+    return `<MermaidRenderer><pre>${token.content}</pre></MermaidRenderer>`
   }
 }
