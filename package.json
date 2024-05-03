@@ -61,7 +61,7 @@
     "@types/node": "^20.12.8",
     "@types/nprogress": "^0.2.3",
     "@types/three": "^0.149.0",
-    "@unhead/vue": "^1.9.8",
+    "@unhead/vue": "^1.9.9",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
@@ -73,7 +73,7 @@
     "unplugin-auto-import": "^0.17.5",
     "unplugin-vue-components": "^0.26.0",
     "unplugin-vue-markdown": "^0.26.2",
-    "vite": "^5.2.10",
+    "vite": "^5.2.11",
     "vite-plugin-inspect": "^0.8.4",
     "vite-plugin-pages": "^0.32.1",
     "vite-ssg": "^0.23.7"
