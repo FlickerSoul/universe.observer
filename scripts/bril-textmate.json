@@ -32,7 +32,7 @@
     "function": {
       "patterns": [
         {
-          "begin": "\\s*(@\\w+)(?:\\(([^\\)]*)\\))?\\s*\\{",
+          "begin": "\\s*(@\\w+)(?:\\(([^\\)]*)\\))?\\s*(?::(\\w+))?\\{",
           "beginCaptures": {
             "1": {
               "patterns": [
@@ -45,6 +45,13 @@
               "patterns": [
                 {
                   "include": "#arg_list"
+                }
+              ]
+            },
+            "3": {
+              "patterns": [
+                {
+                  "include": "#types"
                 }
               ]
             }
