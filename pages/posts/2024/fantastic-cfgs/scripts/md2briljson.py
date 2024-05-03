@@ -5,6 +5,7 @@ import re
 import subprocess
 import pathlib
 import md2bril
+import sys
 
 
 def arg_parse() -> argparse.Namespace:

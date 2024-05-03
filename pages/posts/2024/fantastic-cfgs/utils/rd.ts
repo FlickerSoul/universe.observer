@@ -1,6 +1,5 @@
 import type { Program } from './types'
-import type { InstrNode } from './group-basic-blocks'
-import { blocksToPlainGraph, groupBasicBlocksForFun } from './group-basic-blocks'
+import { InstrNode, blocksToPlainGraph, groupBasicBlocksForFun } from './group-basic-blocks'
 
 type FuncName = string
 type VarName = string
@@ -97,10 +96,17 @@ export function reachingDefinition(prog: Program): RDResult {
           result,
         ]
       }
+      const preNode = new InstrNode({ op: 'noop', pos: func.pos ? { ...func.pos } : undefined })
+      preNode.next.push(root)
+      root.prev.push(preNode)
+      const preMap: RDLine = new Map()
+      for (const arg of func.args || [])
+        preMap.set(arg.name, new Set([func.pos.row]))
 
       const rdOuts = new Map<InstrNode, RDLine>()
       for (const node of graph.nodes.values())
         rdOuts.set(node, new Map() as RDLine)
+      rdOuts.set(preNode, preMap)
 
       const workList = new Deque<InstrNode>()
 

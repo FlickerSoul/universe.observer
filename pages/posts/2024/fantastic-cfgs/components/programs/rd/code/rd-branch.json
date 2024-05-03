@@ -1,0 +1,133 @@
+{
+  "functions": [
+    {
+      "args": [
+        {
+          "name": "a",
+          "type": "int"
+        }
+      ],
+      "instrs": [
+        {
+          "dest": "zero",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 2
+          },
+          "type": "int",
+          "value": 0
+        },
+        {
+          "args": [
+            "a",
+            "zero"
+          ],
+          "dest": "negative",
+          "op": "lt",
+          "pos": {
+            "col": 5,
+            "row": 3
+          },
+          "type": "bool"
+        },
+        {
+          "args": [
+            "negative"
+          ],
+          "labels": [
+            "here",
+            "there"
+          ],
+          "op": "br",
+          "pos": {
+            "col": 5,
+            "row": 4
+          }
+        },
+        {
+          "label": "here",
+          "pos": {
+            "col": 1,
+            "row": 5
+          }
+        },
+        {
+          "dest": "five",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 6
+          },
+          "type": "int",
+          "value": -5
+        },
+        {
+          "args": [
+            "a",
+            "five"
+          ],
+          "dest": "b",
+          "op": "mul",
+          "pos": {
+            "col": 5,
+            "row": 7
+          },
+          "type": "int"
+        },
+        {
+          "labels": [
+            "end"
+          ],
+          "op": "jmp",
+          "pos": {
+            "col": 5,
+            "row": 8
+          }
+        },
+        {
+          "label": "there",
+          "pos": {
+            "col": 1,
+            "row": 9
+          }
+        },
+        {
+          "args": [
+            "a",
+            "a"
+          ],
+          "dest": "b",
+          "op": "mul",
+          "pos": {
+            "col": 5,
+            "row": 10
+          },
+          "type": "int"
+        },
+        {
+          "label": "end",
+          "pos": {
+            "col": 1,
+            "row": 11
+          }
+        },
+        {
+          "args": [
+            "b"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 12
+          }
+        }
+      ],
+      "name": "main",
+      "pos": {
+        "col": 1,
+        "row": 1
+      }
+    }
+  ]
+}

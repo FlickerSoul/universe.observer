@@ -117,7 +117,7 @@ export function blocksToPlainGraph(blocks: BasicBlock[]): InstrGraph {
   graph.setRoot(blockStartEndNodes[0][0])
 
   blocks.forEach((block, index) => {
-    for (const nextLabel in block.next) {
+    for (const nextLabel of block.next) {
       const nextIndex = labelToIndex.get(nextLabel)
 
       if (nextIndex === undefined)
