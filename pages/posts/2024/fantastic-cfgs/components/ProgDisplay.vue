@@ -50,17 +50,12 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
     <div>
       <slot v-if="viewToggle === ProgramDisplayType.PROGRAM" />
 
-      <MermaidRenderer v-show="viewToggle === ProgramDisplayType.CFG">
-        <pre>
-          {{ fullProgMermaid }}
-        </pre>
-      </MermaidRenderer>
+      <MermaidRenderer v-show="viewToggle === ProgramDisplayType.CFG" :mermaid-content="fullProgMermaid" />
 
-      <MermaidRenderer v-show="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS">
-        <pre>
-          {{ simplifiedProgMermaid }}
-        </pre>
-      </MermaidRenderer>
+      <MermaidRenderer
+        v-show="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS"
+        :mermaid-content="simplifiedProgMermaid"
+      />
 
       <PassDisplay v-if="optionals?.dce" v-show="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
 
