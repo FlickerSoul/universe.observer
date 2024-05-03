@@ -2,7 +2,6 @@ import { type HighlighterGeneric, getHighlighter } from 'shiki'
 import brilJson from '../../scripts/bril-textmate.json?raw'
 import nordJson from '../../scripts/nord.json?raw'
 import rosePineDawnJson from '../../scripts/rose-pine-dawn.json?raw'
-import { BrilTransformerFactory } from '../../scripts/BrilTransformer'
 
 const bril = JSON.parse(brilJson)
 const nord = JSON.parse(nordJson)
@@ -20,7 +19,7 @@ export const CustomHighlighter: HighlighterGeneric<any, any> = {
       ...options,
       mergeWhitespaces: false,
       transformers: [
-        BrilTransformerFactory(bril, nord, rosePineDawn),
+        ...options.transformers ?? [],
       ],
     })
   },
