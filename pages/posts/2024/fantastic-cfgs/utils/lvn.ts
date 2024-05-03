@@ -1,5 +1,7 @@
 import type { BasicBlock } from './group-basic-blocks'
-import type { Constant, Instruction, Operation, ValueInstruction } from './types'
+import { groupBasicBlocksForFun } from './group-basic-blocks'
+import type { Constant, Instruction, Operation, Program, ValueInstruction } from './types'
+import { funcBlocksToFunc } from './bril-txt'
 
 export interface LVNResult {
 
@@ -319,4 +321,17 @@ export function applyLVNForBlock(block: BasicBlock) {
       }
     }
   })
+}
+
+export function applyLvnToProgram(prog: Program): Program {
+  return {
+    functions: prog.functions.map((func) => {
+      const blocks = groupBasicBlocksForFun(func).map((block) => {
+        applyLVNForBlock(block)
+        return block
+      })
+
+      return funcBlocksToFunc(func.name, blocks, func.args, func.type, func.pos)
+    }),
+  } as Program
 }
