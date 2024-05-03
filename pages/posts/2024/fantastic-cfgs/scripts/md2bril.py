@@ -13,6 +13,13 @@ def arg_parse() -> argparse.Namespace:
     return args
 
 
+def find_tilda(lines: list[str], start: int = 0) -> int:
+    for i in range(start, len(lines)):
+        if '```' in lines[i].strip():
+            return i
+    return -1
+
+
 def convert(file_path: str) -> str:
     try:
         with open(file_path, 'r') as file:
@@ -22,9 +29,20 @@ def convert(file_path: str) -> str:
         sys.exit(1)
 
     # Determine the number of lines to print
-    if len(lines) > 2:
+
+    start = find_tilda(lines)
+    if start == -1:
+        print("No code block found")
+        sys.exit(1)
+
+    end = find_tilda(lines, start + 1)
+    if end == -1:
+        print("No closing code block found")
+        sys.exit(1)
+
+    if end - start > 1:
         # Exclude the first line and the last two lines
-        contents = lines[1:-1]
+        contents = lines[start + 1:end]
     else:
         # If there are 3 or fewer lines, nothing will be printed
         contents = []

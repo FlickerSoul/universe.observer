@@ -58,19 +58,3 @@ defineExpose({
     </div>
   </div>
 </template>
-
-<style scoped lang="sass">
-@keyframes flickerAnimation
-  0%
-    opacity: 1
-  50%
-    opacity: 0
-  100%
-    opacity: 1
-
-.flicker
-  animation-name: flickerAnimation
-  animation-duration: 1s
-  animation-iteration-count: 4
-  animation-timing-function: ease-in-out
-</style>

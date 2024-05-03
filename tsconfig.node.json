@@ -10,6 +10,7 @@
     "vite.config.ts",
     "shims-vue.d.ts",
     "scripts/**/*.ts",
-    "src/components/types.ts"
+    "src/components/types.ts",
+    "pages/posts/2024/fantastic-cfgs/utils/*.ts"
   ]
 }

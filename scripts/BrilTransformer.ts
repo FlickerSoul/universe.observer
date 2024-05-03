@@ -1,12 +1,17 @@
+import { execSync } from 'node:child_process'
 import type { ShikiTransformer, ThemedToken } from 'shiki'
 import { addClassToHast, getHighlighter } from 'shiki'
-import type { Element, Properties, RootContent } from 'hast'
+import type { Element, Properties, Text } from 'hast'
+import type { RDResult } from '../pages/posts/2024/fantastic-cfgs/utils/rd'
+import { reachingDefinition } from '../pages/posts/2024/fantastic-cfgs/utils/rd'
+import { loadBril } from '../pages/posts/2024/fantastic-cfgs/utils/tools'
 
 declare module 'shiki' {
   interface ShikiTransformerContextMeta {
-    transformLvn?: boolean
+    transformRd?: string
     brilTokenExplanations?: ThemedToken[][]
     codeLines?: string[]
+    rdInfo?: RDResult
   }
 }
 
@@ -31,6 +36,22 @@ const BASIC_POPPER_PROPERTIES = {
   popperClass: 'shiki bril-floating',
 }
 
+function addIdToHast(hast: Element, id: string) {
+  if (hast.properties === undefined)
+    hast.properties = {}
+
+  hast.properties.id = id
+  return hast
+}
+
+function generateId(lang: string, prefix: string, row: number) {
+  return `${lang}-${prefix}-${row}`
+}
+
+function generateClickCallback(id: string) {
+  return `flicker('${id}')`
+}
+
 export async function BrilTransformerFactory(bril: any, nord: any, rose: any): Promise<ShikiTransformer> {
   const highlighter = await getHighlighter(
     {
@@ -40,12 +61,14 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
   )
 
   return {
-    name: 'bril:lvn',
+    name: 'bril:rd',
     preprocess(this, code) {
-      if (this.options.lang !== 'bril' || !this.options.meta.__raw.includes('transform-lvn'))
+      const match = this.options.meta.__raw.match(/transform-rd=(\S+)/)
+
+      if (this.options.lang !== 'bril' || !match)
         return
 
-      this.meta.transformLvn = true
+      this.meta.transformRd = match ? match[1] : undefined
 
       this.meta.brilTokenExplanations = highlighter.codeToTokensBase(code, {
         lang: 'bril',
@@ -53,10 +76,16 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
         includeExplanation: true,
       })
       this.meta.codeLines = code.split('\n')
+
+      const cmd = execSync('bril2json -p', { input: code })
+      const json = cmd.toString()
+
+      this.meta.rdInfo = reachingDefinition(loadBril(JSON.parse(json)))
+
       this.options.mergeWhitespaces = false
     },
     span(this, hast, row, col) {
-      if (!this.meta.transformLvn)
+      if (this.meta.transformRd === undefined)
         return
 
       const tokens = this.meta.brilTokenExplanations
@@ -76,35 +105,85 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
 
         addClassToHast(hast, isVariable ? 'bril-variable' : isDestVariable ? 'bril-dest-variable' : '')
 
-        if (isVariable || isDestVariable) {
+        if (isDestVariable) {
+          const id = generateId(this.options.lang, this.meta.transformRd, row)
+          return addIdToHast(hast, id)
+        } else if (isVariable) {
           // note: token col = bril json col - 1
 
-          return <Element>{
-            type: 'element',
-            tagName: 'v-menu',
-            properties: <Properties>{
-              ...BASIC_POPPER_PROPERTIES,
-            },
-            children: [
-              hast,
-              <Element>{
-                type: 'element',
-                tagName: 'template',
-                properties: {
-                  'v-slot:popper': '{}',
-                },
-                content: {
-                  type: 'root',
-                  children: [
-                    <RootContent>{
-                      type: 'text',
-                      value: 'variable!',
-                    },
-                  ],
-                },
-                children: [],
+          const variableName = token.content.trim()
+          let reachingDefLines: Set<number> | undefined
+
+          for (const rdInfo of this.meta.rdInfo.values()) {
+            if (rdInfo.get(row) === undefined)
+              continue
+            reachingDefLines = rdInfo.get(row)?.get(variableName)
+          }
+
+          if (reachingDefLines !== undefined) {
+            return <Element>{
+              type: 'element',
+              tagName: 'v-menu',
+              properties: <Properties>{
+                ...BASIC_POPPER_PROPERTIES,
               },
-            ],
+              children: [
+                hast,
+                <Element>{
+                  type: 'element',
+                  tagName: 'template',
+                  properties: {
+                    'v-slot:popper': '{}',
+                  },
+                  content: {
+                    type: 'root',
+                    children: [
+                      <Element>{
+                        type: 'element',
+                        tagName: 'client-only',
+                        children: [
+                          <Element>{
+                            type: 'element',
+                            tagName: 'div',
+                            children: [
+                              <Element>{
+                                type: 'element',
+                                tagName: 'span',
+                                children: [
+                                  {
+                                    type: 'text',
+                                    value: 'Defined at: ',
+                                  },
+                                ],
+                              },
+                              ...Array.from(reachingDefLines).map((line, index) => {
+                                const targetId = generateId(this.options.lang, this.meta.transformRd, line)
+                                const separator = index === reachingDefLines.size - 1 ? '' : ', '
+                                return {
+                                  type: 'element',
+                                  tagName: 'a',
+                                  properties: {
+                                    '@click': generateClickCallback(targetId),
+                                    'class': ['cursor-pointer'],
+                                  },
+                                  children: [
+                                    <Text>{
+                                      type: 'text',
+                                      value: `${line}${separator}`,
+                                    },
+                                  ],
+                                }
+                              }),
+                            ],
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                  children: [],
+                },
+              ],
+            }
           }
         }
       }

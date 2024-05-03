@@ -7,6 +7,7 @@
     "./group-basic-blocks": "./group-basic-blocks.ts",
     "./tools": "./tools.ts",
     "./types": "./types.ts",
-    "./lvn": "./lvn.ts"
+    "./lvn": "./lvn.ts",
+    "./rd": "./rd.ts"
   }
 }
