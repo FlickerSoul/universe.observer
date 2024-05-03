@@ -53,23 +53,15 @@ flow of the program, or how the program executes. This is where
 come in.
 
 <script setup>
-import DCERedef from './components/programs/dce/DCERedef.vue';
-import DCEUnused from './components/programs/dce/DCEUnused.vue';
-import DCENative from './components/programs/dce/DCENative.vue';
-import DCEMultiPass from './components/programs/dce/DCEMultipass.vue';
-
-import LVNSimple from "./components/programs/lvn/LVNSimple.vue"; 
-import LVNDuplicated from "./components/programs/lvn/LVNDuplicated.vue"; 
+import {DCECycle} from './components/programs/dce';
+import {LVNCycle} from './components/programs/lvn';
+import {RDCycle} from './components/programs/rd';
 
 import {ref} from 'vue'; 
 
 const dce = ref(null);
 const lvn = ref(null);
-
-const cycleCompMapping = {
-   'dce': [DCERedef, DCEUnused, DCENative, DCEMultiPass],
-   'lvn': [LVNSimple, LVNDuplicated]
-};
+const rd = ref(null);
 
 function browseCycle(comp, count) {
     comp.value.display(count - 1);
@@ -141,7 +133,7 @@ carefully, it we can see that the redefinition happens conditionally, and it is
 unclear at compile time which path the program is going to take. This means it
 is possible to use both definition of `a` at line 12.
 
-<ProgCycle :progs="cycleCompMapping['dce']" ref="dce"/>
+<ProgCycle :progs="DCECycle" ref="dce"/>
 
 Well, how can we optimize dead code assignment properly? It is clear that using
 local information within one basic block isn't enough, because we cannot know
@@ -185,8 +177,29 @@ because the same computation yielding the same value happens twice. It would be
 nice to identify unique values and reduce duplicated computations. This problem
 is referred as common subexpression elimination.
 
-<ProgCycle :progs="cycleCompMapping['lvn']" ref="lvn" />
+<ProgCycle :progs="LVNCycle" ref="lvn" />
 
 To provide these kinds of the optimizations, we can identify each value with a
 number instead of their canonical names, and point their canonical names to the
-numbers.
+numbers. Whenever a variable is assigned, denote it's value as a number and
+points the variable to the number; whenever a variable is used, query the number
+associated with the variable, and try use the value instead of variable.
+
+### Reaching Definition And Flow Analysis Framework
+
+This is rather a toolkit instead of an optimization. To understand this
+framework, we need several terminologies.
+
+- A definition (of a variable) is an instruction that writes value to a (the)
+  variable; thus every instruction that writes to a variable is a definition.
+- A use of variables is when the instruction uses the variables.
+- An available definition at a given point in the program is a definition
+  reaches the given point.
+- A kill of a definition (of a variable) happens when a new definition (of the
+  variable) is available.
+
+Using the terminologies above, we can formulate the reaching definition problem
+as: at a given point in the problem, a definition of a variable is still
+available at the point.
+
+<ProgCycle :progs="RDCycle" ref="rd" />
