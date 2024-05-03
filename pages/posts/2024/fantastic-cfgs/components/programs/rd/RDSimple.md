@@ -9,15 +9,6 @@
 ```
 
 <script setup lang="ts">
-function flicker(id: string) {
-    const el = document.getElementById(id);
-    console.log(el, id);
-
-    if (el) {
-        el.classList.add('flicker');
-        setTimeout(() => {
-            el.classList.remove('flicker');
-        }, 1500);
-    }
-}
+import {inject} from 'vue';
+const flicker = inject('flicker');
 </script>

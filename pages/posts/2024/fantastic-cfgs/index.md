@@ -57,7 +57,7 @@ import {DCECycle} from './components/programs/dce';
 import {LVNCycle} from './components/programs/lvn';
 import {RDCycle} from './components/programs/rd';
 
-import {ref} from 'vue'; 
+import {ref, provide} from 'vue'; 
 
 const dce = ref(null);
 const lvn = ref(null);
@@ -74,6 +74,19 @@ function browseDCE(count) {
 function browseLVN(count) {
    browseCycle(lvn, count)
 }
+
+function flicker(id) {
+    const el = document.getElementById(id);
+
+    if (el) {
+        el.classList.add('flicker');
+        setTimeout(() => {
+            el.classList.remove('flicker');
+        }, 1500);
+    }
+}
+
+provide('flicker', flicker)
 </script>
 
 ## CFG, Local | Global | Inter-procedural Optimization
