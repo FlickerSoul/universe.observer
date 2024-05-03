@@ -3,10 +3,6 @@ import { groupBasicBlocksForFun } from './group-basic-blocks'
 import type { Constant, Instruction, Operation, Program, ValueInstruction } from './types'
 import { funcBlocksToFunc } from './bril-txt'
 
-export interface LVNResult {
-
-}
-
 type RefType = string
 type FundamentalVariableType = number | boolean
 
