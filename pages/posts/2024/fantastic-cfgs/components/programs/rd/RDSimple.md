@@ -1,4 +1,4 @@
-```bril transform-rd=rd-simple
+```bril {2,5} transform-rd=rd-simple
 @main {
     a: int = const 5;
     one: int = const 1;

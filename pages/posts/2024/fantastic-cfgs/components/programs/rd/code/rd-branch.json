@@ -5,6 +5,10 @@
         {
           "name": "a",
           "type": "int"
+        },
+        {
+          "name": "b",
+          "type": "int"
         }
       ],
       "instrs": [
@@ -53,19 +57,22 @@
           }
         },
         {
-          "dest": "five",
-          "op": "const",
+          "args": [
+            "a",
+            "a"
+          ],
+          "dest": "a",
+          "op": "mul",
           "pos": {
             "col": 5,
             "row": 6
           },
-          "type": "int",
-          "value": -5
+          "type": "int"
         },
         {
           "args": [
             "a",
-            "five"
+            "b"
           ],
           "dest": "b",
           "op": "mul",
@@ -120,6 +127,16 @@
           "pos": {
             "col": 5,
             "row": 12
+          }
+        },
+        {
+          "args": [
+            "a"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 13
           }
         }
       ],

@@ -75,6 +75,10 @@ function browseLVN(count) {
    browseCycle(lvn, count)
 }
 
+function browseRD(count) {
+   browseCycle(rd, count)
+}
+
 function flicker(id) {
     const el = document.getElementById(id);
 
@@ -212,7 +216,25 @@ framework, we need several terminologies.
   variable) is available.
 
 Using the terminologies above, we can formulate the reaching definition problem
-as: at a given point in the problem, a definition of a variable is still
-available at the point.
+as: when a variable is used at a point in the problem, which definitions of the
+variable are still available at the point.
+
+In the following two examples, you can hover on the used variable name (in the
+instruction arguments) and see in the dropdown what the reaching definitions of
+the variable are. You can also click on the numbers to highlight where the
+definition is.
 
 <ProgCycle :progs="RDCycle" ref="rd" />
+
+In the <c @click="browseRD(1)">first</c> example, the definition of `a` at line
+5 kills the
+definition of `a` at line 2. Thus, before line 5, when `a` is used to
+construct `b`, the reaching definition is the instruction at line 2; after line
+5, when `a` is used in the return instruction, the reaching definition is newer
+instruction at line `5`.
+
+In the <c @click="browseRD(2)">second</c> example, there are two reaching
+definitions for variable `a` and `b`, respectively, when they are used in the
+highlighted line. This CFG shows this clearly: there are two paths to get to the
+highlighted lines and in each path there is a definition of different of `a`
+and `b`. Check the hover dropdown to see where the definitions are!
