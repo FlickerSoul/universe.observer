@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install PNPM
-        run: npm install -g pnpm
+        run: npm install -g pnpm && pnpm setup
       - name: Install Cargo
         run: curl https://sh.rustup.rs -sSf | sh -s -- -y
       - name: Install Vercel CLI
