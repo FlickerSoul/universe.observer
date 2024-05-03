@@ -14,7 +14,7 @@ type Option = MagicMoveRenderOptions & MagicMoveDifferOptions
 const props = withDefaults(defineProps<{
   options?: Option
   codes: string[]
-  defaultIndex: number
+  defaultIndex?: number
   lang: string
 }>(), {
   defaultIndex: 0,

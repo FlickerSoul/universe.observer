@@ -8,7 +8,7 @@ import HighlighterWrapper from '~/components/HighlighterWrapper.vue'
 
 const props = withDefaults(defineProps<{
   steps: KeyedTokensInfo[]
-  defaultIndex: number
+  defaultIndex?: number
 }>(), {
   defaultIndex: 0,
 })
