@@ -1,4 +1,4 @@
-```bril {5-6} transform-lvn
+```bril {5-6}
 @main() {
     a: int = const 4;
     b: int = const 5;
