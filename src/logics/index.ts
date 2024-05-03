@@ -61,28 +61,17 @@ export function toggleDark(event: MouseEvent) {
     })
 }
 
-function initMermaid(mermaid: Mermaid) {
+function initMermaid(mermaid: Mermaid, dark: boolean | undefined = undefined) {
   mermaid.initialize({
     startOnLoad: false,
-    theme: isDark.value ? 'dark' : 'default',
+    theme: (dark ?? isDark.value) ? 'dark' : 'default',
   })
 }
 
-export async function renderMermaidInPlace() {
-  if (document.querySelectorAll('pre.mermaid-content').length === 0)
-    return
-
+export async function renderMermaidToElement(id: string, content: string, dark: boolean | undefined = undefined): Promise<RenderResult> {
   const { default: mermaid } = await import('mermaid')
 
-  initMermaid(mermaid)
-
-  await mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
-}
-
-export async function renderMermaidToElement(id: string, content: string): Promise<RenderResult> {
-  const { default: mermaid } = await import('mermaid')
-
-  initMermaid(mermaid)
+  initMermaid(mermaid, dark)
 
   return await mermaid.render(id, content)
 }

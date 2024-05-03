@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { getCurrentInstance, onMounted, ref, watch } from 'vue'
-import { isDark, renderMermaidToElement } from '~/logics'
+import { getCurrentInstance, onMounted, ref } from 'vue'
+import { renderMermaidToElement } from '~/logics'
 import Magnifier from '~/components/Magnifier.vue'
 
 const props = defineProps<{
@@ -10,25 +10,33 @@ const props = defineProps<{
 const uid = getCurrentInstance()?.uid ?? Math.floor(Math.random() * 10e10)
 
 const mermaid = ref<HTMLDivElement | null>(null)
-const dest = ref<HTMLDivElement | null>(null)
-const svg = ref<string>('')
+const dark = ref<HTMLDivElement | null>(null)
+const light = ref<HTMLDivElement | null>(null)
+
+const darkSvg = ref<string>('')
+const lightSvg = ref<string>('')
 
 async function renderMermaid() {
   const mermaidText = props.mermaidContent || mermaid.value?.textContent
   if (!mermaidText)
     return
 
-  if (dest.value) {
-    const hash = `msvg-${uid}-${isDark.value ? 'dark' : 'light'}`
-    const result = await renderMermaidToElement(hash, mermaidText)
-    svg.value = result.svg
-    result.bindFunctions?.(dest.value)
+  if (dark.value) {
+    const hash = `msvg-${uid}-dark`
+    const result = await renderMermaidToElement(hash, mermaidText, true)
+    darkSvg.value = result.svg
+    result.bindFunctions?.(dark.value)
+  }
+
+  if (light.value) {
+    const hash = `msvg-${uid}-light`
+    const result = await renderMermaidToElement(hash, mermaidText, false)
+    lightSvg.value = result.svg
+    result.bindFunctions?.(light.value)
   }
 }
 
 onMounted(renderMermaid)
-
-watch(isDark, renderMermaid)
 </script>
 
 <template>
@@ -37,13 +45,23 @@ watch(isDark, renderMermaid)
       <slot />
     </div>
     <Magnifier>
-      <div ref="dest" class="mermaid-container" v-html="svg" />
+      <div ref="dark" class="mermaid-container dark-mermaid" v-html="darkSvg" />
+    </Magnifier>
+
+    <Magnifier>
+      <div ref="light" class="mermaid-container light-mermaid" v-html="lightSvg" />
     </Magnifier>
   </div>
 </template>
 
 <style lang="sass">
 .mermaid-text-compartment
+  display: none
+
+html:not(.dark) .dark-mermaid
+  display: none
+
+html.dark .light-mermaid
   display: none
 
 div.mermaid-container
