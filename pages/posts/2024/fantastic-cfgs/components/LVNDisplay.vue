@@ -20,7 +20,7 @@ const lvnProg = {
   }),
 } as Program
 
-const codes = [brilProgramToText(lvnProg), originalProg]
+const codes = [originalProg, brilProgramToText(lvnProg)]
 </script>
 
 <template>
