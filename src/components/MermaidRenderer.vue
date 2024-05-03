@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { isDark, renderMermaidToElement, stringHash } from '~/logics'
+import { getCurrentInstance, onMounted, ref, watch } from 'vue'
+import { isDark, renderMermaidToElement } from '~/logics'
 import Magnifier from '~/components/Magnifier.vue'
 
 const props = defineProps<{
   mermaidContent?: string
 }>()
+
+const uid = getCurrentInstance()?.uid ?? Math.floor(Math.random() * 10e10)
+
 const mermaid = ref<HTMLDivElement | null>(null)
 const dest = ref<HTMLDivElement | null>(null)
 const svg = ref<string>('')
@@ -16,8 +19,10 @@ async function renderMermaid() {
     return
 
   if (dest.value) {
-    const hash = `msvg-${stringHash(mermaidText).toString()}-${isDark.value ? 'dark' : 'light'}`
-    svg.value = await renderMermaidToElement(hash, mermaidText)
+    const hash = `msvg-${uid}-${isDark.value ? 'dark' : 'light'}`
+    const result = await renderMermaidToElement(hash, mermaidText)
+    svg.value = result.svg
+    result.bindFunctions?.(dest.value)
   }
 }
 

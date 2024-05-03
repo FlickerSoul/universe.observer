@@ -50,7 +50,10 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
     <div>
       <slot v-if="viewToggle === ProgramDisplayType.PROGRAM" />
 
-      <MermaidRenderer v-show="viewToggle === ProgramDisplayType.CFG" :mermaid-content="fullProgMermaid" />
+      <MermaidRenderer
+        v-show="viewToggle === ProgramDisplayType.CFG"
+        :mermaid-content="fullProgMermaid"
+      />
 
       <MermaidRenderer
         v-show="viewToggle === ProgramDisplayType.CFG_BASIC_BLOCKS"

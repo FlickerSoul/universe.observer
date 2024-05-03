@@ -1,7 +1,7 @@
 import { useDark } from '@vueuse/core'
 import dayjs from 'dayjs'
 import { nextTick } from 'vue'
-import type { Mermaid } from 'mermaid'
+import type { Mermaid, RenderResult } from 'mermaid'
 
 export function formatDate(date: string | Date) {
   const day = dayjs(date)
@@ -9,20 +9,6 @@ export function formatDate(date: string | Date) {
     return day.format('MMM.DD')
   else
     return day.format('MMM.DD,YYYY')
-}
-
-export function stringHash(str: string) {
-  let hash = 0
-  let i
-  let chr
-  if (str.length === 0)
-    return hash
-  for (i = 0; i < str.length; i++) {
-    chr = str.charCodeAt(i)
-    hash = ((hash << 5) - hash) + chr
-    hash |= 0 // Convert to 32bit integer
-  }
-  return hash
 }
 
 export const isDark = useDark()
@@ -93,12 +79,10 @@ export async function renderMermaidInPlace() {
   await mermaid.run({ nodes: document.querySelectorAll('pre.mermaid-content') })
 }
 
-export async function renderMermaidToElement(id: string, content: string): Promise<string> {
+export async function renderMermaidToElement(id: string, content: string): Promise<RenderResult> {
   const { default: mermaid } = await import('mermaid')
 
   initMermaid(mermaid)
 
-  const { svg } = await mermaid.render(id, content)
-
-  return svg
+  return await mermaid.render(id, content)
 }
