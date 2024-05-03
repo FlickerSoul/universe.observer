@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "build:vercel": "git clone --depth=1 https://github.com/sampsyo/bril && cargo install --path ./bril/bril-rs/bril2json && pnpm build",
+    "build:vercel": "if [ ! -d \"bril\" ] ; then git clone --depth=1 https://github.com/sampsyo/bril; fi && cargo install --path ./bril/bril-rs/bril2json && pnpm build",
     "build": "env NODE_ENV=production vite-ssg build -c vite.config.ts",
     "preview": "vite preview",
     "lint": "eslint .",

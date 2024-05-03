@@ -45,3 +45,4 @@ vite.config.ts.*.mjs
 __pycache__/
 
 .vite-ssg-temp/
+/bril/
