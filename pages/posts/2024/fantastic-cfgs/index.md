@@ -127,6 +127,107 @@ They are called **forward analysis** and **backward analysis**, respectively.
 
 ## Optimizations
 
+### Reaching Definition And Flow Analysis Framework
+
+This is rather a toolkit instead of an optimization. To understand this
+framework, we need several terminologies.
+
+- A definition (of a variable) is an instruction that writes value to a (the)
+  variable; thus every instruction that writes to a variable is a definition.
+- A use of variables is when the instruction uses the variables.
+- An available definition at a given point in the program is a definition
+  reaches the given point.
+- A kill of a definition (of a variable) happens when a new definition (of the
+  variable) is available.
+
+Using the terminologies above, we can formulate the reaching definition problem
+as: when a variable is used at a point in the problem, which definitions of the
+variable are still available at the point.
+
+In the following two examples, you can hover on the used variable name (in the
+instruction arguments) and see in the dropdown what the reaching definitions of
+the variable are. You can also click on the numbers to highlight where the
+definition is.
+
+<ProgCycle :progs="RDCycle" ref="rd" />
+
+In the <c @click="browseRD(1)">first</c> example, the definition of `a` at line
+5 kills the
+definition of `a` at line 2. Thus, before line 5, when `a` is used to
+construct `b`, the reaching definition is the instruction at line 2; after line
+5, when `a` is used in the return instruction, the reaching definition is newer
+instruction at line `5`.
+
+In the <c @click="browseRD(2)">second</c> example, there are two reaching
+definitions for variable `a` and `b`, respectively, when they are used in the
+highlighted line. This CFG shows this clearly: there are two paths to get to the
+highlighted lines and in each path there is a definition of different of `a`
+and `b`. Check the hover dropdown to see where the definitions are!
+
+Since we are trying to identify how far the definition has survived along the
+function's execution, it is natural to use forward analysis and have do book
+keeping on definitions of variables after each execution of an instruction in
+the problem.
+
+The general idea of the algorithm of identifying reaching definition relies on
+the observation that a new definition of a variable kills all previous
+definitions of the variable, for a variable can only store one value thus only
+allow one write at a time. The immediately next instruction and the all the
+instructions come after the new definition will use the new definition,
+until a newer definition is established. When we are doing note keeping for each
+instruction, it would be nice to know what has been made available before the
+execution of the instruction; this means if the instruction creates a new
+definition, we just need to update the note and pass it to next instruction,
+because after the execution of the instruction, the corresponding variable will
+have new definition; when the instruction only uses variables, we just need to
+pass the note as it is, since no new definitions need to be kept.
+
+The previous description shows how the note is populated with definitions and
+how a definition is killed and repopulated. We can see how the information
+is generated, flows, and changes from the start of the function til the end.
+
+However, we are missing a subtle thing for the algorithm to
+work correctly: how notes from different paths are combined, an scenario
+illustrated in the <c @click="browseRD(2)">second</c> example. When there are
+many paths to get to an instruction, each path is likely to have a note of
+definitions. For instance, in the <c @click="browseRD(2)">second</c> example,
+both paths have defined variable `a` independently. It is natural to take a
+union of all the notes since we want to know all the definitions that have
+survived until the instruction.
+
+In general, an flow analysis on CFGs can be done if three things are specified
+for a instruction:
+
+- initial information for the instruction
+- how information flowed into the instruction is combined, along with the
+  initial information
+- how information is generated and killed
+
+Then, with the help from a general solver, which can take this information and
+produces the final results, we can obtain our solution with less boilerplate.
+
+We can formulate the reaching definition using the framework above. The
+information flow among the instructions is a mapping from variable names to a
+set of lines of available definitions. A mapping will be denoted in set
+notation, where the keys are unique variable names and the values are a set of
+line numbers where the reaching definitions originate.
+
+- Initial information are $\emptyset$ (empty mappings) except the first
+  instruction
+  in the function: the first instruction contains definitions that defines
+  function arguments.
+- Let $R_{\text{in}}^i$ denote the information flowing from the $i$th
+  predecessor of the instruction. Then the combined result
+  is $R_{\text{in}} = \cup_i R_{\text{in}}^i$, where the union ($\cup$) notation
+  means merging two mappings into a single mapping in which a key (variable
+  name) is mapped to the union of the values (sets of line numbers) from the two
+  mappings.
+- If the instruction writes to a variable named $k$ and has line number $n$,
+  then the information flowing
+  out is $R_\text{out} = R_\text{in} \setminus \{k\} \cup \{k \to [n]\}$.
+- If the the instruction does not write to any variable, then the information
+  flowing out is $R_\text{out} = R_\text{in}$.
+
 ### Dead Assignment Elimination
 
 [Dead code](https://www.wikiwand.com/en/Dead_code) can be loosely understood as
@@ -174,6 +275,8 @@ We can formulate algorithm into two steps:
 2. remove those assignments, repeat from previous step until no dead assignment
    is found
 
+We can also use the data flow framework discussed in the previous section.
+
 ### Local Value Numbering
 
 Local value numbering comes in handy when we are dealing with aliases and
@@ -202,39 +305,3 @@ numbers. Whenever a variable is assigned, denote it's value as a number and
 points the variable to the number; whenever a variable is used, query the number
 associated with the variable, and try use the value instead of variable.
 
-### Reaching Definition And Flow Analysis Framework
-
-This is rather a toolkit instead of an optimization. To understand this
-framework, we need several terminologies.
-
-- A definition (of a variable) is an instruction that writes value to a (the)
-  variable; thus every instruction that writes to a variable is a definition.
-- A use of variables is when the instruction uses the variables.
-- An available definition at a given point in the program is a definition
-  reaches the given point.
-- A kill of a definition (of a variable) happens when a new definition (of the
-  variable) is available.
-
-Using the terminologies above, we can formulate the reaching definition problem
-as: when a variable is used at a point in the problem, which definitions of the
-variable are still available at the point.
-
-In the following two examples, you can hover on the used variable name (in the
-instruction arguments) and see in the dropdown what the reaching definitions of
-the variable are. You can also click on the numbers to highlight where the
-definition is.
-
-<ProgCycle :progs="RDCycle" ref="rd" />
-
-In the <c @click="browseRD(1)">first</c> example, the definition of `a` at line
-5 kills the
-definition of `a` at line 2. Thus, before line 5, when `a` is used to
-construct `b`, the reaching definition is the instruction at line 2; after line
-5, when `a` is used in the return instruction, the reaching definition is newer
-instruction at line `5`.
-
-In the <c @click="browseRD(2)">second</c> example, there are two reaching
-definitions for variable `a` and `b`, respectively, when they are used in the
-highlighted line. This CFG shows this clearly: there are two paths to get to the
-highlighted lines and in each path there is a definition of different of `a`
-and `b`. Check the hover dropdown to see where the definitions are!
