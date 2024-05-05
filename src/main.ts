@@ -42,7 +42,7 @@ const UseFloatingVue: Plugin<FloatingVueConfig> = {
           delay: 0,
           handleResize: false,
           autoHide: true,
-          instantMove: true,
+          instantMove: false,
           flip: false,
           arrowPadding: 8,
           autoBoundaryMaxSize: true,

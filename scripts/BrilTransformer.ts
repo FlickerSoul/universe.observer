@@ -158,23 +158,35 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
                               },
                               ...Array.from(reachingDefLines)
                                 .sort((a, b) => a - b)
-                                .map((line, index) => {
+                                .flatMap((line, index) => {
                                   const targetId = generateId(this.options.lang, this.meta.transformRd, line)
                                   const separator = index === reachingDefLines.size - 1 ? '' : ', '
-                                  return {
-                                    type: 'element',
-                                    tagName: 'a',
-                                    properties: {
-                                      '@click': generateClickCallback(targetId),
-                                      'class': ['cursor-pointer'],
-                                    },
-                                    children: [
-                                      <Text>{
-                                        type: 'text',
-                                        value: `${line}${separator}`,
+                                  return [
+                                    {
+                                      type: 'element',
+                                      tagName: 'a',
+                                      properties: {
+                                        '@click': generateClickCallback(targetId),
+                                        'class': ['cursor-pointer'],
                                       },
-                                    ],
-                                  }
+                                      children: [
+                                        <Text>{
+                                          type: 'text',
+                                          value: `${line}`,
+                                        },
+                                      ],
+                                    },
+                                    {
+                                      type: 'element',
+                                      tagName: 'span',
+                                      children: [
+                                        {
+                                          type: 'text',
+                                          value: separator,
+                                        },
+                                      ],
+                                    },
+                                  ]
                                 }),
                             ],
                           },

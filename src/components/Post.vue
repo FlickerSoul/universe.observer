@@ -213,7 +213,7 @@ useHead({
 <style lang="sass">
 @import 'floating-vue/dist/style.css'
 .v-popper__inner
-  padding: 0 0.5em
+  padding: 0.2em 0.7em
 </style>
 
 <style scoped lang="sass">
