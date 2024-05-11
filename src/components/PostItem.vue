@@ -13,7 +13,10 @@ function handleClick(e: MouseEvent) {
   if (target.tagName === 'A' && target.closest('a'))
     return
 
-  router.push({ path: post.path })
+  if (e.metaKey)
+    window.open(post.path, '_blank')
+  else
+    router.push({ path: post.path })
 }
 </script>
 
