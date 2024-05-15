@@ -1,10 +1,10 @@
-import { execSync } from 'node:child_process'
-import type { ShikiTransformer, ThemedToken } from 'shiki'
-import { addClassToHast, getHighlighter } from 'shiki'
-import type { Element, Properties, Text } from 'hast'
-import type { RDResult } from '../pages/posts/2024/fantastic-cfgs/utils/rd'
-import { reachingDefinition } from '../pages/posts/2024/fantastic-cfgs/utils/rd'
-import { loadBril } from '../pages/posts/2024/fantastic-cfgs/utils/tools'
+import {execSync} from 'node:child_process'
+import type {ShikiTransformer, ThemedToken} from 'shiki'
+import {addClassToHast, getHighlighter} from 'shiki'
+import type {Element, Properties, Text} from 'hast'
+import type {RDResult} from '../pages/posts/2024/fantastic-cfgs/utils/rd'
+import {reachingDefinition} from '../pages/posts/2024/fantastic-cfgs/utils/rd'
+import {loadBril} from '../pages/posts/2024/fantastic-cfgs/utils/tools'
 
 declare module 'shiki' {
   interface ShikiTransformerContextMeta {
@@ -44,8 +44,9 @@ function addIdToHast(hast: Element, id: string) {
   return hast
 }
 
-function generateId(lang: string, prefix: string, row: number) {
-  return `${lang}-${prefix}-${row}`
+function generateId(lang: string, prefix: string, row: number, variable: string) {
+  const escapedVariable = variable.replace(/[^a-zA-Z0-9]/g, '-')
+  return `${lang}-${prefix}-${row}-${escapedVariable}`
 }
 
 function generateClickCallback(id: string) {
@@ -77,7 +78,7 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
       })
       this.meta.codeLines = code.split('\n')
 
-      const cmd = execSync('bril2json -p', { input: code })
+      const cmd = execSync('bril2json -p', {input: code})
       const json = cmd.toString()
 
       this.meta.rdInfo = reachingDefinition(loadBril(JSON.parse(json)))
@@ -98,15 +99,17 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
 
       const explanation = token.explanation
       if (explanation && explanation.length > 0) {
+
         const firstExplanation = explanation[0]
         const scopes = firstExplanation.scopes
         const isVariable = scopes.filter(s => s.scopeName === VARIABLE_SCOPE).length > 0
         const isDestVariable = scopes.filter(s => s.scopeName === DEST_VARIABLE_SCOPE).length > 0
+        const content = token.content.trim()
 
         addClassToHast(hast, isVariable ? 'bril-variable' : isDestVariable ? 'bril-dest-variable' : '')
 
         if (isDestVariable) {
-          const id = generateId(this.options.lang, this.meta.transformRd, row)
+          const id = generateId(this.options.lang, this.meta.transformRd, row, content)
           return addIdToHast(hast, id)
         } else if (isVariable) {
           // note: token col = bril json col - 1
@@ -159,7 +162,7 @@ export async function BrilTransformerFactory(bril: any, nord: any, rose: any): P
                               ...Array.from(reachingDefLines)
                                 .sort((a, b) => a - b)
                                 .flatMap((line, index) => {
-                                  const targetId = generateId(this.options.lang, this.meta.transformRd, line)
+                                  const targetId = generateId(this.options.lang, this.meta.transformRd, line, content)
                                   const separator = index === reachingDefLines.size - 1 ? '' : ', '
                                   return [
                                     {
