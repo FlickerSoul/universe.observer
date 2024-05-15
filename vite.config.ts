@@ -1,7 +1,7 @@
-import { resolve } from 'node:path'
+import {resolve} from 'node:path'
 import * as fs from 'node:fs'
 import * as process from 'node:process'
-import { defineConfig } from 'vite'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
 import imports from 'unplugin-auto-import/vite'
@@ -11,7 +11,7 @@ import anchor from 'markdown-it-anchor'
 import linkattr from 'markdown-it-link-attributes'
 import toc from 'markdown-it-table-of-contents'
 import unocss from 'unocss/vite'
-import { presetAttributify, presetIcons, presetUno, presetWebFonts, transformerDirectives } from 'unocss'
+import {presetAttributify, presetIcons, presetUno, presetWebFonts, transformerDirectives} from 'unocss'
 import components from 'unplugin-vue-components/vite'
 import katex from '@uniob/markdown-it-katex'
 import sup from 'markdown-it-sup'
@@ -19,7 +19,7 @@ import sub from 'markdown-it-sub'
 import mark from 'markdown-it-mark'
 import Inspect from 'vite-plugin-inspect'
 import generateSitemap from 'vite-plugin-pages-sitemap'
-import type { RouteRecordNormalized, RouteRecordRaw } from 'vue-router'
+import type {RouteRecordNormalized, RouteRecordRaw} from 'vue-router'
 import MarkdownItShiki from '@shikijs/markdown-it'
 import {
   transformerMetaHighlight,
@@ -29,19 +29,19 @@ import {
   transformerNotationHighlight,
 } from '@shikijs/transformers'
 import MarkdownItGitHubAlerts from 'markdown-it-github-alerts'
-import { slugify } from './scripts/routing-support'
-import { checkCustomComponent, katexOptions } from './scripts/tex-defs'
-import { customFenceWrapper, retainMermaid } from './scripts/markdown-custom-fences'
+import {slugify} from './scripts/routing-support'
+import {checkCustomComponent, katexOptions} from './scripts/tex-defs'
+import {customFenceWrapper, retainMermaid} from './scripts/markdown-custom-fences'
 import wrapMagnifier from './scripts/markdown-img-wrapper'
 import ViteLoadString from './scripts/vite-load-string'
-import { BrilTransformerFactory } from './scripts/BrilTransformer'
+import {BrilTransformerFactory} from './scripts/BrilTransformer'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
     alias: [
       // rename imports
-      { find: '~/', replacement: `${resolve(__dirname, 'src')}/` },
+      {find: '~/', replacement: `${resolve(__dirname, 'src')}/`},
     ],
   },
   optimizeDeps: {
@@ -66,7 +66,7 @@ export default defineConfig({
         presetUno(),
         presetWebFonts({
           fonts: {
-            sans: [{ name: 'Inter', weights: [400, 500, 600], italic: true }],
+            sans: [{name: 'Inter', weights: [400, 500, 600], italic: true}],
             mono: ['JetBrains Mono', 'monospace'],
           },
         }),
@@ -95,7 +95,7 @@ export default defineConfig({
       extendRoute(route) {
         const path = resolve(__dirname, route.component.slice(1))
         const md = fs.readFileSync(path, 'utf-8')
-        const data = matter(md, { excerpt_separator: '<!-- more -->' })
+        const data = matter(md, {excerpt_separator: '<!-- more -->'})
         route.meta = Object.assign(route.meta || {}, {
           frontmatter: {
             ...data.data,
@@ -160,7 +160,7 @@ export default defineConfig({
               transformerNotationErrorLevel(),
               transformerNotationHighlight(),
               transformerNotationFocus(),
-              await BrilTransformerFactory(bril, nord, rosePineDawn),
+              ...await BrilTransformerFactory(bril, nord, rosePineDawn),
             ],
           })
         })()
@@ -170,7 +170,7 @@ export default defineConfig({
           slugify,
           permalink: anchor.permalink.linkInsideHeader({
             symbol: '🔗',
-            renderAttrs: () => ({ 'aria-hidden': 'true' }),
+            renderAttrs: () => ({'aria-hidden': 'true'}),
           }),
         })
         md.use(linkattr, {
