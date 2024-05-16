@@ -1,6 +1,12 @@
 import type { BasicBlock } from './group-basic-blocks'
 import { groupBasicBlocksForFun } from './group-basic-blocks'
-import type { Constant, Instruction, Operation, Program, ValueInstruction } from './types'
+import type {
+  Constant,
+  Instruction,
+  Operation,
+  Program,
+  ValueInstruction,
+} from './types'
 import { funcBlocksToFunc } from './bril-txt'
 
 type RefType = string
@@ -31,8 +37,7 @@ interface NonCommutativeOp extends BinOp {
 }
 
 function instrToDest(instr: Instruction): string | undefined {
-  if ('dest' in instr)
-    return instr.dest
+  if ('dest' in instr) return instr.dest
   return undefined
 }
 
@@ -136,20 +141,21 @@ class NumberPool {
     return this.counter++
   }
 
-  updateWithInstruction(instr: Instruction, instrIndex: number): Commit | undefined {
+  updateWithInstruction(
+    instr: Instruction,
+    instrIndex: number,
+  ): Commit | undefined {
     const op = instrToOp(instr)
 
     // if the operation uses variables, record which variables they used and their numbers
-    if (!op)
-      return undefined
+    if (!op) return undefined
 
     const valueOp = this.opToValueOp(op)
 
     if (op.refs && op.refs.length > 0) {
       for (const refVar of op.refs) {
         const usedRefVarNumber = this.variableMap.get(refVar)
-        if (usedRefVarNumber === undefined)
-          continue
+        if (usedRefVarNumber === undefined) continue
 
         // record the variables that are used
         this.commitVariable(refVar, usedRefVarNumber, instrIndex)
@@ -158,8 +164,7 @@ class NumberPool {
 
     const dest = instrToDest(instr)
     // if the operation does not produce a value, return
-    if (!dest)
-      return undefined
+    if (!dest) return undefined
 
     // get the value from the operation
     // get the number of the value
@@ -228,8 +233,7 @@ class NumberPool {
     const instrCommit = this.variableCommits.get(instrIndex)!
 
     const commit = this.generateCommit(varNumber)
-    if (commit === undefined)
-      throw new Error('Commit should not be undefined')
+    if (commit === undefined) throw new Error('Commit should not be undefined')
 
     instrCommit.set(varName, commit)
   }
@@ -252,7 +256,7 @@ class NumberPool {
       return {
         type: op.type,
         op: op.op,
-        refs: op.refs.map((variable) => {
+        refs: op.refs.map(variable => {
           let variableNumber = this.variableMap.get(variable)
           if (variableNumber === undefined)
             variableNumber = this.updateWithVariable(variable)
@@ -311,7 +315,7 @@ export function applyLVNForBlock(block: BasicBlock) {
     } else {
       const argSwap = pool.variableCommits.get(index)
       if (argSwap && argSwap.size > 0) {
-        (instr as Operation).args = (instr as Operation).args?.map((arg) => {
+        ;(instr as Operation).args = (instr as Operation).args?.map(arg => {
           return argSwap.get(arg)?.ref || arg
         })
       }
@@ -321,8 +325,8 @@ export function applyLVNForBlock(block: BasicBlock) {
 
 export function applyLvnToProgram(prog: Program): Program {
   return {
-    functions: prog.functions.map((func) => {
-      const blocks = groupBasicBlocksForFun(func).map((block) => {
+    functions: prog.functions.map(func => {
+      const blocks = groupBasicBlocksForFun(func).map(block => {
         applyLVNForBlock(block)
         return block
       })

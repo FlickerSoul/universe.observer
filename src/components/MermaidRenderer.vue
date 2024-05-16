@@ -18,8 +18,7 @@ const lightSvg = ref<string>('')
 
 async function renderMermaid() {
   const mermaidText = props.mermaidContent || mermaid.value?.textContent
-  if (!mermaidText)
-    return
+  if (!mermaidText) return
 
   if (dark.value) {
     const hash = `msvg-${uid}-dark`
@@ -49,7 +48,11 @@ onMounted(renderMermaid)
     </Magnifier>
 
     <Magnifier>
-      <div ref="light" class="mermaid-container light-mermaid" v-html="lightSvg" />
+      <div
+        ref="light"
+        class="mermaid-container light-mermaid"
+        v-html="lightSvg"
+      />
     </Magnifier>
   </div>
 </template>

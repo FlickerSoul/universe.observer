@@ -1,5 +1,3 @@
-import {reachingDefinitionTransformer} from './reaching-definition';
+import { reachingDefinitionTransformer } from './reaching-definition'
 
-export {
-  reachingDefinitionTransformer
-}
+export { reachingDefinitionTransformer }

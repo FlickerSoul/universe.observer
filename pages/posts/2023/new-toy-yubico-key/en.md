@@ -1,9 +1,9 @@
 ---
-title: "Yubico Key"
+title: 'Yubico Key'
 createdAt: 2023-03-03
 updatedAt: 2023-03-03
 lang: en
-tags: 
+tags:
   - 碎碎念
 abstract: I got two Yubico keys and they are cool!
 ---
@@ -20,4 +20,4 @@ Oh, the purpose of writing this post is to show that you can now click on the la
 
 下一个要做的是处理一下图像的压缩，可能写个Vite的插件看看，在 build 的时候转化退片
 
-The next goal is to work on image compression. Maybe I should write a Vite plugin so that it can shrink images during compile time. 
+The next goal is to work on image compression. Maybe I should write a Vite plugin so that it can shrink images during compile time.

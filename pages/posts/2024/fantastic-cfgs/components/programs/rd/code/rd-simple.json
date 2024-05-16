@@ -23,10 +23,7 @@
           "value": 1
         },
         {
-          "args": [
-            "a",
-            "one"
-          ],
+          "args": ["a", "one"],
           "dest": "b",
           "op": "add",
           "pos": {
@@ -36,10 +33,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "a",
-            "b"
-          ],
+          "args": ["a", "b"],
           "dest": "a",
           "op": "add",
           "pos": {
@@ -49,9 +43,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "a"
-          ],
+          "args": ["a"],
           "op": "ret",
           "pos": {
             "col": 5,

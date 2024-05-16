@@ -32,9 +32,11 @@ export interface IPostData {
   wip?: boolean
 }
 
-export type IListedPostData =
-  Omit<IPostData, 'display' | 'hasComments' | 'createdAt' | 'updatedAt'> & {
-    path: string
-    createdAt?: Date
-    updatedAt?: Date
-  }
+export type IListedPostData = Omit<
+  IPostData,
+  'display' | 'hasComments' | 'createdAt' | 'updatedAt'
+> & {
+  path: string
+  createdAt?: Date
+  updatedAt?: Date
+}

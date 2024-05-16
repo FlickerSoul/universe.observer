@@ -8,7 +8,11 @@ const { info } = defineProps<{
 
 <template>
   <div :id="`cv-info-item-${info.name}`">
-    <i :class="[info.icon]" :title="info.name" class="cv-info-icon inline-block text-lg mr-2 align-middle" />
+    <i
+      :class="[info.icon]"
+      :title="info.name"
+      class="cv-info-icon inline-block text-lg mr-2 align-middle"
+    />
     <a v-if="info.url" :href="info.url" target="_blank">{{ info.value }}</a>
     <span v-else :class="{ 'font-mono': info.mono }">{{ info.value }}</span>
   </div>

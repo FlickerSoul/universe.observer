@@ -9,7 +9,16 @@ const rosePineDawn = JSON.parse(rosePineDawnJson)
 
 const highlighter = await getHighlighter({
   themes: [nord, rosePineDawn],
-  langs: ['typescript', 'c++', 'python', 'markdown', 'latex', 'swift', 'kotlin', bril],
+  langs: [
+    'typescript',
+    'c++',
+    'python',
+    'markdown',
+    'latex',
+    'swift',
+    'kotlin',
+    bril,
+  ],
 })
 
 export const CustomHighlighter: HighlighterGeneric<any, any> = {
@@ -18,9 +27,7 @@ export const CustomHighlighter: HighlighterGeneric<any, any> = {
     return highlighter.codeToHtml(code, {
       ...options,
       mergeWhitespaces: false,
-      transformers: [
-        ...options.transformers ?? [],
-      ],
+      transformers: [...(options.transformers ?? [])],
     })
   },
 }

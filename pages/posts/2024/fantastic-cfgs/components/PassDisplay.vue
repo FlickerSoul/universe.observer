@@ -12,9 +12,10 @@ defineProps<{
 <template>
   <MagicMove v-if="codePasses !== undefined" lang="bril" :codes="codePasses" />
 
-  <CompiledMagicMove v-else-if="compiledPasses !== undefined" :steps="compiledPasses" />
+  <CompiledMagicMove
+    v-else-if="compiledPasses !== undefined"
+    :steps="compiledPasses"
+  />
 
-  <div v-else>
-    Error: No passes provided
-  </div>
+  <div v-else>Error: No passes provided</div>
 </template>

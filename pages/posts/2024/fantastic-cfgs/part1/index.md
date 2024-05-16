@@ -1,15 +1,15 @@
 ---
 title: Fantastic CFGs and Their Optimizations
 subtitle: CS6120 learning note part 1
-#abstract: 
+#abstract:
 lang: en
-#langs: 
+#langs:
 tags:
   - PL
   - compiler
 createdAt: 2024-04-20
 updatedAt: 2024-04-20
-#hidden: 
+#hidden:
 #hasComments:
 #wip: false
 ---
@@ -21,6 +21,7 @@ following along the course and the exercises. This post is the first part of
 learning notes of the course, containing introduction to CFGs, and data flow
 analysis framework, optimizations like reaching definitions, dead code
 elimination, and local value numbering.
+
 <!-- more -->
 
 [[TOC]]
@@ -38,7 +39,7 @@ parsed from pure strings into defined
 [lexical tokens](https://www.wikiwand.com/en/Lexical_token); then tokens are
 transformed into structured data like
 [abstract syntax trees (ASTs)](https://www.wikiwand.com/en/Abstract_syntax_tree);
-[semantics](https://www.wikiwand.com/en/Semantics_(computer_science)) are given
+[semantics](<https://www.wikiwand.com/en/Semantics_(computer_science)>) are given
 based on the ASTs, often in the form of
 [intermediate representations (IRs)](https://www.wikiwand.com/en/Intermediate_representation);
 in the end, we eventually get
@@ -306,4 +307,3 @@ number instead of their canonical names, and point their canonical names to the
 numbers. Whenever a variable is assigned, denote it's value as a number and
 points the variable to the number; whenever a variable is used, query the number
 associated with the variable, and try use the value instead of variable.
-

@@ -6,8 +6,8 @@ const parent = ref<HTMLDivElement>()
 const copyStatus = ref<boolean | undefined>(undefined)
 
 function copyParentText() {
-  const codeNode: HTMLPreElement | null | undefined
-    = parent.value?.parentElement?.parentElement?.querySelector('pre.shiki')
+  const codeNode: HTMLPreElement | null | undefined =
+    parent.value?.parentElement?.parentElement?.querySelector('pre.shiki')
   if (codeNode?.textContent) {
     const { isSupported, copy } = useClipboard()
     if (!isSupported) {
@@ -29,7 +29,13 @@ function copyParentText() {
   <div ref="parent" class="copy-button cursor-pointer" @click="copyParentText">
     <div
       class="copy-icon"
-      :class="[copyStatus === undefined ? 'i-mdi-content-copy' : (copyStatus ? 'i-mdi-check' : 'i-mdi-error')]"
+      :class="[
+        copyStatus === undefined
+          ? 'i-mdi-content-copy'
+          : copyStatus
+            ? 'i-mdi-check'
+            : 'i-mdi-error',
+      ]"
     />
   </div>
 </template>

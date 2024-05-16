@@ -6,7 +6,11 @@ import BrilCode from './code/lvn-simple.json?raw'
 </script>
 
 <template>
-  <ProgDisplay :prog="BrilCode" :init-view="ProgramDisplayType.PROGRAM" :optionals="{ lvn: true }">
+  <ProgDisplay
+    :prog="BrilCode"
+    :init-view="ProgramDisplayType.PROGRAM"
+    :optionals="{ lvn: true }"
+  >
     <ProgramCode />
   </ProgDisplay>
 </template>

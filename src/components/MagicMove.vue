@@ -2,7 +2,10 @@
 import { ShikiMagicMove } from 'shiki-magic-move/vue'
 import { computed, defineExpose, ref } from 'vue'
 
-import type { MagicMoveDifferOptions, MagicMoveRenderOptions } from 'shiki-magic-move/types'
+import type {
+  MagicMoveDifferOptions,
+  MagicMoveRenderOptions,
+} from 'shiki-magic-move/types'
 import { CustomHighlighter as highlighter } from '~/logics/highlighter'
 
 import { isDark } from '~/logics'
@@ -11,14 +14,17 @@ import HighlighterWrapper from '~/components/HighlighterWrapper.vue'
 
 type Option = MagicMoveRenderOptions & MagicMoveDifferOptions
 
-const props = withDefaults(defineProps<{
-  options?: Option
-  codes: string[]
-  defaultIndex?: number
-  lang: string
-}>(), {
-  defaultIndex: 0,
-})
+const props = withDefaults(
+  defineProps<{
+    options?: Option
+    codes: string[]
+    defaultIndex?: number
+    lang: string
+  }>(),
+  {
+    defaultIndex: 0,
+  },
+)
 
 const DEFAULT_OPTIONS = {
   lineNumbers: true,
@@ -35,7 +41,7 @@ const processedOptions = computed(() => {
   } as Option
 })
 
-const usedTheme = computed(() => isDark.value ? 'nord' : 'rose-pine-dawn')
+const usedTheme = computed(() => (isDark.value ? 'nord' : 'rose-pine-dawn'))
 
 const index = ref(props.defaultIndex)
 const code = computed(() => props.codes[index.value])
@@ -44,8 +50,7 @@ const canPrev = computed(() => index.value > 0)
 const canNext = computed(() => index.value < props.codes.length - 1)
 
 function next() {
-  if (canNext.value)
-    index.value = (index.value + 1) % props.codes.length
+  if (canNext.value) index.value = (index.value + 1) % props.codes.length
 }
 
 function prev() {
@@ -72,7 +77,12 @@ defineExpose({
     </HighlighterWrapper>
     <CycleOperator
       class="mt-1"
-      :can-prev="canPrev" :next="next" :can-next="canNext" :prev="prev" :total-steps="codes.length" :step="index"
+      :can-prev="canPrev"
+      :next="next"
+      :can-next="canNext"
+      :prev="prev"
+      :total-steps="codes.length"
+      :step="index"
     />
   </div>
 </template>

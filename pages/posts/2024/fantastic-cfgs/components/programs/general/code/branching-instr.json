@@ -23,10 +23,7 @@
           "value": 5
         },
         {
-          "args": [
-            "x",
-            "five"
-          ],
+          "args": ["x", "five"],
           "dest": "y",
           "op": "add",
           "pos": {
@@ -36,9 +33,7 @@
           "type": "int"
         },
         {
-          "labels": [
-            "branching"
-          ],
+          "labels": ["branching"],
           "op": "jmp",
           "pos": {
             "col": 5,
@@ -63,12 +58,8 @@
           }
         },
         {
-          "args": [
-            "y"
-          ],
-          "funcs": [
-            "foo"
-          ],
+          "args": ["y"],
+          "funcs": ["foo"],
           "op": "call",
           "pos": {
             "col": 5,
@@ -76,9 +67,7 @@
           }
         },
         {
-          "args": [
-            "y"
-          ],
+          "args": ["y"],
           "op": "ret",
           "pos": {
             "col": 5,
@@ -101,9 +90,7 @@
       ],
       "instrs": [
         {
-          "args": [
-            "x"
-          ],
+          "args": ["x"],
           "op": "print",
           "pos": {
             "col": 5,

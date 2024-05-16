@@ -1,6 +1,12 @@
-import type {Program} from './types'
-import {groupBasicBlocksForFun, InstrNode} from './group-basic-blocks'
-import {Equals, GenFunc, InstrDataFlowMachine, KillFunc, MergeFunc} from "./data-flow-machine";
+import type { Program } from './types'
+import { groupBasicBlocksForFun, InstrNode } from './group-basic-blocks'
+import {
+  Equals,
+  GenFunc,
+  InstrDataFlowMachine,
+  KillFunc,
+  MergeFunc,
+} from './data-flow-machine'
 
 type FuncName = string
 type VarName = string
@@ -19,11 +25,9 @@ class Node<T> {
     this.next = next
     this.prev = prev
 
-    if (next)
-      next.prev = this
+    if (next) next.prev = this
 
-    if (prev)
-      prev.next = this
+    if (prev) prev.next = this
   }
 }
 
@@ -35,21 +39,17 @@ class Deque<T> {
   pushBack(data: T) {
     const node = new Node<T>(data, undefined, this.end)
     this.end = node
-    if (this.start === undefined)
-      this.start = node
+    if (this.start === undefined) this.start = node
     this.size++
   }
 
   popFront(): T | undefined {
-    if (this.start === undefined)
-      return undefined
+    if (this.start === undefined) return undefined
 
     const data = this.start.data
     this.start = this.start.next
-    if (this.start === undefined)
-      this.end = undefined
-    else
-      this.start.prev = undefined
+    if (this.start === undefined) this.end = undefined
+    else this.start.prev = undefined
     this.size--
     return data
   }
@@ -60,24 +60,20 @@ class Deque<T> {
 }
 
 function mapEqual<K, V>(a: Map<K, Set<V>>, b: Map<K, Set<V>>): boolean {
-  if (a.size !== b.size)
-    return false
+  if (a.size !== b.size) return false
 
   for (const [key, value] of a) {
-    if (!b.has(key) || setEqual(b.get(key), value))
-      return false
+    if (!b.has(key) || setEqual(b.get(key), value)) return false
   }
 
   return true
 }
 
 function setEqual<T>(a: Set<T>, b: Set<T>): boolean {
-  if (a.size !== b.size)
-    return false
+  if (a.size !== b.size) return false
 
   for (const elem of a) {
-    if (!b.has(elem))
-      return false
+    if (!b.has(elem)) return false
   }
 
   return true
@@ -99,9 +95,9 @@ class RDData implements Equals {
 
 export function rdWithMachine(prog: Program): RDResult {
   return new Map(
-    prog.functions.map((func) => {
+    prog.functions.map(func => {
       const blocks = groupBasicBlocksForFun(func)
-      const genFunc: GenFunc<InstrNode, RDData> = (node) => {
+      const genFunc: GenFunc<InstrNode, RDData> = node => {
         if ('dest' in node.instr)
           return [new RDData(node.instr.dest, node.instrRow())]
         return []
@@ -113,43 +109,46 @@ export function rdWithMachine(prog: Program): RDResult {
         if ('dest' in node.instr) {
           // kill those that's not defined in the current node
           const dest = node.instr.dest
-          return inData.filter((rd) => (rd.variable === dest && rd.index !== node.instrRow()))
+          return inData.filter(
+            rd => rd.variable === dest && rd.index !== node.instrRow(),
+          )
         }
 
         return []
       }
 
-      const machine = new InstrDataFlowMachine(genFunc, killFunc, mergeFunc).loadInstrGraph(blocks)
+      const machine = new InstrDataFlowMachine(
+        genFunc,
+        killFunc,
+        mergeFunc,
+      ).loadInstrGraph(blocks)
 
       machine.init(
-        machine.graph.root.index(), (func.args ?? []).map((arg) => new RDData(arg.name, func.pos.row))
+        machine.graph.root.index(),
+        (func.args ?? []).map(arg => new RDData(arg.name, func.pos.row)),
       )
 
       try {
         machine.run()
       } catch (e) {
         console.log(e)
-        return [
-          func.name,
-          new Map(),
-        ]
+        return [func.name, new Map()]
       }
 
+      const result: FuncRD = new Map(
+        Array.from(machine.dataIn.entries()).map(([index, data]) => {
+          const lineResult = data.reduce((acc, rd) => {
+            if (acc.get(rd.variable) === undefined)
+              acc.set(rd.variable, new Set())
+            acc.get(rd.variable)?.add(rd.index)
+            return acc
+          }, new Map() as RDLine)
 
-      const result: FuncRD = new Map(Array.from(machine.dataIn.entries()).map(([index, data]) => {
-
-        const lineResult = data.reduce((acc, rd) => {
-          if (acc.get(rd.variable) === undefined)
-            acc.set(rd.variable, new Set())
-          acc.get(rd.variable)?.add(rd.index)
-          return acc
-        }, new Map() as RDLine)
-
-        return [index, lineResult]
-      }))
-
+          return [index, lineResult]
+        }),
+      )
 
       return [func.name, result]
-    })
+    }),
   )
 }

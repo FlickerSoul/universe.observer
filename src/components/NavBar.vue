@@ -7,8 +7,20 @@ import DarkToggle from './DarkToggle.vue'
   <header class="header font-mono">
     <router-link class="" to="/">
       <div class="logo">
-        <img v-show="!isDark" src="/logo-black-lower.svg" alt="site logo" height="64" width="64">
-        <img v-show="isDark" src="/logo-white-lower.svg" alt="site logo" height="64" width="64">
+        <img
+          v-show="!isDark"
+          src="/logo-black-lower.svg"
+          alt="site logo"
+          height="64"
+          width="64"
+        />
+        <img
+          v-show="isDark"
+          src="/logo-white-lower.svg"
+          alt="site logo"
+          height="64"
+          width="64"
+        />
       </div>
     </router-link>
     <nav class="nav">
@@ -19,7 +31,7 @@ import DarkToggle from './DarkToggle.vue'
         </router-link>
         <router-link to="/posts">
           <span class="lt-md:hidden">Posts</span>
-          <div class="md:hidden i-mdi-book-settings-outline nav-icon " />
+          <div class="md:hidden i-mdi-book-settings-outline nav-icon" />
         </router-link>
         <router-link to="/toys">
           <span class="lt-md:hidden">Toys</span>
@@ -33,7 +45,12 @@ import DarkToggle from './DarkToggle.vue'
           <span class="lt-md:hidden">Friends</span>
           <div class="md:hidden i-mdi-account-group-outline nav-icon" />
         </router-link>
-        <a href="https://github.com/FlickerSoul" target="_blank" title="GitHub" class="nav-icon">
+        <a
+          href="https://github.com/FlickerSoul"
+          target="_blank"
+          title="GitHub"
+          class="nav-icon"
+        >
           <div class="i-mdi-github-box" />
         </a>
         <DarkToggle class="nav-icon" />

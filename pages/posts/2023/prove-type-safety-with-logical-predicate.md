@@ -1,8 +1,8 @@
 ---
 title: Prove Strong Normalization With Logical Predicates
 lang: en
-tags: 
-  - PL 
+tags:
+  - PL
   - learning notes
 createdAt: 2023-02-11
 updatedAt: 2023-02-11
@@ -12,7 +12,7 @@ hidden: true
 
 This post assumes that you are familiar with the [lambda calculus](https://en.wikipedia.org/wiki/Lambda_calculus) and the [simply typed lambda calculus](https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus).
 
-## Simply Typed Lambda Calculus Overview 
+## Simply Typed Lambda Calculus Overview
 
 Let's consider a simply typed lambda calculus system with base types $\Int$ and $\Bool$, and base values of $0$, $\true$, $\false$. The type system is defined as follows:
 
@@ -34,4 +34,4 @@ e &= v \mid x \mid \lambda x: \tau. e \mid \app{e_1}{e_2} \\
 \end{aligned}
 $$
 
-The typing rules are defined as follows: 
+The typing rules are defined as follows:

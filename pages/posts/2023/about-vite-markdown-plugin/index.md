@@ -8,7 +8,7 @@ tags:
 lang: en
 abstract: This website uses vite-plugin-markdown-vue extensively.
   Let's disassemble the plugin and see how it works!
-  It's surprisingly powerful and fun! 
+  It's surprisingly powerful and fun!
 ---
 
 This post is dedicated to cover the design and implementation details
@@ -26,7 +26,7 @@ import vue from '@vitejs/plugin-vue'
 import pages from 'vite-plugin-pages'
 import markdown from 'vite-plugin-vue-markdown'
 import inspect from 'vite-plugin-inspect'
-// other imports 
+// other imports
 
 export default defineConfig({
   plugins: [
@@ -35,8 +35,8 @@ export default defineConfig({
     markdown({
       // options here
     }),
-    inspect()
-  ]
+    inspect(),
+  ],
 })
 ```
 
@@ -55,13 +55,13 @@ works. Before that, let's take a peek at the inspect
 page (`localhost:5173/__inspect` on my machine) provided by
 the `vite-plugin-inspect`.
 
-~~~markdown fileName="test_simple.md" {14-23}
+````markdown fileName="test_simple.md" {14-23}
 ---
 title: test-simple
 ---
 
 ```typescript {1,2} filename="aaa.ts"
-let a = "10"
+let a = '10'
 a.trim()
 ```
 
@@ -78,7 +78,7 @@ function changeValue(){
     value.value += 1
 }
 </script>
-~~~
+````
 
 ![Markdown Vite Plugin Transform Inspect](./markdown-vite-transform.png)
 
@@ -168,8 +168,8 @@ function VitePluginMarkdown(userOptions: Options = {}): Plugin {
       // transform details
     },
     async handleHotUpdate(ctx) {
-      // hot update server impl details 
-    }
+      // hot update server impl details
+    },
   }
 }
 
@@ -186,13 +186,13 @@ export default VitePluginMarkdown
    because the markdown content has to be transformed to a Vue component before
    passed into the `vue` plugin.
 
-    - Alias
-    - User plugins with enforce: 'pre'
-    - Vite core plugins
-    - User plugins without enforce value
-    - Vite build plugins
-    - User plugins with enforce: 'post'
-    - Vite post build plugins (minify, manifest, reporting)
+   - Alias
+   - User plugins with enforce: 'pre'
+   - Vite core plugins
+   - User plugins without enforce value
+   - Vite build plugins
+   - User plugins with enforce: 'post'
+   - Vite post build plugins (minify, manifest, reporting)
 
 2. `transform` is where the transformation takes place. We can see that it's
    actually very simple. First, run the current content's id through the filter
@@ -203,10 +203,9 @@ export default VitePluginMarkdown
 
    ```ts fileName="index.ts" {3-11}
    return {
-     //... 
+     //...
      transform(raw, id) {
-       if (!filter(id))
-         return
+       if (!filter(id)) return
        try {
          return markdownToVue(id, raw)
        } catch (e: any) {
@@ -273,8 +272,8 @@ a magnifier vue component such that when you click the image, it brings up an
 overlay and enables zooming and panning features.
 
 ```ts
-import type {Plugin, TransformResult} from 'vite'
-import {createFilter} from 'vite'
+import type { Plugin, TransformResult } from 'vite'
+import { createFilter } from 'vite'
 
 export interface Options {
   wrappingTag?: string
@@ -306,8 +305,8 @@ function resolveOptions(options: Options = {}): ResolvedOptions {
 type Extractor = (code: string) => TransformResult
 
 function getExtractor(options: ResolvedOptions): Extractor {
-  return (code) => {
-    const {wrappingTag, matchRe, converter} = options
+  return code => {
+    const { wrappingTag, matchRe, converter } = options
     const matches = code.matchAll(matchRe)
 
     for (const match of matches)
@@ -320,9 +319,7 @@ function getExtractor(options: ResolvedOptions): Extractor {
   }
 }
 
-export default function MarkdownImageWrapper(
-  options: Options = {},
-): Plugin {
+export default function MarkdownImageWrapper(options: Options = {}): Plugin {
   const resolvedOptions = resolveOptions(options)
   const extractor = getExtractor(resolvedOptions)
   const filter = createFilter(resolvedOptions.include, resolvedOptions.exclude)
@@ -331,13 +328,11 @@ export default function MarkdownImageWrapper(
     name: 'markdown-image-wrapper',
     enforce: 'pre',
     transform(code, id) {
-      if (!filter(id))
-        return
+      if (!filter(id)) return
       return extractor(code)
     },
     async handleHotUpdate(ctx) {
-      if (!filter(ctx.file))
-        return
+      if (!filter(ctx.file)) return
       const defaultRead = ctx.read
       ctx.read = async () => {
         return extractor(await defaultRead()).code
@@ -354,9 +349,9 @@ can use `import Shader from './compute_shader.wgsl?raw'` directly and use it as
 a string in WebGPU.
 
 ```ts
-import type {Plugin} from 'vite'
-import {createFilter} from 'vite'
-import {dataToEsm} from '@rollup/pluginutils'
+import type { Plugin } from 'vite'
+import { createFilter } from 'vite'
+import { dataToEsm } from '@rollup/pluginutils'
 
 export type MinifyFactory = (content: string) => Promise<string> | string
 
@@ -374,9 +369,7 @@ function defaultMinify(content: string): string {
 function resolveConfig(options: UserOptions): Options {
   return {
     ...options,
-    include: [
-      '**/*.wgsl',
-    ],
+    include: ['**/*.wgsl'],
     minify: true,
   }
 }
@@ -389,8 +382,7 @@ export default function (userOptions: UserOptions = {}): Plugin {
   return {
     name: 'vite-plugin-load-string',
     async transform(source, id) {
-      if (!filter(id))
-        return
+      if (!filter(id)) return
 
       return {
         code: dataToEsm(minify ? await minify(source) : source),
@@ -399,5 +391,4 @@ export default function (userOptions: UserOptions = {}): Plugin {
     },
   }
 }
-
 ```

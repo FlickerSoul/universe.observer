@@ -9,8 +9,18 @@ const { createdAt, updatedAt } = defineProps({
 
 <template>
   <div class="font-mono flex flex-row flex-nowrap gap-4">
-    <DateDisplay v-show="createdAt" class="post-date" :date="createdAt" name="Created@" />
-    <DateDisplay v-show="updatedAt" class="post-date" :date="updatedAt" name="Updated@" />
+    <DateDisplay
+      v-show="createdAt"
+      class="post-date"
+      :date="createdAt"
+      name="Created@"
+    />
+    <DateDisplay
+      v-show="updatedAt"
+      class="post-date"
+      :date="updatedAt"
+      name="Updated@"
+    />
   </div>
 </template>
 

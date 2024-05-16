@@ -50,7 +50,10 @@ interface _IContentItem {
   endDate?: string
 }
 
-export type IContentItem = _IContentItem | (_IContentItem & HasStartDate) | (_IContentItem & HasEndDate)
+export type IContentItem =
+  | _IContentItem
+  | (_IContentItem & HasStartDate)
+  | (_IContentItem & HasEndDate)
 
 export interface ISkillItem {
   name: string

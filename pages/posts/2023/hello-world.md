@@ -1,10 +1,10 @@
 ---
-title: Hello World! 
+title: Hello World!
 abstract: Hi there! Welcome come to yet another new blog. :)
 createdAt: 2023-02-04
 updatedAt: 2023-02-08
 lang: zh
-tags: 
+tags:
   - 碎碎念
 ---
 

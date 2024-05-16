@@ -6,12 +6,15 @@ import { ShikiMagicMovePrecompiled } from 'shiki-magic-move/vue'
 import CycleOperator from '~/components/CycleOperator.vue'
 import HighlighterWrapper from '~/components/HighlighterWrapper.vue'
 
-const props = withDefaults(defineProps<{
-  steps: KeyedTokensInfo[]
-  defaultIndex?: number
-}>(), {
-  defaultIndex: 0,
-})
+const props = withDefaults(
+  defineProps<{
+    steps: KeyedTokensInfo[]
+    defaultIndex?: number
+  }>(),
+  {
+    defaultIndex: 0,
+  },
+)
 
 const step = ref(props.defaultIndex)
 
@@ -35,14 +38,16 @@ defineExpose({
 <template>
   <div>
     <HighlighterWrapper lang="">
-      <ShikiMagicMovePrecompiled
-        :steps="steps"
-        :step="step"
-      />
+      <ShikiMagicMovePrecompiled :steps="steps" :step="step" />
     </HighlighterWrapper>
     <CycleOperator
       class="mt-1"
-      :can-prev="canPrev" :next="next" :can-next="canNext" :prev="prev" :total-steps="steps.length" :step="step"
+      :can-prev="canPrev"
+      :next="next"
+      :can-next="canNext"
+      :prev="prev"
+      :total-steps="steps.length"
+      :step="step"
     />
   </div>
 </template>

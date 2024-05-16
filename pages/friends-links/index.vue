@@ -5,8 +5,9 @@ import { cursor, moveCursor } from './components/utils'
 import LinkSection from './components/LinkSection.vue'
 import Post from '~/components/Post.vue'
 
-const DESCRIPTION = 'A page containing links to my friends and some places I found interesting!'
-const TITLE = 'Friends\' Links | Universe Observer'
+const DESCRIPTION =
+  'A page containing links to my friends and some places I found interesting!'
+const TITLE = "Friends' Links | Universe Observer"
 
 useHead({
   title: TITLE,
@@ -22,7 +23,7 @@ const LINKS = {
     {
       name: 'Jabriel',
       url: 'https://wh0.is',
-      about: ['A wizard who\'s mastering Unreal Engine', 'Artist and Game Dev'],
+      about: ["A wizard who's mastering Unreal Engine", 'Artist and Game Dev'],
     },
     {
       name: 'Sima Nerush',
@@ -39,7 +40,7 @@ const LINKS = {
       url: 'https://blog.huggy.moe/',
     },
     {
-      name: 'Yihui\'s Blog',
+      name: "Yihui's Blog",
       url: 'https://yihuiblog.top/',
     },
   ],
@@ -49,11 +50,11 @@ const LINKS = {
     { name: 'STRML: Projects and Work', url: 'https://www.strml.net/' },
     { name: '虎兔手记', url: 'http://notes.localhost-8080.com/' },
     { name: '考据癖', url: 'http://localhost-8080.com/' },
-    { name: 'Halfrost\'s Field | 冰霜之地', url: 'https://halfrost.com/' },
+    { name: "Halfrost's Field | 冰霜之地", url: 'https://halfrost.com/' },
     { name: '失眠海峡', url: 'https://blog.imalan.cn/' },
     { name: '1010Code', url: 'https://andy6804tw.github.io/' },
-    { name: 'Kamikat\'s Blog', url: 'https://banana.moe/posts/' },
-    { name: 'Zirnc\'s Blog', url: 'https://blog.chungzh.cn/' },
+    { name: "Kamikat's Blog", url: 'https://banana.moe/posts/' },
+    { name: "Zirnc's Blog", url: 'https://blog.chungzh.cn/' },
     { name: '无垠', url: 'https://flyhigher.top/' },
     { name: 'Math & Programming', url: 'https://jeremykun.com/' },
     { name: '编程随想', url: 'https://program-think.blogspot.com/' },
@@ -66,7 +67,11 @@ const LINKS = {
   ],
 } as const
 
-const frontmatter = { title: 'Friends\' Links', createdAt: '2023-04-12', updatedAt: '2024-04-08' } as const
+const frontmatter = {
+  title: "Friends' Links",
+  createdAt: '2023-04-12',
+  updatedAt: '2024-04-08',
+} as const
 
 onMounted(() => {
   cursor.value = document.querySelector('#cursor') as HTMLDivElement
@@ -74,7 +79,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <Post :custom-frontmatter="frontmatter" class="link-page" @mousemove="moveCursor">
+  <Post
+    :custom-frontmatter="frontmatter"
+    class="link-page"
+    @mousemove="moveCursor"
+  >
     <LinkSection :links="LINKS.friends" name="Friends" />
     <LinkSection :links="LINKS.interestingSites" name="Interesting Sites" />
     <div id="cursor" ref="cursor">

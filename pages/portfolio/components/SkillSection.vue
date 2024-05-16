@@ -11,7 +11,11 @@ const { skills } = defineProps<{ skills: ISkillSection }>()
       {{ skills.name }}
     </div>
     <ul class="skill-listing">
-      <SkillItem v-for="skill in skills.skills" :key="skill.name" :skill="skill" />
+      <SkillItem
+        v-for="skill in skills.skills"
+        :key="skill.name"
+        :skill="skill"
+      />
     </ul>
   </div>
 </template>

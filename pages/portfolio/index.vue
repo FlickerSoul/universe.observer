@@ -22,11 +22,13 @@ useHead({
   <div class="portfolio-wrapper flex mx-auto content-center mt-5">
     <div class="info-sec">
       <div class="cv-info-avatar mb-5">
-        <img src="./head.jpg" alt="profile-photo" class="h-80% w-80% ma border-rd-50%">
+        <img
+          src="./head.jpg"
+          alt="profile-photo"
+          class="h-80% w-80% ma border-rd-50%"
+        />
       </div>
-      <div class="mb-1 text-10 cv-info-name serif-font">
-        Larry Zeng
-      </div>
+      <div class="mb-1 text-10 cv-info-name serif-font">Larry Zeng</div>
       <div class="cv-info-items">
         <InfoItem
           v-for="info in infoItems"
@@ -34,14 +36,15 @@ useHead({
           :info="info"
           class="my-1"
         />
-        <div class="i-mdi-printer hover-cursor-pointer print-button my-1" onclick="window.print();return false;" />
+        <div
+          class="i-mdi-printer hover-cursor-pointer print-button my-1"
+          onclick="window.print();return false;"
+        />
       </div>
     </div>
     <div>
       <div class="content-sec">
-        <div class="section-title">
-          Experience
-        </div>
+        <div class="section-title">Experience</div>
         <ContentItem
           v-for="content in contentItems"
           :key="content.title"
@@ -50,9 +53,7 @@ useHead({
         />
       </div>
       <div class="skill-sec">
-        <div class="section-title">
-          Skills
-        </div>
+        <div class="section-title">Skills</div>
         <SkillSection
           v-for="skills in skillSets"
           :key="skills.name"

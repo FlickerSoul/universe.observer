@@ -5,7 +5,7 @@ const route = useRoute()
 
 <template>
   <div class="mb-15 post-center">
-    <hr class="mt-20 mb-5">
+    <hr class="mt-20 mb-5" />
 
     <div v-if="route.path !== '/'" class="my-8">
       <router-link
@@ -17,13 +17,14 @@ const route = useRoute()
     </div>
     <a
       target="_blank"
-      class="text-sm  opacity-50 hover:opacity-90 mt-7"
+      class="text-sm opacity-50 hover:opacity-90 mt-7"
       href="https://creativecommons.org/licenses/by-nc-sa/4.0/"
     >
       CC BY-NC-SA 4.0
     </a>
     <span class="text-sm opacity-50">
-      2023 - PRESENT © Larry Z | Built With <span style="display: inline-block; color: #cd0006" class="i-mdi-heart" />
+      2023 - PRESENT © Larry Z | Built With
+      <span style="display: inline-block; color: #cd0006" class="i-mdi-heart" />
     </span>
   </div>
 </template>

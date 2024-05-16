@@ -4,9 +4,7 @@ const { name } = defineProps({ name: { type: String } })
 
 <template>
   <div>
-    <div>
-      Definition: {{ name }}
-    </div>
+    <div>Definition: {{ name }}</div>
     <slot />
   </div>
 </template>

@@ -8,12 +8,11 @@ import { getVisiblePosts } from '~/logics/get-posts'
 const router = useRouter()
 const comm = useCommStore()
 async function buildTags() {
-  getVisiblePosts()
-    .forEach((route) => {
-      route.meta.frontmatter.tags?.forEach((tag: string) => {
-        comm.pushTag(tag)
-      })
+  getVisiblePosts().forEach(route => {
+    route.meta.frontmatter.tags?.forEach((tag: string) => {
+      comm.pushTag(tag)
     })
+  })
 }
 
 await buildTags()
@@ -27,36 +26,47 @@ function toggleTags() {
 if (typeof router.currentRoute.value.query.tag === 'string')
   comm.chooseTag(router.currentRoute.value.query.tag)
 else if (Array.isArray(router.currentRoute.value.query.tag))
-  router.currentRoute.value.query.tag.forEach((tag) => { comm.chooseTag(tag as string) })
-
-watch(() => comm.selectedTags, (newVal) => {
-  router.replace({
-    path: router.currentRoute.value.path, query: { tag: newVal },
+  router.currentRoute.value.query.tag.forEach(tag => {
+    comm.chooseTag(tag as string)
   })
-})
 
-if (comm.selectedTags.length > 0)
-  tagToggleFlag.value = true
+watch(
+  () => comm.selectedTags,
+  newVal => {
+    router.replace({
+      path: router.currentRoute.value.path,
+      query: { tag: newVal },
+    })
+  },
+)
+
+if (comm.selectedTags.length > 0) tagToggleFlag.value = true
 </script>
 
 <template>
-  <div
-    class="tags w-90% py-2 px-7 font-mono lt-md:pl-4"
-  >
-    <div class="cursor-pointer" style="width: max-content;" @click="toggleTags">
+  <div class="tags w-90% py-2 px-7 font-mono lt-md:pl-4">
+    <div class="cursor-pointer" style="width: max-content" @click="toggleTags">
       <div
-        class="align-middle inline-block border border-style-solid border-current rounded
-      text-xs py-0.5 px-1 md:ml--7.5 mr2"
+        class="align-middle inline-block border border-style-solid border-current rounded text-xs py-0.5 px-1 md:ml--7.5 mr2"
       >
-        <div class="i-mdi-chevron-down tags-arrow" :class="{ 'rotate-arrow': tagToggleFlag }" />
+        <div
+          class="i-mdi-chevron-down tags-arrow"
+          :class="{ 'rotate-arrow': tagToggleFlag }"
+        />
       </div>
-      <span class="pb-3">
-        Tags:
-      </span>
+      <span class="pb-3"> Tags: </span>
     </div>
-    <div class="tags-check-boxes" :class="{ 'tags-check-boxes-closed': !tagToggleFlag }">
+    <div
+      class="tags-check-boxes"
+      :class="{ 'tags-check-boxes-closed': !tagToggleFlag }"
+    >
       <div class="grid px-3 mt-4 grid-cols-3 lt-md:grid-cols-2">
-        <TagSelector v-for="tag in comm.tags" :key="tag" :tag-name="tag" class="tag-check-box" />
+        <TagSelector
+          v-for="tag in comm.tags"
+          :key="tag"
+          :tag-name="tag"
+          class="tag-check-box"
+        />
       </div>
     </div>
   </div>

@@ -18,7 +18,9 @@ export function customFenceWrapper(md: MarkdownIt) {
     const lang = tokens[idx].info.split(/\s/g)[0]
     const langSpan = `<span class="font-mono">${lang}</span>`
     const fileName = parseFileName(tokens[idx].info)
-    const fileNameSpan = fileName ? `<span class="font-mono">${fileName}</span>` : undefined
+    const fileNameSpan = fileName
+      ? `<span class="font-mono">${fileName}</span>`
+      : undefined
 
     const containers = `<div class="shiki-extra-before flex gap-3 items-center">
     ${fileNameSpan === undefined ? langSpan : fileNameSpan}
@@ -28,7 +30,9 @@ export function customFenceWrapper(md: MarkdownIt) {
     </div>`
 
     const rendered = defaultFenceRenderer(tokens, idx, options, env, slf)
-    const matchedPreStyles = /<pre.*? style="(?<styleContent>[^"]*?)"/g.exec(rendered)
+    const matchedPreStyles = /<pre.*? style="(?<styleContent>[^"]*?)"/g.exec(
+      rendered,
+    )
 
     return `<div class="code-container" style="${matchedPreStyles.groups.styleContent}">
     ${containers}

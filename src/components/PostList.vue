@@ -8,57 +8,62 @@ import { getVisiblePosts } from '~/logics/get-posts'
 const UNKNOWN_DATE_REPR = '?'
 
 const posts: IListedPostData[] = getVisiblePosts()
-  .map((route) => {
+  .map(route => {
     return {
       ...route.meta.frontmatter,
       path: route.path,
-      createdAt: route.meta.frontmatter.createdAt ? new Date(route.meta.frontmatter.createdAt) : undefined,
-      updatedAt: route.meta.frontmatter.updatedAt ? new Date(route.meta.frontmatter.updatedAt) : undefined,
+      createdAt: route.meta.frontmatter.createdAt
+        ? new Date(route.meta.frontmatter.createdAt)
+        : undefined,
+      updatedAt: route.meta.frontmatter.updatedAt
+        ? new Date(route.meta.frontmatter.updatedAt)
+        : undefined,
     }
   })
   .sort((a, b) => {
-    if (a.createdAt && b.createdAt)
-      return (-a.createdAt + +b.createdAt)
-    else if (a.createdAt)
-      return -1
-    else
-      return 1
+    if (a.createdAt && b.createdAt) return -a.createdAt + +b.createdAt
+    else if (a.createdAt) return -1
+    else return 1
   })
 
 const comm = useCommStore()
 const displayedPosts = computed(() => {
-  return posts.filter((post) => {
+  return posts.filter(post => {
     return comm.selectedTags.length === 0
       ? true
-      : comm.selectedTags.every(tag => post.tags?.includes(tag),
-      )
+      : comm.selectedTags.every(tag => post.tags?.includes(tag))
   })
 })
 
 function diffYear(a: Date | undefined, b: Date | undefined) {
-  if (a === undefined && b === undefined)
-    return false
-  else if (a === undefined || b === undefined)
-    return true
-  else
-    return a.getFullYear() !== b.getFullYear()
+  if (a === undefined && b === undefined) return false
+  else if (a === undefined || b === undefined) return true
+  else return a.getFullYear() !== b.getFullYear()
 }
 </script>
 
 <template>
   <TransitionGroup name="list" tag="ul" class="post-list lt-md:ps">
     <template v-if="posts.length === 0">
-      <div>
-        no posts yet, coming soon ...
-      </div>
+      <div>no posts yet, coming soon ...</div>
     </template>
     <template v-for="(post, idx) in displayedPosts" :key="post.path">
       <div
-        v-if="(idx === 0 || diffYear(displayedPosts[idx - 1].createdAt, displayedPosts[idx].createdAt))"
+        v-if="
+          idx === 0 ||
+          diffYear(
+            displayedPosts[idx - 1].createdAt,
+            displayedPosts[idx].createdAt,
+          )
+        "
       >
         <div class="relative h20 pointer-prevent-none select-none">
-          <span class="absolute font-bold mt-4 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15">
-            {{ post.createdAt ? post.createdAt.getFullYear() : UNKNOWN_DATE_REPR }}
+          <span
+            class="absolute font-bold mt-4 md:mt-4 md:text-7rem text-5rem right-0.2rem op-15"
+          >
+            {{
+              post.createdAt ? post.createdAt.getFullYear() : UNKNOWN_DATE_REPR
+            }}
           </span>
         </div>
       </div>

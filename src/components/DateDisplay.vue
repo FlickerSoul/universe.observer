@@ -8,7 +8,7 @@ const { name, date, delimiter } = defineProps({
   delimiter: { type: String, default: ' ' },
 })
 
-const formattedDate = computed(() => date ? formatDate(date) : 'N/A')
+const formattedDate = computed(() => (date ? formatDate(date) : 'N/A'))
 </script>
 
 <template>

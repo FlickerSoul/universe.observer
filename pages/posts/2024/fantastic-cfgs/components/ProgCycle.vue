@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import {ref} from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps<{
-  progs: object[],
+  progs: object[]
   names?: string[]
 }>()
 
@@ -19,8 +19,7 @@ function prev() {
 const isFlickering = ref(false)
 
 function triggerFlicker() {
-  if (isFlickering.value)
-    return
+  if (isFlickering.value) return
 
   isFlickering.value = true
   setTimeout(() => {
@@ -32,7 +31,11 @@ const el = ref<HTMLDivElement | null>(null)
 
 function display(number: number) {
   index.value = number
-  el.value?.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})
+  el.value?.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'center',
+  })
   triggerFlicker()
 }
 
@@ -44,19 +47,23 @@ defineExpose({
 <template>
   <div ref="el" class="my-4">
     <div class="flex flex-row gap-2 justify-center mb-4">
-      <div class="cursor-pointer" @click.stop="prev">
-        ⬅️
-      </div>
+      <div class="cursor-pointer" @click.stop="prev">⬅️</div>
       <div>
-        <span :class="{ flicker: isFlickering }">{{ index + 1 }}</span> / {{ props.progs.length }}
+        <span :class="{ flicker: isFlickering }">{{ index + 1 }}</span> /
+        {{ props.progs.length }}
       </div>
-      <div class="cursor-pointer" @click.stop="next">
-        ➡️
-      </div>
-      <span v-if="names !== undefined" :class="{ flicker: isFlickering }">{{ names[index] }}</span>
+      <div class="cursor-pointer" @click.stop="next">➡️</div>
+      <span v-if="names !== undefined" :class="{ flicker: isFlickering }">{{
+        names[index]
+      }}</span>
     </div>
     <div class="w-100%">
-      <component :is="prog" v-for="(prog, i) in progs" v-show="index === i" :key="i"/>
+      <component
+        :is="prog"
+        v-for="(prog, i) in progs"
+        v-show="index === i"
+        :key="i"
+      />
     </div>
   </div>
 </template>

@@ -21,18 +21,13 @@
           "value": 3
         },
         {
-          "args": [
-            "a",
-            "b"
-          ],
+          "args": ["a", "b"],
           "dest": "x",
           "op": "add",
           "type": "int"
         },
         {
-          "args": [
-            "x"
-          ],
+          "args": ["x"],
           "op": "ret"
         }
       ],

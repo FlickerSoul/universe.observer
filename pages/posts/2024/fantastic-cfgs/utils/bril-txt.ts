@@ -2,7 +2,17 @@
  * Convert a Bril instruction to a human-readable string.
  * Credit: https://github.com/sampsyo/bril/blob/main/bril-txt/briltxt.py
  */
-import type { Argument, FuncInstruction, IFunction, Instruction, Label, Position, Program, Type, Value } from './types'
+import type {
+  Argument,
+  FuncInstruction,
+  IFunction,
+  Instruction,
+  Label,
+  Position,
+  Program,
+  Type,
+  Value,
+} from './types'
 import type { BasicBlock } from './group-basic-blocks'
 import { START_LABEL } from './group-basic-blocks'
 
@@ -30,8 +40,7 @@ function instrToString(instr: Instruction) {
     if ('funcs' in instr)
       rhs += ` ${instr['funcs']?.map(f => `@${f}`).join(' ')}`
 
-    if ('args' in instr)
-      rhs += ` ${instr['args']?.join(' ')}`
+    if ('args' in instr) rhs += ` ${instr['args']?.join(' ')}`
 
     if ('labels' in instr)
       rhs += ` ${instr['labels']?.map(f => `.${f}`).join(' ')}`
@@ -61,7 +70,9 @@ function typeToStr(type: Type): string {
 
 function valueToStr(type: Type, value: Value) {
   if (typeof type === 'string' && type.toLowerCase() === 'char') {
-    const controlCharsReverse = Object.fromEntries(Object.entries(controlChars).map(([k, v]) => [v, k]))
+    const controlCharsReverse = Object.fromEntries(
+      Object.entries(controlChars).map(([k, v]) => [v, k]),
+    )
     if ((value as string).charCodeAt(0) in controlCharsReverse)
       value = controlCharsReverse[(value as string).charCodeAt(0)]
 
@@ -72,15 +83,15 @@ function valueToStr(type: Type, value: Value) {
 }
 
 export function brilInstructionToText(instr: Instruction | Label): string {
-  if ('label' in instr)
-    return labelToText(instr)
-  else
-    return instrToString(instr)
+  if ('label' in instr) return labelToText(instr)
+  else return instrToString(instr)
 }
 
 function argsToString(args: Argument[]) {
   if (args && args.length > 0) {
-    const argsStr = args.map(arg => `${arg.name}: ${typeToStr(arg.type)}`).join(', ')
+    const argsStr = args
+      .map(arg => `${arg.name}: ${typeToStr(arg.type)}`)
+      .join(', ')
     return `(${argsStr})`
   } else {
     return ''
@@ -88,28 +99,31 @@ function argsToString(args: Argument[]) {
 }
 
 export function brilFuncToText(func: IFunction): string {
-  const funcType = func.type
-    ? `: ${typeToStr(func.type)}`
-    : ''
+  const funcType = func.type ? `: ${typeToStr(func.type)}` : ''
   const funcHeader = `@${func['name']}${argsToString(func.args ?? [])}${funcType} {`
   const funcEnd = '}'
-  const body = func.instrs.map((instr) => {
-    if ('label' in instr)
-      return labelToText(instr)
-    else
-      return `  ${instrToString(instr)}`
-  }).join('\n')
+  const body = func.instrs
+    .map(instr => {
+      if ('label' in instr) return labelToText(instr)
+      else return `  ${instrToString(instr)}`
+    })
+    .join('\n')
 
   return `${funcHeader}\n${body}\n${funcEnd}`
 }
 
 export function brilFuncsToText(funcs: IFunction[]): string {
-  return funcs.map((func) => {
-    return brilFuncToText(func)
-  }).join('\n')
+  return funcs
+    .map(func => {
+      return brilFuncToText(func)
+    })
+    .join('\n')
 }
 
-export function basicBlockToInstructions(funcName: string, block: BasicBlock): FuncInstruction[] {
+export function basicBlockToInstructions(
+  funcName: string,
+  block: BasicBlock,
+): FuncInstruction[] {
   let label: string | undefined = block.label
   const pattern = /^(?<funcName>[^.]+?)\.(?<suffix>[^.]+)$/
   const match = label.match(pattern)
@@ -118,13 +132,15 @@ export function basicBlockToInstructions(funcName: string, block: BasicBlock): F
     const labelFuncName = match.groups.funcName
     const suffix = match.groups.suffix
 
-    if (labelFuncName === funcName && (suffix === START_LABEL || suffix.startsWith('l')))
+    if (
+      labelFuncName === funcName &&
+      (suffix === START_LABEL || suffix.startsWith('l'))
+    )
       label = undefined
   }
 
   const instructions: FuncInstruction[] = []
-  if (label)
-    instructions.push({ label })
+  if (label) instructions.push({ label })
 
   instructions.push(...block.instrs)
 

@@ -5,7 +5,7 @@ tags:
   - 碎碎念
 createdAt: 2023-05-23
 updatedAt: 2024-04-1
-abstract: Is Reed just a dream? Hey my dear friend, I miss you. 
+abstract: Is Reed just a dream? Hey my dear friend, I miss you.
 ---
 
 I know I'm a sentimental person and I am not used to admit it.

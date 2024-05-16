@@ -5,10 +5,8 @@ import type { Mermaid, RenderResult } from 'mermaid'
 
 export function formatDate(date: string | Date) {
   const day = dayjs(date)
-  if (day.year() === dayjs().year())
-    return day.format('MMM.DD')
-  else
-    return day.format('MMM.DD,YYYY')
+  if (day.year() === dayjs().year()) return day.format('MMM.DD')
+  else return day.format('MMM.DD,YYYY')
 }
 
 export const isDark = useDark()
@@ -19,8 +17,9 @@ export const isDark = useDark()
  */
 export function toggleDark(event: MouseEvent) {
   // @ts-expect-error experimental API
-  const isAppearanceTransition = document.startViewTransition
-    && !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const isAppearanceTransition =
+    document.startViewTransition &&
+    !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   if (!isAppearanceTransition) {
     isDark.value = !isDark.value
@@ -38,37 +37,38 @@ export function toggleDark(event: MouseEvent) {
     isDark.value = !isDark.value
     await nextTick()
   })
-  transition.ready
-    .then(() => {
-      const clipPath = [
-        `circle(0px at ${x}px ${y}px)`,
-        `circle(${endRadius}px at ${x}px ${y}px)`,
-      ]
-      document.documentElement.animate(
-        {
-          clipPath: isDark.value
-            ? [...clipPath].reverse()
-            : clipPath,
-        },
-        {
-          duration: 400,
-          easing: 'ease-out',
-          pseudoElement: isDark.value
-            ? '::view-transition-old(root)'
-            : '::view-transition-new(root)',
-        },
-      )
-    })
+  transition.ready.then(() => {
+    const clipPath = [
+      `circle(0px at ${x}px ${y}px)`,
+      `circle(${endRadius}px at ${x}px ${y}px)`,
+    ]
+    document.documentElement.animate(
+      {
+        clipPath: isDark.value ? [...clipPath].reverse() : clipPath,
+      },
+      {
+        duration: 400,
+        easing: 'ease-out',
+        pseudoElement: isDark.value
+          ? '::view-transition-old(root)'
+          : '::view-transition-new(root)',
+      },
+    )
+  })
 }
 
 function initMermaid(mermaid: Mermaid, dark: boolean | undefined = undefined) {
   mermaid.initialize({
     startOnLoad: false,
-    theme: (dark ?? isDark.value) ? 'dark' : 'default',
+    theme: dark ?? isDark.value ? 'dark' : 'default',
   })
 }
 
-export async function renderMermaidToElement(id: string, content: string, dark: boolean | undefined = undefined): Promise<RenderResult> {
+export async function renderMermaidToElement(
+  id: string,
+  content: string,
+  dark: boolean | undefined = undefined,
+): Promise<RenderResult> {
   const { default: mermaid } = await import('mermaid')
 
   initMermaid(mermaid, dark)

@@ -2,7 +2,15 @@
 import { defineProps } from 'vue'
 import type { PropType } from 'vue'
 import type { IFriendLink } from './types'
-import { compOnEnter, compOnLeave, compOnMove, parOnEnter, parOnLeave, parOnPressed, parOnReleased } from './utils'
+import {
+  compOnEnter,
+  compOnLeave,
+  compOnMove,
+  parOnEnter,
+  parOnLeave,
+  parOnPressed,
+  parOnReleased,
+} from './utils'
 
 defineProps({
   link: { type: Object as PropType<IFriendLink>, required: true },

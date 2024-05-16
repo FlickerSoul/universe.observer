@@ -1,21 +1,22 @@
 ---
 title: Loops and Phi Nodes
 subtitle: CS6120 learning note part 2
-#abstract: 
+#abstract:
 lang: en
-#langs: 
+#langs:
 tags:
   - PL
   - compiler
 createdAt: 2024-05-16
 updatedAt: 2024-05-16
-#hidden: 
+#hidden:
 #hasComments:
 wip: true
 ---
 
 This is the part 2 of the CS6120 learning note. This note will introduce natural
 loops, loop-invariant code motion, and static single assignments.
+
 <!-- more -->
 
 [[TOC]]
@@ -80,7 +81,7 @@ Before defining what a natural loop is, we need to identify a couple relations:
   basic block `X`.
 
 - `A` strictly dominates `B` (simplified as `A` SDOM `B`): iff `A` DOM `B` and `
-  A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
+A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
   strictly dominate `B`.
 - `A` immediately dominates `B` (simplified as `A` IDOM `B`): iff `A` SDOM `B`
   and `A` does not strictly dominate any node that strictly dominate `B`. In

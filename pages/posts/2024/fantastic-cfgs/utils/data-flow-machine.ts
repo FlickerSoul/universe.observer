@@ -7,8 +7,8 @@ import {
   Graph,
   GraphNode,
   InstrGraph,
-  InstrNode
-} from "./group-basic-blocks";
+  InstrNode,
+} from './group-basic-blocks'
 
 export interface Equals {
   equals: (this, other: typeof this) => boolean
@@ -16,11 +16,23 @@ export interface Equals {
 
 type DType = Equals | string | number | boolean
 
-export type GenFunc<NodeType extends GraphNode, DataType extends DType> = (block: NodeType) => DataType[]
-export type KillFunc<NodeType extends GraphNode, DataType extends DType> = (block: NodeType, inData: DataType[], genData: DataType[]) => DataType[]
-export type MergeFunc<DataType extends DType> = (...data: DataType[][]) => DataType[]
+export type GenFunc<NodeType extends GraphNode, DataType extends DType> = (
+  block: NodeType,
+) => DataType[]
+export type KillFunc<NodeType extends GraphNode, DataType extends DType> = (
+  block: NodeType,
+  inData: DataType[],
+  genData: DataType[],
+) => DataType[]
+export type MergeFunc<DataType extends DType> = (
+  ...data: DataType[][]
+) => DataType[]
 
-export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph<NodeType>, DataType extends DType> {
+export class DataFlowMachine<
+  NodeType extends GraphNode,
+  GraphType extends Graph<NodeType>,
+  DataType extends DType,
+> {
   genFunc: GenFunc<NodeType, DataType>
   killFunc: KillFunc<NodeType, DataType>
   mergeFunc: MergeFunc<DataType>
@@ -28,8 +40,11 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
   dataOut: Map<number, DataType[]>
   graph: GraphType | undefined
 
-
-  constructor(genFunc: GenFunc<NodeType, DataType>, killFunc: KillFunc<NodeType, DataType>, mergeFunc: MergeFunc<DataType>) {
+  constructor(
+    genFunc: GenFunc<NodeType, DataType>,
+    killFunc: KillFunc<NodeType, DataType>,
+    mergeFunc: MergeFunc<DataType>,
+  ) {
     this.genFunc = genFunc
     this.killFunc = killFunc
     this.mergeFunc = mergeFunc
@@ -52,8 +67,7 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
     if (graph === undefined) throw new Error('Graph is undefined')
 
     const rootIndex = graph.root.index()
-    if (rootIndex === undefined)
-      throw new Error('Root index is undefined')
+    if (rootIndex === undefined) throw new Error('Root index is undefined')
 
     const workList: number[] = [rootIndex]
 
@@ -62,11 +76,13 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
       const node = graph.indexToNode.get(head)!
       const prevIndices = node.prev.map(prev => prev.index())
       const prevIn =
-        prevIndices.length > 0 ?
-          this.mergeFunc(
-            ...prevIndices.map(index => this.dataOut.get(index)).filter(data => data !== undefined)
-          ) :
-          (this.dataIn.get(head) ?? [])
+        prevIndices.length > 0
+          ? this.mergeFunc(
+              ...prevIndices
+                .map(index => this.dataOut.get(index))
+                .filter(data => data !== undefined),
+            )
+          : this.dataIn.get(head) ?? []
 
       this.dataIn.set(head, prevIn)
 
@@ -106,14 +122,18 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
   }
 }
 
-export class InstrDataFlowMachine<DataType extends DType> extends DataFlowMachine<InstrNode, InstrGraph, DataType> {
+export class InstrDataFlowMachine<
+  DataType extends DType,
+> extends DataFlowMachine<InstrNode, InstrGraph, DataType> {
   loadInstrGraph(blocks: BasicBlock[]) {
     const graph = blocksToInstrGraph(blocks)
     return this.loadGraph(graph)
   }
 }
 
-export class BlockDataFlowMachine<DataType extends DType> extends DataFlowMachine<BlockNode, BlockGraph, DataType> {
+export class BlockDataFlowMachine<
+  DataType extends DType,
+> extends DataFlowMachine<BlockNode, BlockGraph, DataType> {
   loadBlockGraph(blocks: BasicBlock[]) {
     const graph = blocksToBlockGraph(blocks)
     return this.loadGraph(graph)

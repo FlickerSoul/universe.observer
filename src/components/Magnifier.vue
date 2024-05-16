@@ -32,8 +32,7 @@ function startPan(event: MouseEvent) {
 }
 
 function pan(event: MouseEvent) {
-  if (!isPanning)
-    return
+  if (!isPanning) return
   position.value.x = event.clientX - start.x
   position.value.y = event.clientY - start.y
 }
@@ -44,10 +43,8 @@ function endPan() {
 
 function handleWheel(event: WheelEvent) {
   event.preventDefault()
-  if (event.deltaY < 0)
-    zoomIn()
-  else
-    zoomOut()
+  if (event.deltaY < 0) zoomIn()
+  else zoomOut()
 }
 </script>
 
@@ -70,7 +67,9 @@ function handleWheel(event: WheelEvent) {
     </div>
     <div
       class="image-container"
-      :style="{ transform: `translate(${position.x}px, ${position.y}px) scale(${zoomLevel})` }"
+      :style="{
+        transform: `translate(${position.x}px, ${position.y}px) scale(${zoomLevel})`,
+      }"
       @mousedown="startPan"
       @mousemove="pan"
       @mouseup="endPan"

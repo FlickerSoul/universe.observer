@@ -36,71 +36,48 @@
           "label": "loop.enter"
         },
         {
-          "args": [
-            "term",
-            "i"
-          ],
+          "args": ["term", "i"],
           "dest": "y",
           "op": "sub",
           "type": "int"
         },
         {
-          "args": [
-            "y",
-            "zero"
-          ],
+          "args": ["y", "zero"],
           "dest": "cond",
           "op": "gt",
           "type": "bool"
         },
         {
-          "args": [
-            "cond"
-          ],
-          "labels": [
-            "loop.body",
-            "loop.end"
-          ],
+          "args": ["cond"],
+          "labels": ["loop.body", "loop.end"],
           "op": "br"
         },
         {
           "label": "loop.body"
         },
         {
-          "args": [
-            "x",
-            "x"
-          ],
+          "args": ["x", "x"],
           "dest": "x",
           "op": "add"
         },
         {
-          "args": [
-            "i",
-            "one"
-          ],
+          "args": ["i", "one"],
           "dest": "i",
           "op": "add"
         },
         {
-          "labels": [
-            "loop.enter"
-          ],
+          "labels": ["loop.enter"],
           "op": "jmp"
         },
         {
           "label": "loop.end"
         },
         {
-          "args": [
-            "x"
-          ],
+          "args": ["x"],
           "op": "print"
         },
         {
-          "args": [
-            "zero"
-          ],
+          "args": ["zero"],
           "op": "ret"
         }
       ],

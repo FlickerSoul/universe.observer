@@ -23,10 +23,7 @@
           "value": 0
         },
         {
-          "args": [
-            "a",
-            "zero"
-          ],
+          "args": ["a", "zero"],
           "dest": "negative",
           "op": "lt",
           "pos": {
@@ -36,13 +33,8 @@
           "type": "bool"
         },
         {
-          "args": [
-            "negative"
-          ],
-          "labels": [
-            "here",
-            "there"
-          ],
+          "args": ["negative"],
+          "labels": ["here", "there"],
           "op": "br",
           "pos": {
             "col": 5,
@@ -57,10 +49,7 @@
           }
         },
         {
-          "args": [
-            "a",
-            "a"
-          ],
+          "args": ["a", "a"],
           "dest": "a",
           "op": "mul",
           "pos": {
@@ -70,10 +59,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "a",
-            "b"
-          ],
+          "args": ["a", "b"],
           "dest": "b",
           "op": "mul",
           "pos": {
@@ -83,9 +69,7 @@
           "type": "int"
         },
         {
-          "labels": [
-            "end"
-          ],
+          "labels": ["end"],
           "op": "jmp",
           "pos": {
             "col": 5,
@@ -100,10 +84,7 @@
           }
         },
         {
-          "args": [
-            "a",
-            "a"
-          ],
+          "args": ["a", "a"],
           "dest": "b",
           "op": "mul",
           "pos": {
@@ -120,9 +101,7 @@
           }
         },
         {
-          "args": [
-            "b"
-          ],
+          "args": ["b"],
           "op": "print",
           "pos": {
             "col": 5,
@@ -130,9 +109,7 @@
           }
         },
         {
-          "args": [
-            "a"
-          ],
+          "args": ["a"],
           "op": "print",
           "pos": {
             "col": 5,

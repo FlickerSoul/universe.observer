@@ -1,9 +1,9 @@
 ---
-title: "Yubico 密钥"
+title: 'Yubico 密钥'
 createdAt: 2023-03-03
 updatedAt: 2023-03-03
 lang: zh
-tags: 
+tags:
   - 碎碎念
 abstract: 买了两把 Yubico 密钥！很有趣！
 ---

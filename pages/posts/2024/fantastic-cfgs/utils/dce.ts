@@ -42,19 +42,22 @@ function eliminateRecursive(
 
   flow.blockIn.set(currentIndex, deepCopy(flow.definitions))
 
-  for (let instrIndex = 0; instrIndex < currentBlock.instrs.length; instrIndex++) {
+  for (
+    let instrIndex = 0;
+    instrIndex < currentBlock.instrs.length;
+    instrIndex++
+  ) {
     const instr = currentBlock.instrs[instrIndex]
     const instrIdent = { blockIndex: currentIndex, instrIndex }
 
     // mark things as used
     if ('args' in instr) {
-      instr.args!.forEach((arg) => {
+      instr.args!.forEach(arg => {
         if (flow.definitions.has(arg)) {
           const argInfo = flow.definitions.get(arg)
 
-          argInfo!.forEach((info) => {
-            if (!info.stale)
-              info.used = true
+          argInfo!.forEach(info => {
+            if (!info.stale) info.used = true
           })
         }
       })
@@ -64,11 +67,10 @@ function eliminateRecursive(
     if ('dest' in instr) {
       const dest = instr.dest
 
-      if (!flow.definitions.has(dest))
-        flow.definitions.set(dest, [])
+      if (!flow.definitions.has(dest)) flow.definitions.set(dest, [])
 
       const destInfo = flow.definitions.get(dest)
-      destInfo!.forEach((info) => {
+      destInfo!.forEach(info => {
         info.stale = true
       })
 
@@ -78,8 +80,7 @@ function eliminateRecursive(
 
   for (const nextLabel of currentBlock.next) {
     const nextIndex = blockLabelToIndex.get(nextLabel)
-    if (nextIndex === undefined)
-      continue
+    if (nextIndex === undefined) continue
 
     eliminateRecursive(nextIndex, blocks, blockLabelToIndex, flow)
   }
@@ -90,7 +91,9 @@ export interface EliminationBlocksResult {
   final: BasicBlock[]
 }
 
-function eliminateDeadCodeFromInstructions(blocks: BasicBlock[]): EliminationBlocksResult {
+function eliminateDeadCodeFromInstructions(
+  blocks: BasicBlock[],
+): EliminationBlocksResult {
   if (blocks.length === 0) {
     return {
       passes: [],
@@ -114,18 +117,21 @@ function eliminateDeadCodeFromInstructions(blocks: BasicBlock[]): EliminationBlo
     }
 
     eliminateRecursive(0, blocks, blockLabelToIndex, info)
-    const deadAssignment
-      = Array.from(info.definitions.values())
-        .flatMap((defInfo) => {
-          return defInfo.filter(info => !info.used).map(info => [info.ident.blockIndex, info.ident.instrIndex])
-        })
-        .reduce((acc, [blockIndex, instrIndex]) => {
-          if (!acc.get(blockIndex))
-            acc.set(blockIndex, [])
+    const deadAssignment = Array.from(info.definitions.values())
+      .flatMap(defInfo => {
+        return defInfo
+          .filter(info => !info.used)
+          .map(info => [info.ident.blockIndex, info.ident.instrIndex])
+      })
+      .reduce(
+        (acc, [blockIndex, instrIndex]) => {
+          if (!acc.get(blockIndex)) acc.set(blockIndex, [])
 
           acc.get(blockIndex)!.push(instrIndex)
           return acc
-        }, new Map() as Map<number, InstrIndex[]>)
+        },
+        new Map() as Map<number, InstrIndex[]>,
+      )
 
     const deadAssignmentArr = Array.from(deadAssignment.entries())
     modified = deadAssignmentArr.length > 0
@@ -134,13 +140,14 @@ function eliminateDeadCodeFromInstructions(blocks: BasicBlock[]): EliminationBlo
       const block = blocks[blockIndex]
       blocks[blockIndex] = {
         label: block.label,
-        instrs: block.instrs.filter((_, index) => !instrIndexes.includes(index)),
+        instrs: block.instrs.filter(
+          (_, index) => !instrIndexes.includes(index),
+        ),
         next: block.next,
       }
     }
 
-    if (modified)
-      passes.push(deepCopy(blocks))
+    if (modified) passes.push(deepCopy(blocks))
   }
 
   return {
@@ -154,13 +161,19 @@ export interface EliminationProgramResult {
   final: Program
 }
 
-export function eliminateDeadAssignment(prog: Program): EliminationProgramResult {
+export function eliminateDeadAssignment(
+  prog: Program,
+): EliminationProgramResult {
   const basicBlockMapping = groupBasicBlocks(prog)
 
-  const eliminationResults
-    = new Map(Object.entries(basicBlockMapping).map(([funcName, blocks]) => {
-      return [funcName, eliminateDeadCodeFromInstructions(blocks)] as [string, EliminationBlocksResult]
-    }))
+  const eliminationResults = new Map(
+    Object.entries(basicBlockMapping).map(([funcName, blocks]) => {
+      return [funcName, eliminateDeadCodeFromInstructions(blocks)] as [
+        string,
+        EliminationBlocksResult,
+      ]
+    }),
+  )
 
   const maxPasses = Array.from(eliminationResults.values()).reduce(
     (prev, { passes }) => Math.max(prev, passes.length),
@@ -171,10 +184,13 @@ export function eliminateDeadAssignment(prog: Program): EliminationProgramResult
 
   for (let passIndex = 0; passIndex < maxPasses; passIndex++) {
     progPasses.push({
-      functions: prog.functions.map((fun) => {
+      functions: prog.functions.map(fun => {
         const funName = fun.name
         const eliminationResult = eliminationResults.get(funName)!
-        const validPassIndex = Math.min(passIndex, eliminationResult.passes.length - 1)
+        const validPassIndex = Math.min(
+          passIndex,
+          eliminationResult.passes.length - 1,
+        )
         const funBlocks = eliminationResult.passes[validPassIndex]
 
         return funcBlocksToFunc(funName, funBlocks, fun.args, fun.type, fun.pos)
@@ -185,7 +201,7 @@ export function eliminateDeadAssignment(prog: Program): EliminationProgramResult
   return {
     passes: progPasses,
     final: {
-      functions: prog.functions.map((fun) => {
+      functions: prog.functions.map(fun => {
         const funName = fun.name
         const eliminationResult = eliminationResults.get(funName)!
         const funBlocks = eliminationResult.final

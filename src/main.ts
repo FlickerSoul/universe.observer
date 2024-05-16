@@ -8,22 +8,18 @@ import NProgress from 'nprogress'
 import { ViteSSG } from 'vite-ssg'
 import type { App, Plugin } from 'vue'
 import FloatingVue from 'floating-vue'
-import { addHtmlExtension, addMultiLangPages, redirectAll } from '../scripts/routing-support'
+import {
+  addHtmlExtension,
+  addMultiLangPages,
+  redirectAll,
+} from '../scripts/routing-support'
 import Application from './App.vue'
 
-const routes = redirectAll(
-  addHtmlExtension(
-    addMultiLangPages(
-      autoRoutes,
-    ),
-  ),
-)
+const routes = redirectAll(addHtmlExtension(addMultiLangPages(autoRoutes)))
 
 function scrollBehavior(to: any, from: any, savedPosition: any) {
-  if (savedPosition)
-    return savedPosition
-  else
-    return { top: 0 }
+  if (savedPosition) return savedPosition
+  else return { top: 0 }
 }
 
 export type FloatingVueConfig = Parameters<(typeof FloatingVue)['install']>[1]
@@ -69,4 +65,5 @@ export const createApp = ViteSSG(
         NProgress.done()
       })
     }
-  })
+  },
+)

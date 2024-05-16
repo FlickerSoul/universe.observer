@@ -22,7 +22,8 @@ const lambdaCalculusOperations = {
   '\\stlc': '\\lambda #1: #2.\\ #3',
   '\\inl': '\\iota_1\\, #1',
   '\\inr': '\\iota_2\\, #1',
-  '\\case': '\\texttt{case}(#1): \\inl x \\texttt{=>} #2;\\ \\inr x \\texttt{=>} #3',
+  '\\case':
+    '\\texttt{case}(#1): \\inl x \\texttt{=>} #2;\\ \\inr x \\texttt{=>} #3',
   '\\succ': '\\texttt{succ}(#1)',
   '\\pred': '\\texttt{pred}(#1)',
   '\\iszero': '\\texttt{iszero}(#1)',
@@ -42,12 +43,23 @@ export const katexOptions: KatexOptions = {
 }
 
 const KATEX_COMPONENTS = [
-  'math', 'semantics', 'mrow',
-  'mi', 'mo', 'annotation',
-  'msub', 'mtext', 'mn',
-  'mtable', 'mtr', 'mtd',
-  'mstyle', 'big', 'msup',
-  'munder', 'mover',
+  'math',
+  'semantics',
+  'mrow',
+  'mi',
+  'mo',
+  'annotation',
+  'msub',
+  'mtext',
+  'mn',
+  'mtable',
+  'mtr',
+  'mtd',
+  'mstyle',
+  'big',
+  'msup',
+  'munder',
+  'mover',
 ]
 
 export function checkCustomComponent(tag: string) {

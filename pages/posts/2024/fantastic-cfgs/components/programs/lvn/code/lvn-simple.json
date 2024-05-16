@@ -13,9 +13,7 @@
           "value": 2
         },
         {
-          "args": [
-            "a"
-          ],
+          "args": ["a"],
           "dest": "b",
           "op": "id",
           "pos": {
@@ -25,9 +23,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "b"
-          ],
+          "args": ["b"],
           "dest": "c",
           "op": "id",
           "pos": {
@@ -37,9 +33,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "c"
-          ],
+          "args": ["c"],
           "dest": "d",
           "op": "id",
           "pos": {
@@ -49,9 +43,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "d"
-          ],
+          "args": ["d"],
           "op": "print",
           "pos": {
             "col": 5,

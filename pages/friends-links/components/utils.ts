@@ -6,8 +6,7 @@ export const cursor = shallowRef<HTMLDivElement>()
 let rect: DOMRect | undefined
 
 export function moveCursor(event: MouseEvent) {
-  if (isLocked.value)
-    return
+  if (isLocked.value) return
 
   const { x, y } = event
   cursor.value?.style.setProperty('--cursor-top', `${y + window.scrollY}px`)
@@ -23,7 +22,10 @@ export function compOnEnter(event: MouseEvent) {
     rect = target.getBoundingClientRect()
 
     cursor.value.classList.add('is-locked')
-    cursor.value.style.setProperty('--cursor-top', `${rect.top + window.scrollY - 2}px`)
+    cursor.value.style.setProperty(
+      '--cursor-top',
+      `${rect.top + window.scrollY - 2}px`,
+    )
     cursor.value.style.setProperty('--cursor-left', `${rect.left - 5}px`)
     cursor.value.style.setProperty('--cursor-width', `${rect.width + 10}px`)
     cursor.value.style.setProperty('--cursor-height', `${rect.height + 4}px`)
@@ -42,8 +44,7 @@ export function compOnLeave(event: MouseEvent) {
     cursor.value.style.setProperty('--cursor-height', null)
 
     setTimeout(() => {
-      if (!isLocked.value)
-        cursor.value!.classList.remove('is-locked')
+      if (!isLocked.value) cursor.value!.classList.remove('is-locked')
     }, 100)
   }
 
@@ -86,13 +87,11 @@ export function parOnLeave() {
 }
 
 export function parOnPressed() {
-  if (isLocked.value)
-    return
+  if (isLocked.value) return
   cursor.value?.style.setProperty('--hover-scale', '0.9')
 }
 
 export function parOnReleased() {
-  if (isLocked.value)
-    return
+  if (isLocked.value) return
   cursor.value?.style.setProperty('--hover-scale', '1')
 }

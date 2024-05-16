@@ -23,10 +23,7 @@
           "value": 5
         },
         {
-          "args": [
-            "a",
-            "b"
-          ],
+          "args": ["a", "b"],
           "dest": "temp1",
           "op": "add",
           "pos": {
@@ -36,10 +33,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "a",
-            "b"
-          ],
+          "args": ["a", "b"],
           "dest": "temp2",
           "op": "add",
           "pos": {
@@ -49,10 +43,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "temp1",
-            "temp2"
-          ],
+          "args": ["temp1", "temp2"],
           "dest": "result",
           "op": "mul",
           "pos": {
@@ -62,9 +53,7 @@
           "type": "int"
         },
         {
-          "args": [
-            "result"
-          ],
+          "args": ["result"],
           "op": "print",
           "pos": {
             "col": 5,

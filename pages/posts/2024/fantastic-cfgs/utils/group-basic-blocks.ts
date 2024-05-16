@@ -1,4 +1,4 @@
-import type {IFunction, Instruction, Program} from './types'
+import type { IFunction, Instruction, Program } from './types'
 
 export interface BasicBlock {
   instrs: Instruction[]
@@ -16,38 +16,39 @@ export interface FuncBlockMapping {
 
 export function groupBasicBlocksForFun(func: IFunction) {
   const basicBlocks: BasicBlock[] = []
-  let currentBlock: BasicBlock = {label: `${func.name}.${START_LABEL}`, instrs: [], next: []}
+  let currentBlock: BasicBlock = {
+    label: `${func.name}.${START_LABEL}`,
+    instrs: [],
+    next: [],
+  }
 
   func.instrs.forEach((instr, instrIndex) => {
     if ('label' in instr) {
-      if (currentBlock.instrs.length > 0)
-        basicBlocks.push(currentBlock)
+      if (currentBlock.instrs.length > 0) basicBlocks.push(currentBlock)
 
       currentBlock.next.push(instr.label)
 
-      currentBlock = {label: instr.label, instrs: [], next: []}
+      currentBlock = { label: instr.label, instrs: [], next: [] }
     } else {
       if (instr.op === 'br' || instr.op === 'jmp' || instr.op === 'ret') {
         if (instr.op === 'br' || instr.op === 'jmp') {
           const labels = instr.labels as string[]
 
-          for (const label of labels)
-            currentBlock.next.push(label)
+          for (const label of labels) currentBlock.next.push(label)
         }
 
         currentBlock.instrs.push(instr)
         basicBlocks.push(currentBlock)
         // + 1 because of index, and another +1 because the label is in the next line
         const inlineLabel = `${func.name}.l${instrIndex + 2}`
-        currentBlock = {label: inlineLabel, instrs: [], next: []}
+        currentBlock = { label: inlineLabel, instrs: [], next: [] }
       } else {
         currentBlock.instrs.push(instr)
       }
     }
   })
 
-  if (currentBlock.instrs.length > 0)
-    basicBlocks.push(currentBlock)
+  if (currentBlock.instrs.length > 0) basicBlocks.push(currentBlock)
 
   return basicBlocks
 }
@@ -94,8 +95,7 @@ export class InstrGraph implements Graph<InstrNode> {
 
   addNode(node: InstrNode) {
     const index = node.index()
-    if (index === undefined)
-      throw new Error('Node index is undefined')
+    if (index === undefined) throw new Error('Node index is undefined')
     this.nodes.set(index, node)
     this.registerIndex(node)
   }
@@ -107,7 +107,12 @@ export class InstrNode implements GraphNode {
   prev: InstrNode[]
   label: string
 
-  constructor(instr: Instruction, label: string, next: InstrNode[] | undefined = undefined, prev: InstrNode[] | undefined = undefined) {
+  constructor(
+    instr: Instruction,
+    label: string,
+    next: InstrNode[] | undefined = undefined,
+    prev: InstrNode[] | undefined = undefined,
+  ) {
     this.instr = instr
     this.next = next ?? []
     this.prev = prev ?? []
@@ -127,7 +132,10 @@ export class InstrNode implements GraphNode {
   }
 }
 
-function blockToGraph(block: BasicBlock, graph: InstrGraph): [InstrNode, InstrNode] {
+function blockToGraph(
+  block: BasicBlock,
+  graph: InstrGraph,
+): [InstrNode, InstrNode] {
   const startNode: InstrNode = new InstrNode(block.instrs[0], block.label)
   graph.addNode(startNode)
   let currentNode = startNode
@@ -145,11 +153,12 @@ function blockToGraph(block: BasicBlock, graph: InstrGraph): [InstrNode, InstrNo
 export function blocksToInstrGraph(blocks: BasicBlock[]): InstrGraph {
   const graph = new InstrGraph()
 
-  if (blocks.length === 0)
-    return graph
+  if (blocks.length === 0) return graph
 
   const blockStartEndNodes = blocks.map(block => blockToGraph(block, graph))
-  const labelToIndex = new Map(blocks.map((block, index) => [block.label, index] as const))
+  const labelToIndex = new Map(
+    blocks.map((block, index) => [block.label, index] as const),
+  )
   graph.setRoot(blockStartEndNodes[0][0])
 
   blocks.forEach((block, index) => {
@@ -172,7 +181,7 @@ export function blocksToInstrGraph(blocks: BasicBlock[]): InstrGraph {
 export function groupBasicBlocks(program: Program): FuncBlockMapping {
   const result: FuncBlockMapping = {}
 
-  program.functions.forEach((func) => {
+  program.functions.forEach(func => {
     result[func.name] = groupBasicBlocksForFun(func)
   })
 
@@ -185,7 +194,12 @@ export class BlockNode implements GraphNode {
   prev: BlockNode[]
   next: BlockNode[]
 
-  constructor(blockRef: BasicBlock, index: number, prev: BlockNode[] = [], next: BlockNode[] = []) {
+  constructor(
+    blockRef: BasicBlock,
+    index: number,
+    prev: BlockNode[] = [],
+    next: BlockNode[] = [],
+  ) {
     this.blockRef = blockRef
     this.index = () => index
     this.prev = prev
@@ -219,19 +233,21 @@ export class BlockGraph implements Graph<BlockNode> {
   }
 }
 
-
 export function blocksToBlockGraph(blocks: BasicBlock[]): BlockGraph {
   const graph = new BlockGraph()
   if (blocks.length === 0) return graph
 
-
-  const blockNodes = blocks.map(((node, index) => new BlockNode(node, index)))
-  const labelToIndex = new Map(blocks.map((block, index) => [block.label, index] as const))
+  const blockNodes = blocks.map((node, index) => new BlockNode(node, index))
+  const labelToIndex = new Map(
+    blocks.map((block, index) => [block.label, index] as const),
+  )
   graph.setRoot(blockNodes[0])
 
   for (let i = 0; i < blocks.length; i++) {
     const node = blockNodes[i]
-    const nextNodes = node.blockRef.next.map(label => labelToIndex.get(label)!).map(index => blockNodes[index])
+    const nextNodes = node.blockRef.next
+      .map(label => labelToIndex.get(label)!)
+      .map(index => blockNodes[index])
     node.next = nextNodes
     nextNodes.forEach(next => next.prev.push(node))
 

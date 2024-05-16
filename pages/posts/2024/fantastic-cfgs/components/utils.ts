@@ -28,12 +28,13 @@ export interface OptionalDisplays {
   dom?: boolean
 }
 
-export function addDisplays(displays: ProgramDisplayType[], optionalDisplays: OptionalDisplays | undefined) {
-  if (optionalDisplays?.dce)
-    displays.push(ProgramDisplayType.DCE)
+export function addDisplays(
+  displays: ProgramDisplayType[],
+  optionalDisplays: OptionalDisplays | undefined,
+) {
+  if (optionalDisplays?.dce) displays.push(ProgramDisplayType.DCE)
 
-  if (optionalDisplays?.lvn)
-    displays.push(ProgramDisplayType.LVN)
+  if (optionalDisplays?.lvn) displays.push(ProgramDisplayType.LVN)
 
   return displays
 }

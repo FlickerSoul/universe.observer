@@ -18,9 +18,7 @@ function defaultMinify(content: string): string {
 function resolveConfig(options: UserOptions): Options {
   return {
     ...options,
-    include: [
-      '**/*.wgsl',
-    ],
+    include: ['**/*.wgsl'],
     minify: true,
   }
 }
@@ -33,8 +31,7 @@ export default function (userOptions: UserOptions = {}): Plugin {
   return {
     name: 'vite-plugin-load-string',
     async transform(source, id) {
-      if (!filter(id))
-        return
+      if (!filter(id)) return
 
       return {
         code: dataToEsm(minify ? await minify(source) : source),

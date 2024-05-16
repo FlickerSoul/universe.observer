@@ -22,7 +22,9 @@ const langDisplay = computed(() => {
 </script>
 
 <template>
-  <span class="inline-block text-center lang-display border border-current border-solid rounded">
+  <span
+    class="inline-block text-center lang-display border border-current border-solid rounded"
+  >
     {{ langDisplay }}
   </span>
 </template>

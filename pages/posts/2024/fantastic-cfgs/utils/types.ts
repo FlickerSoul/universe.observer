@@ -49,9 +49,18 @@ interface Op {
  * An instruction that does not produce any result.
  */
 export interface EffectOperation extends Op {
-  op: 'br' | 'jmp' | 'print' | 'ret' | 'call' |
-  'store' | 'free' |
-  'speculate' | 'guard' | 'commit' | 'noop'
+  op:
+    | 'br'
+    | 'jmp'
+    | 'print'
+    | 'ret'
+    | 'call'
+    | 'store'
+    | 'free'
+    | 'speculate'
+    | 'guard'
+    | 'commit'
+    | 'noop'
 }
 
 /**
@@ -59,16 +68,42 @@ export interface EffectOperation extends Op {
  * destination variable.
  */
 export interface ValueOperation extends Op {
-  op: 'add' | 'mul' | 'sub' | 'div' |
-  'id' | 'nop' |
-  'eq' | 'lt' | 'gt' | 'ge' | 'le' | 'not' | 'and' | 'or' |
-  'call' |
-  'load' | 'ptradd' | 'alloc' |
-  'fadd' | 'fmul' | 'fsub' | 'fdiv' |
-  'feq' | 'flt' | 'fle' | 'fgt' | 'fge' |
-  'ceq' | 'clt' | 'cle' | 'cgt' | 'cge' |
-  'char2int' | 'int2char' |
-  'phi'
+  op:
+    | 'add'
+    | 'mul'
+    | 'sub'
+    | 'div'
+    | 'id'
+    | 'nop'
+    | 'eq'
+    | 'lt'
+    | 'gt'
+    | 'ge'
+    | 'le'
+    | 'not'
+    | 'and'
+    | 'or'
+    | 'call'
+    | 'load'
+    | 'ptradd'
+    | 'alloc'
+    | 'fadd'
+    | 'fmul'
+    | 'fsub'
+    | 'fdiv'
+    | 'feq'
+    | 'flt'
+    | 'fle'
+    | 'fgt'
+    | 'fge'
+    | 'ceq'
+    | 'clt'
+    | 'cle'
+    | 'cgt'
+    | 'cge'
+    | 'char2int'
+    | 'int2char'
+    | 'phi'
   dest: Ident
   type: Type
 }
@@ -144,7 +179,7 @@ export type FuncInstruction = Instruction | Label
 export interface IFunction {
   name: Ident
   args?: Argument[]
-  instrs: (FuncInstruction)[]
+  instrs: FuncInstruction[]
   type?: Type
   pos?: Position
 }
@@ -194,13 +229,13 @@ export type Signature = BaseSignature<Type>
  * A polymorphic type variable.
  */
 export interface TVar {
-  'tv': string
+  tv: string
 }
 
 /**
  * Like bril.Type, except that type variables may occur at the leaves.
  */
-export type PolyType = PrimType | TVar | { 'ptr': PolyType }
+export type PolyType = PrimType | TVar | { ptr: PolyType }
 
 /**
  * A polymorphic type signature, universally quantified over a single
@@ -260,11 +295,23 @@ export const OP_SIGS: { [key: string]: Signature | PolySignature } = {
   fge: { args: ['float', 'float'], dest: 'bool' },
 
   // Memory.
-  alloc: { tvar: { tv: 'T' }, sig: { args: ['int'], dest: { ptr: { tv: 'T' } } } },
+  alloc: {
+    tvar: { tv: 'T' },
+    sig: { args: ['int'], dest: { ptr: { tv: 'T' } } },
+  },
   free: { tvar: { tv: 'T' }, sig: { args: [{ ptr: { tv: 'T' } }] } },
-  store: { tvar: { tv: 'T' }, sig: { args: [{ ptr: { tv: 'T' } }, { tv: 'T' }] } },
-  load: { tvar: { tv: 'T' }, sig: { args: [{ ptr: { tv: 'T' } }], dest: { tv: 'T' } } },
-  ptradd: { tvar: { tv: 'T' }, sig: { args: [{ ptr: { tv: 'T' } }, 'int'], dest: { ptr: { tv: 'T' } } } },
+  store: {
+    tvar: { tv: 'T' },
+    sig: { args: [{ ptr: { tv: 'T' } }, { tv: 'T' }] },
+  },
+  load: {
+    tvar: { tv: 'T' },
+    sig: { args: [{ ptr: { tv: 'T' } }], dest: { tv: 'T' } },
+  },
+  ptradd: {
+    tvar: { tv: 'T' },
+    sig: { args: [{ ptr: { tv: 'T' } }, 'int'], dest: { ptr: { tv: 'T' } } },
+  },
 
   // Speculation.
   speculate: { args: [] },

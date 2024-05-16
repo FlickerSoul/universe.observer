@@ -2,7 +2,12 @@
 
 import { parseArgs } from 'https://deno.land/std/cli/mod.ts'
 import { ensureDir } from 'https://deno.land/std/fs/mod.ts'
-import { basename, extname, join, resolve } from 'https://deno.land/std/path/mod.ts'
+import {
+  basename,
+  extname,
+  join,
+  resolve,
+} from 'https://deno.land/std/path/mod.ts'
 import { loadBril } from './tools.ts'
 import { eliminateDeadAssignment } from './dce.ts'
 import { brilProgramToText } from './bril-txt'
@@ -13,7 +18,10 @@ function getFilenameWithoutExtension(path: string) {
   return filename.substring(0, filename.length - extension.length) // Remove the extension
 }
 
-async function processJsonFile(progJsonFilePath: string, passOutputFolder: string) {
+async function processJsonFile(
+  progJsonFilePath: string,
+  passOutputFolder: string,
+) {
   progJsonFilePath = resolve(progJsonFilePath)
   passOutputFolder = resolve(passOutputFolder)
 
@@ -34,7 +42,10 @@ async function processJsonFile(progJsonFilePath: string, passOutputFolder: strin
       const currentPassText = brilProgramToText(currentPass)
 
       await Deno.writeTextFile(outputPath, JSON.stringify(currentPass, null, 2))
-      await Deno.writeTextFile(outputPath.replace('.json', '.bril'), currentPassText)
+      await Deno.writeTextFile(
+        outputPath.replace('.json', '.bril'),
+        currentPassText,
+      )
     }
   } catch (error) {
     console.error('Error processing JSON file:', error)
@@ -50,8 +61,9 @@ async function main() {
   if (args.progJson && args.passFolder)
     await processJsonFile(args.progJson, args.passFolder)
   else
-    console.log('Usage: deno run --allow-read --allow-write script.js --progJson=[PATH] --progJson=[PATH]')
+    console.log(
+      'Usage: deno run --allow-read --allow-write script.js --progJson=[PATH] --progJson=[PATH]',
+    )
 }
 
-if (typeof Deno !== 'undefined')
-  await main()
+if (typeof Deno !== 'undefined') await main()

@@ -13,19 +13,26 @@ const { content } = defineProps<{
         {{ content.title }}
       </div>
       <div v-if="content.startDate">
-        <span> {{ content.startDate }} </span> <span v-if="content.endDate"> -- {{ content.endDate }} </span>
+        <span> {{ content.startDate }} </span>
+        <span v-if="content.endDate"> -- {{ content.endDate }} </span>
       </div>
     </div>
-    <div v-if="content.role || content.url" class="flex flex-row leading-none" style="justify-content: space-between;">
+    <div
+      v-if="content.role || content.url"
+      class="flex flex-row leading-none"
+      style="justify-content: space-between"
+    >
       <div class="text-3.5">
         {{ content.role }}
       </div>
       <div v-if="content.url" class="text-3.5">
-        <a :href="content.url.url" target="_blank">{{ content.url.text || content.url.url }}</a>
+        <a :href="content.url.url" target="_blank">{{
+          content.url.text || content.url.url
+        }}</a>
       </div>
     </div>
     <div v-if="content.techStack" class="font-mono text-3.5">
-      {{ content.techStack.join("\u2009|\u2009") }}
+      {{ content.techStack.join('\u2009|\u2009') }}
     </div>
     <div>
       <ul>

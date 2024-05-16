@@ -8,14 +8,14 @@ import Footer from './components/Footer.vue'
 import { isDark } from './logics'
 
 onMounted(() => {
-  import('@vercel/analytics').then((mod) => {
+  import('@vercel/analytics').then(mod => {
     mod.inject()
   })
 })
 
 const route = useRoute()
 const TITLE = 'Universe Observer'
-const DESCRIPTION = 'Larry Z\'s blog'
+const DESCRIPTION = "Larry Z's blog"
 const AUTHOR = 'Larry Zeng'
 
 useHead({
@@ -38,14 +38,15 @@ useHead({
 
 useHead({
   meta: [
-    { property: 'og:icon', content: () => isDark.value ? '/logo-white-lower' : '/logo-black-lower' },
+    {
+      property: 'og:icon',
+      content: () => (isDark.value ? '/logo-white-lower' : '/logo-black-lower'),
+    },
   ],
 })
 
 useHead({
-  meta: [
-    { property: 'og:url', content: () => `%site.url${route.fullPath}` },
-  ],
+  meta: [{ property: 'og:url', content: () => `%site.url${route.fullPath}` }],
 })
 </script>
 

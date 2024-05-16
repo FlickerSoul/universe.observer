@@ -39,8 +39,16 @@ const isTOCToggled = ref<boolean>(false)
 const route = router.currentRoute
 
 function handleLanguageChange(lang: SupportedLangs) {
-  const { path, meta: { frontmatter: { langs } } } = route.value
-  if (!(langs?.includes(lang) || lang === SupportedLangs.__translate) || !(lang in SupportedLangs))
+  const {
+    path,
+    meta: {
+      frontmatter: { langs },
+    },
+  } = route.value
+  if (
+    !(langs?.includes(lang) || lang === SupportedLangs.__translate) ||
+    !(lang in SupportedLangs)
+  )
     return
 
   const matched = matchMultiLangBase(path)
@@ -53,21 +61,14 @@ function handleLanguageChange(lang: SupportedLangs) {
   }
 }
 
-watch(
-  isTOCToggled,
-  (val) => {
-    if (!TOC.value)
-      return
-    if (val)
-      TOC.value.classList.add('toc-show')
-    else
-      TOC.value.classList.remove('toc-show')
-  },
-)
+watch(isTOCToggled, val => {
+  if (!TOC.value) return
+  if (val) TOC.value.classList.add('toc-show')
+  else TOC.value.classList.remove('toc-show')
+})
 
 onMounted(() => {
-  if (isTOCToggled.value)
-    TOC.value?.classList.add('toc-show')
+  if (isTOCToggled.value) TOC.value?.classList.add('toc-show')
 
   TOC.value?.parentElement?.classList.add('ma-0')
 })
@@ -76,29 +77,27 @@ onMounted(() => {
 onMounted(() => {
   const navigate = () => {
     if (location.hash) {
-      document.querySelector(decodeURIComponent(location.hash))
+      document
+        .querySelector(decodeURIComponent(location.hash))
         ?.scrollIntoView({ behavior: 'smooth' })
     }
   }
-  const handleAnchors = (
-    event: MouseEvent & { target: HTMLElement },
-  ) => {
+  const handleAnchors = (event: MouseEvent & { target: HTMLElement }) => {
     const link = event.target.closest('a')
     if (
-      !event.defaultPrevented
-      && link
-      && event.button === 0
-      && link.target !== '_blank'
-      && link.rel !== 'external'
-      && !link.download
-      && !event.metaKey
-      && !event.ctrlKey
-      && !event.shiftKey
-      && !event.altKey
+      !event.defaultPrevented &&
+      link &&
+      event.button === 0 &&
+      link.target !== '_blank' &&
+      link.rel !== 'external' &&
+      !link.download &&
+      !event.metaKey &&
+      !event.ctrlKey &&
+      !event.shiftKey &&
+      !event.altKey
     ) {
       const url = new URL(link.href)
-      if (url.origin !== window.location.origin)
-        return
+      if (url.origin !== window.location.origin) return
       event.preventDefault()
       const { pathname, hash } = url
       if (hash && (!pathname || pathname === location.pathname)) {
@@ -116,10 +115,8 @@ onMounted(() => {
 })
 
 const frontmatter = computed<IPostData>(() => {
-  if (props.customFrontmatter === undefined)
-    return route.value.meta.frontmatter
-  else
-    return props.customFrontmatter
+  if (props.customFrontmatter === undefined) return route.value.meta.frontmatter
+  else return props.customFrontmatter
 })
 
 useHead({
@@ -133,7 +130,10 @@ useHead({
 </script>
 
 <template>
-  <div v-show="frontmatter.title || frontmatter.display" class="post-wrapper post-center">
+  <div
+    v-show="frontmatter.title || frontmatter.display"
+    class="post-wrapper post-center"
+  >
     <div class="flex justify-center items-center flex-row">
       <h1 class="title">
         {{ frontmatter.title }}
@@ -145,8 +145,16 @@ useHead({
           :key="lang"
           :lang="lang"
           class="cursor-pointer"
-          :class="lang === frontmatter.lang ? ['cursor-not-allowed', 'opacity-50'] : []"
-          @click="lang === frontmatter.lang ? undefined : handleLanguageChange(lang as SupportedLangs)"
+          :class="
+            lang === frontmatter.lang
+              ? ['cursor-not-allowed', 'opacity-50']
+              : []
+          "
+          @click="
+            lang === frontmatter.lang
+              ? undefined
+              : handleLanguageChange(lang as SupportedLangs)
+          "
         />
       </div>
     </div>
@@ -162,9 +170,17 @@ useHead({
         class="ma"
       />
     </div>
-    <div v-if="frontmatter.tags" class="post-meta flex flex-wrap font-mono items-center text-sm">
+    <div
+      v-if="frontmatter.tags"
+      class="post-meta flex flex-wrap font-mono items-center text-sm"
+    >
       <span class="mr2">Tags: </span>
-      <PostTag v-for="tag in frontmatter.tags" :key="tag" :tag="tag" class="mr-4 post-tag" />
+      <PostTag
+        v-for="tag in frontmatter.tags"
+        :key="tag"
+        :tag="tag"
+        class="mr-4 post-tag"
+      />
     </div>
     <div v-if="frontmatter.wip" class="post-meta">
       <span>🚧 This post is not finished yet!</span>
@@ -189,7 +205,7 @@ useHead({
     </article>
 
     <template v-if="frontmatter?.hasComments !== false">
-      <hr>
+      <hr />
       <Discussion
         id="giscus-comments"
         host="https://giscus.universe.observer"
