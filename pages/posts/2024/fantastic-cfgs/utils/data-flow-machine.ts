@@ -1,4 +1,14 @@
-import {BasicBlock, blocksToInstrGraph, Graph, GraphNode, InstrGraph, InstrNode} from "./group-basic-blocks";
+import {
+  BasicBlock,
+  BlockGraph,
+  BlockNode,
+  blocksToBlockGraph,
+  blocksToInstrGraph,
+  Graph,
+  GraphNode,
+  InstrGraph,
+  InstrNode
+} from "./group-basic-blocks";
 
 export interface Equals {
   equals: (this, other: typeof this) => boolean
@@ -100,6 +110,13 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
 export class InstrDataFlowMachine<DataType extends DType> extends DataFlowMachine<InstrNode, InstrGraph, DataType> {
   loadInstrGraph(blocks: BasicBlock[]) {
     const graph = blocksToInstrGraph(blocks)
+    return this.loadGraph(graph)
+  }
+}
+
+export class BlockDataFlowMachine<DataType extends DType> extends DataFlowMachine<BlockNode, BlockGraph, DataType> {
+  loadBlockGraph(blocks: BasicBlock[]) {
+    const graph = blocksToBlockGraph(blocks)
     return this.loadGraph(graph)
   }
 }

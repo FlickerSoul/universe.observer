@@ -179,7 +179,7 @@ export function groupBasicBlocks(program: Program): FuncBlockMapping {
   return result
 }
 
-class BlockNode implements GraphNode {
+export class BlockNode implements GraphNode {
   blockRef: BasicBlock
   index: () => number
   prev: BlockNode[]
@@ -193,7 +193,7 @@ class BlockNode implements GraphNode {
   }
 }
 
-class BlockGraph implements Graph<BlockNode> {
+export class BlockGraph implements Graph<BlockNode> {
   nodes: Map<number, BlockNode>
   root: BlockNode | undefined = undefined
   indexToLabel: Map<number, string> = new Map()

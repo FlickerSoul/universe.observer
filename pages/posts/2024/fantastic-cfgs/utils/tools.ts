@@ -1,6 +1,6 @@
-import type { Program } from './types'
-import type { BasicBlock, FuncBlockMapping } from './group-basic-blocks'
-import { brilInstructionToText } from './bril-txt'
+import type {Program} from './types'
+import type {BasicBlock, FuncBlockMapping} from './group-basic-blocks'
+import {brilInstructionToText} from './bril-txt'
 
 export function loadBril(content: string | any): Program {
   if (typeof content === 'string')
@@ -34,10 +34,10 @@ function synArrows(blocks: BasicBlock[]): Arrow[] {
 function arrowsToDef(arrows: Arrow[]): string {
   return arrows
     .map(({
-      from,
-      to,
-      type,
-    }) => {
+            from,
+            to,
+            type,
+          }) => {
       if (type === 'dotted')
         return `${from} --> ${to}`
       else
@@ -84,7 +84,17 @@ export function synthesizeMermaid(blockMapping: FuncBlockMapping): string {
       const body = block.instrs
         .map((instr, instrIndex) => {
           const stateLabel = `${block.label}.${instrIndex}`
-          return `state "${brilInstructionToText(instr)}" as ${stateLabel}`
+          const stateDeclaration = `state "${brilInstructionToText(instr)}" as ${stateLabel}`
+
+          let stateNote: string = ''
+          if (block.notes) {
+            stateNote = '\n'
+            stateNote += `note right of ${stateLabel}\n`
+            stateNote += block.notes.join('\n')
+            stateNote += '\nend note'
+          }
+
+          return stateDeclaration + stateNote
         })
         .join('\n')
 

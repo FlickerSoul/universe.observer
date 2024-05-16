@@ -8,6 +8,8 @@
     "./tools": "./tools.ts",
     "./types": "./types.ts",
     "./lvn": "./lvn.ts",
-    "./rd": "./rd.ts"
+    "./rd": "./rd.ts",
+    "./data-flow-machine": "./data-flow-machine.ts",
+    "./dominance": "./dominance.ts"
   }
 }
