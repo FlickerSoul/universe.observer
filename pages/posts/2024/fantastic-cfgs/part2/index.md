@@ -81,7 +81,7 @@ Before defining what a natural loop is, we need to identify a couple relations:
   basic block `X`.
 
 - `A` strictly dominates `B` (simplified as `A` SDOM `B`): iff `A` DOM `B` and `
-A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
+  A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
   strictly dominate `B`.
 - `A` immediately dominates `B` (simplified as `A` IDOM `B`): iff `A` SDOM `B`
   and `A` does not strictly dominate any node that strictly dominate `B`. In
@@ -90,3 +90,9 @@ A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
   from `B` to the exit includes `A`.
 
 <DominanceExamples />
+
+## Optimizations
+
+### Loop-Invariant Code Motion
+
+### Static Single Assignment (SSA)
