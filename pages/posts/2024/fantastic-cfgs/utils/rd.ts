@@ -1,6 +1,6 @@
 import type {Program} from './types'
-import {groupBasicBlocksForFun} from './group-basic-blocks'
-import {DataFlowMachine, Equals, GenFunc, KillFunc, MergeFunc} from "./data-flow-machine";
+import {groupBasicBlocksForFun, InstrNode} from './group-basic-blocks'
+import {Equals, GenFunc, InstrDataFlowMachine, KillFunc, MergeFunc} from "./data-flow-machine";
 
 type FuncName = string
 type VarName = string
@@ -101,7 +101,7 @@ export function rdWithMachine(prog: Program): RDResult {
   return new Map(
     prog.functions.map((func) => {
       const blocks = groupBasicBlocksForFun(func)
-      const genFunc: GenFunc<RDData> = (node) => {
+      const genFunc: GenFunc<InstrNode, RDData> = (node) => {
         if ('dest' in node.instr)
           return [new RDData(node.instr.dest, node.instrRow())]
         return []
@@ -109,7 +109,7 @@ export function rdWithMachine(prog: Program): RDResult {
       const mergeFunc: MergeFunc<RDData> = (...data) => {
         return data.flat()
       }
-      const killFunc: KillFunc<RDData> = (node, inData, _) => {
+      const killFunc: KillFunc<InstrNode, RDData> = (node, inData, _) => {
         if ('dest' in node.instr) {
           // kill those that's not defined in the current node
           const dest = node.instr.dest
@@ -119,7 +119,7 @@ export function rdWithMachine(prog: Program): RDResult {
         return []
       }
 
-      const machine = new DataFlowMachine(genFunc, killFunc, mergeFunc).loadBlocks(blocks)
+      const machine = new InstrDataFlowMachine(genFunc, killFunc, mergeFunc).loadInstrGraph(blocks)
 
       machine.init(
         machine.graph.root.index(), (func.args ?? []).map((arg) => new RDData(arg.name, func.pos.row))

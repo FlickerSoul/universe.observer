@@ -1,4 +1,4 @@
-import {BasicBlock, blocksToPlainGraph, InstrGraph, InstrNode} from "./group-basic-blocks";
+import {BasicBlock, blocksToInstrGraph, Graph, GraphNode, InstrGraph, InstrNode} from "./group-basic-blocks";
 
 export interface Equals {
   equals: (this, other: typeof this) => boolean
@@ -6,20 +6,20 @@ export interface Equals {
 
 type DType = Equals | string | number | boolean
 
-export type GenFunc<DataType extends DType> = (block: InstrNode) => DataType[]
-export type KillFunc<DataType extends DType> = (block: InstrNode, inData: DataType[], genData: DataType[]) => DataType[]
+export type GenFunc<NodeType extends GraphNode, DataType extends DType> = (block: NodeType) => DataType[]
+export type KillFunc<NodeType extends GraphNode, DataType extends DType> = (block: NodeType, inData: DataType[], genData: DataType[]) => DataType[]
 export type MergeFunc<DataType extends DType> = (...data: DataType[][]) => DataType[]
 
-export class DataFlowMachine<DataType extends DType> {
-  genFunc: GenFunc<DataType>
-  killFunc: KillFunc<DataType>
+export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph<NodeType>, DataType extends DType> {
+  genFunc: GenFunc<NodeType, DataType>
+  killFunc: KillFunc<NodeType, DataType>
   mergeFunc: MergeFunc<DataType>
   dataIn: Map<number, DataType[]>
   dataOut: Map<number, DataType[]>
-  graph: InstrGraph | undefined
+  graph: GraphType | undefined
 
 
-  constructor(genFunc: GenFunc<DataType>, killFunc: KillFunc<DataType>, mergeFunc: MergeFunc<DataType>) {
+  constructor(genFunc: GenFunc<NodeType, DataType>, killFunc: KillFunc<NodeType, DataType>, mergeFunc: MergeFunc<DataType>) {
     this.genFunc = genFunc
     this.killFunc = killFunc
     this.mergeFunc = mergeFunc
@@ -32,21 +32,17 @@ export class DataFlowMachine<DataType extends DType> {
     return this
   }
 
-  loadGraph(graph: InstrGraph) {
+  loadGraph(graph: GraphType) {
     this.graph = graph
     return this
   }
 
-  loadBlocks(blocks: BasicBlock[]) {
-    const graph = blocksToPlainGraph(blocks)
-    return this.loadGraph(graph)
-  }
 
   run(): void {
     const graph = this.graph
     if (graph === undefined) throw new Error('Graph is undefined')
 
-    const rootIndex = graph.root.instrRow()
+    const rootIndex = graph.root.index()
     if (rootIndex === undefined)
       throw new Error('Root index is undefined')
 
@@ -98,5 +94,12 @@ export class DataFlowMachine<DataType extends DType> {
       acc.push(curr)
       return acc
     }, [] as DataType[])
+  }
+}
+
+export class InstrDataFlowMachine<DataType extends DType> extends DataFlowMachine<InstrNode, InstrGraph, DataType> {
+  loadInstrGraph(blocks: BasicBlock[]) {
+    const graph = blocksToInstrGraph(blocks)
+    return this.loadGraph(graph)
   }
 }

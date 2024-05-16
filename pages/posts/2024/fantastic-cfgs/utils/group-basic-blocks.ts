@@ -52,7 +52,27 @@ export function groupBasicBlocksForFun(func: IFunction) {
   return basicBlocks
 }
 
-export class InstrGraph {
+export interface GraphNode {
+  index(): number | undefined
+
+  next: GraphNode[]
+  prev: GraphNode[]
+}
+
+export interface Graph<NodeType extends GraphNode> {
+  nodes: Map<number, NodeType>
+  root: NodeType | undefined
+  indexToLabel: Map<number, string>
+  indexToNode: Map<number, NodeType>
+
+  setRoot(root: NodeType): void
+
+  registerIndex(node: NodeType): void
+
+  addNode(node: NodeType): void
+}
+
+export class InstrGraph implements Graph<InstrNode> {
   nodes: Map<number, InstrNode>
   root: InstrNode | undefined = undefined
   indexToLabel: Map<number, string> = new Map()
@@ -81,7 +101,7 @@ export class InstrGraph {
   }
 }
 
-export class InstrNode {
+export class InstrNode implements GraphNode {
   instr: Instruction
   next: InstrNode[]
   prev: InstrNode[]
@@ -122,7 +142,7 @@ function blockToGraph(block: BasicBlock, graph: InstrGraph): [InstrNode, InstrNo
   return [startNode, currentNode]
 }
 
-export function blocksToPlainGraph(blocks: BasicBlock[]): InstrGraph {
+export function blocksToInstrGraph(blocks: BasicBlock[]): InstrGraph {
   const graph = new InstrGraph()
 
   if (blocks.length === 0)
@@ -157,4 +177,66 @@ export function groupBasicBlocks(program: Program): FuncBlockMapping {
   })
 
   return result
+}
+
+class BlockNode implements GraphNode {
+  blockRef: BasicBlock
+  index: () => number
+  prev: BlockNode[]
+  next: BlockNode[]
+
+  constructor(blockRef: BasicBlock, index: number, prev: BlockNode[] = [], next: BlockNode[] = []) {
+    this.blockRef = blockRef
+    this.index = () => index
+    this.prev = prev
+    this.next = next
+  }
+}
+
+class BlockGraph implements Graph<BlockNode> {
+  nodes: Map<number, BlockNode>
+  root: BlockNode | undefined = undefined
+  indexToLabel: Map<number, string> = new Map()
+  indexToNode: Map<number, BlockNode> = new Map()
+
+  constructor(nodes: Map<number, BlockNode> | undefined = undefined) {
+    this.nodes = nodes ?? new Map()
+  }
+
+  registerIndex(node: BlockNode) {
+    this.indexToLabel.set(node.index(), node.blockRef.label)
+    this.indexToNode.set(node.index(), node)
+  }
+
+  setRoot(root: BlockNode) {
+    this.root = root
+    this.registerIndex(root)
+  }
+
+  addNode(node: BlockNode) {
+    this.nodes.set(node.index(), node)
+    this.registerIndex(node)
+  }
+}
+
+
+export function blocksToBlockGraph(blocks: BasicBlock[]): BlockGraph {
+  const graph = new BlockGraph()
+  if (blocks.length === 0) return graph
+
+
+  const blockNodes = blocks.map(((node, index) => new BlockNode(node, index)))
+  const labelToIndex = new Map(blocks.map((block, index) => [block.label, index] as const))
+  graph.setRoot(blockNodes[0])
+
+  for (let i = 1; i < blocks.length; i++) {
+    const node = blockNodes[i]
+    const nextNodes = node.blockRef.next.map(label => labelToIndex.get(label)!).map(index => blockNodes[index])
+    node.next = nextNodes
+    nextNodes.forEach(next => next.prev.push(node))
+
+    graph.addNode(node)
+  }
+
+  return graph
 }
