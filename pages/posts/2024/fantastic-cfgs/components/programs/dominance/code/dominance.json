@@ -1,0 +1,182 @@
+{
+  "functions": [
+    {
+      "instrs": [
+        {
+          "dest": "x",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 2
+          },
+          "type": "int",
+          "value": 1
+        },
+        {
+          "dest": "y",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 3
+          },
+          "type": "int",
+          "value": 2
+        },
+        {
+          "args": [
+            "x",
+            "y"
+          ],
+          "dest": "b1",
+          "op": "gt",
+          "pos": {
+            "col": 5,
+            "row": 4
+          },
+          "type": "bool"
+        },
+        {
+          "args": [
+            "b1"
+          ],
+          "labels": [
+            "main.path",
+            "side.path"
+          ],
+          "op": "br",
+          "pos": {
+            "col": 5,
+            "row": 5
+          }
+        },
+        {
+          "label": "side.path",
+          "pos": {
+            "col": 1,
+            "row": 6
+          }
+        },
+        {
+          "args": [
+            "b1"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 7
+          }
+        },
+        {
+          "label": "main.path",
+          "pos": {
+            "col": 1,
+            "row": 8
+          }
+        },
+        {
+          "dest": "z",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 9
+          },
+          "type": "int",
+          "value": 3
+        },
+        {
+          "args": [
+            "z",
+            "x"
+          ],
+          "dest": "b2",
+          "op": "gt",
+          "pos": {
+            "col": 5,
+            "row": 10
+          },
+          "type": "bool"
+        },
+        {
+          "args": [
+            "b2"
+          ],
+          "labels": [
+            "main.s",
+            "main.f"
+          ],
+          "op": "br",
+          "pos": {
+            "col": 5,
+            "row": 11
+          }
+        },
+        {
+          "label": "main.f",
+          "pos": {
+            "col": 1,
+            "row": 12
+          }
+        },
+        {
+          "args": [
+            "b2"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 13
+          }
+        },
+        {
+          "labels": [
+            "end"
+          ],
+          "op": "jmp",
+          "pos": {
+            "col": 5,
+            "row": 14
+          }
+        },
+        {
+          "label": "main.s",
+          "pos": {
+            "col": 1,
+            "row": 15
+          }
+        },
+        {
+          "args": [
+            "x"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 16
+          }
+        },
+        {
+          "label": "end",
+          "pos": {
+            "col": 1,
+            "row": 17
+          }
+        },
+        {
+          "args": [
+            "y"
+          ],
+          "op": "ret",
+          "pos": {
+            "col": 5,
+            "row": 18
+          }
+        }
+      ],
+      "name": "main",
+      "pos": {
+        "col": 1,
+        "row": 1
+      }
+    }
+  ]
+}

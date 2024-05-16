@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { defineProps, ref } from 'vue'
-import { loadBril, synthesizeMermaid, synthesizeSimpleMermaid } from '../utils/tools'
-import { groupBasicBlocks } from '../utils/group-basic-blocks'
-import type { OptionalDisplays } from './utils'
-import { ProgramDisplayType, addDisplays, programDisplayTypeToName } from './utils'
+import {defineProps, ref} from 'vue'
+import {loadBril, synthesizeMermaid, synthesizeSimpleMermaid} from '../utils/tools'
+import {FuncBlockMapping, groupBasicBlocks} from '../utils/group-basic-blocks'
+import type {OptionalDisplays} from './utils'
+import {ProgramDisplayType, addDisplays, programDisplayTypeToName} from './utils'
 import PassDisplay from './PassDisplay.vue'
 import LVNDisplay from './LVNDisplay.vue'
 import MermaidRenderer from '~/components/MermaidRenderer.vue'
+import {dominance} from "../utils/dominance";
 
-const { prog, initView, optionals } = defineProps<{
+const {prog, initView, optionals} = defineProps<{
   prog: string
   initView?: ProgramDisplayType
   optionals?: OptionalDisplays
@@ -16,7 +17,11 @@ const { prog, initView, optionals } = defineProps<{
 
 const simpleBrilProg = loadBril(prog)
 
-const blocks = groupBasicBlocks(simpleBrilProg)
+let blocks: FuncBlockMapping = groupBasicBlocks(simpleBrilProg)
+if (optionals?.sdom) {
+  blocks = Object.fromEntries(Object.entries(blocks).map(([name, blocks]) => [name, dominance(blocks)]))
+}
+
 const fullProgMermaid = synthesizeMermaid(blocks)
 const simplifiedProgMermaid = synthesizeSimpleMermaid(blocks)
 
@@ -48,7 +53,7 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
     </div>
 
     <div>
-      <slot v-if="viewToggle === ProgramDisplayType.PROGRAM" />
+      <slot v-if="viewToggle === ProgramDisplayType.PROGRAM"/>
 
       <MermaidRenderer
         v-show="viewToggle === ProgramDisplayType.CFG"
@@ -60,9 +65,9 @@ const viewToggle = ref<ProgramDisplayType>(initView ?? ProgramDisplayType.PROGRA
         :mermaid-content="simplifiedProgMermaid"
       />
 
-      <PassDisplay v-if="optionals?.dce" v-show="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce" />
+      <PassDisplay v-if="optionals?.dce" v-show="viewToggle === ProgramDisplayType.DCE" :code-passes="optionals?.dce"/>
 
-      <LVNDisplay v-if="optionals?.lvn" v-show="viewToggle === ProgramDisplayType.LVN" :prog="simpleBrilProg" />
+      <LVNDisplay v-if="optionals?.lvn" v-show="viewToggle === ProgramDisplayType.LVN" :prog="simpleBrilProg"/>
     </div>
   </div>
 </template>

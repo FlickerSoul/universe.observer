@@ -47,7 +47,6 @@ export class DataFlowMachine<NodeType extends GraphNode, GraphType extends Graph
     return this
   }
 
-
   run(): void {
     const graph = this.graph
     if (graph === undefined) throw new Error('Graph is undefined')

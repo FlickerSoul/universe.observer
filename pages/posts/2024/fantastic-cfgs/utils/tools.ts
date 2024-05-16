@@ -57,13 +57,24 @@ export function synthesizeSimpleMermaid(blockMapping: FuncBlockMapping): string 
 
     const funcArrows: Arrow[] = synArrows(basicBlocks)
 
+    const notes = basicBlocks.map(block => {
+      let stateNote: string = ''
+      if (block.notes) {
+        stateNote = '\n'
+        stateNote += `note right of ${block.label}\n`
+        stateNote += block.notes.join('\n')
+        stateNote += '\nend note'
+      }
+      return stateNote
+    }).join('\n')
+
     let funcArrowDef: string
     if (funcArrows.length === 0)
       funcArrowDef = basicBlocks[0].label
     else
       funcArrowDef = arrowsToDef(funcArrows)
 
-    return `${funcHead}\n${funcArrowDef}\n${funcTail}`
+    return `${funcHead}\n${funcArrowDef}\n${notes}\n${funcTail}`
   }).join('\n')
 
   return `${mermaidStart}\n${body}`
@@ -84,17 +95,7 @@ export function synthesizeMermaid(blockMapping: FuncBlockMapping): string {
       const body = block.instrs
         .map((instr, instrIndex) => {
           const stateLabel = `${block.label}.${instrIndex}`
-          const stateDeclaration = `state "${brilInstructionToText(instr)}" as ${stateLabel}`
-
-          let stateNote: string = ''
-          if (block.notes) {
-            stateNote = '\n'
-            stateNote += `note right of ${stateLabel}\n`
-            stateNote += block.notes.join('\n')
-            stateNote += '\nend note'
-          }
-
-          return stateDeclaration + stateNote
+          return `state "${brilInstructionToText(instr)}" as ${stateLabel}`
         })
         .join('\n')
 

@@ -125,6 +125,70 @@ possible to
 [analyze the program from the beginning or from the end](https://www.wikiwand.com/en/Data-flow_analysis).
 They are called **forward analysis** and **backward analysis**, respectively.
 
+## Natural Loops
+
+As we have discussed, cycles can be formed due to the loops in the program.
+Because it is possible for a directed graph to have various shapes of cycles,
+and not all kinds of cycles happen to programs easily and are good for analysis,
+we define natural loops, which will be an important entity to work with in
+future analysis. You can skip this part until you reach the loop-invariant
+code motion section and the static single assignment section in the
+optimizations.
+
+Before defining what a natural loop is, we need to identify a couple relations:
+
+- `A` dominates `B` (simplified as `A` DOM `B`): if all paths leading to `B`
+  include `A`. It feels like something illustrated below:
+
+  ```mermaid
+  stateDiagram-v2
+      direction LR
+      state "..." as PM
+      state "..." as MM
+      [*] --> P1
+      [*] --> PM
+      [*] --> P3
+      P1 --> A
+      PM --> A
+      P3 --> A
+      A --> M
+      A --> MM
+      M --> B
+      MM --> B
+  ```
+
+  However, the `A` and `B` below do not have the DOM relation, because there is
+  a path to `B` from `M` that does not include `A`.
+
+  ```mermaid
+  stateDiagram-v2
+      direction LR
+      state "..." as PM
+      state "..." as MM
+      state "..." as PPM
+      [*] --> PM
+      [*] --> PPM
+      PM --> M
+      PM --> A
+      PPM --> A
+      A --> MM
+      M --> B
+      MM --> B
+  ```
+
+  Also note that, DOM is a reflexive relation, meaning `X` DOM `X` for every
+  basic block `X`.
+
+- `A` strictly dominates `B` (simplified as `A` SDOM `B`): iff `A` DOM `B` and `
+  A` $\ne$ `B`. In the first diagram above, `A` and `M` (and many other nodes)
+  strictly dominate `B`.
+- `A` immediately dominates `B` (simplified as `A` IDOM `B`): iff `A` SDOM `B`
+  and `A` does not strictly dominate any node that strictly dominate `B`. In
+  other words, `A` is a immediate ancestor of `B`.
+- `A`is post dominated by `B` (simplified as `A` PDOM `B`): iff ...
+
+<Dominance />
+
 ## Optimizations
 
 ### Reaching Definition And Flow Analysis Framework

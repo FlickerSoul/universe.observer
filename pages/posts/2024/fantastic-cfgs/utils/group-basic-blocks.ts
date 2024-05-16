@@ -229,7 +229,7 @@ export function blocksToBlockGraph(blocks: BasicBlock[]): BlockGraph {
   const labelToIndex = new Map(blocks.map((block, index) => [block.label, index] as const))
   graph.setRoot(blockNodes[0])
 
-  for (let i = 1; i < blocks.length; i++) {
+  for (let i = 0; i < blocks.length; i++) {
     const node = blockNodes[i]
     const nextNodes = node.blockRef.next.map(label => labelToIndex.get(label)!).map(index => blockNodes[index])
     node.next = nextNodes

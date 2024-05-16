@@ -24,6 +24,7 @@ export function programDisplayTypeToName(type: ProgramDisplayType): string {
 export interface OptionalDisplays {
   dce?: string[]
   lvn?: boolean
+  sdom?: boolean
 }
 
 export function addDisplays(displays: ProgramDisplayType[], optionalDisplays: OptionalDisplays | undefined) {

@@ -21,9 +21,12 @@ export function dominance(blocks: BasicBlock[]): BasicBlock[] {
   machine.run()
 
   machine.dataIn.forEach((data, index) => {
-    machine.graph.indexToNode.get(index)!.blockRef.notes = (machine.graph.indexToNode.get(index)!.blockRef.notes ?? []).concat(
-      'dominated by: ' + data.join(', ')
-    )
+    const notes = (machine.graph.indexToNode.get(index)!.blockRef.notes ?? [])
+    if (data.length > 0) {
+      machine.graph.indexToNode.get(index)!.blockRef.notes = notes.concat(
+        'strictly dominated by: \n' + data.join(', ')
+      )
+    }
   })
 
   return blocks
