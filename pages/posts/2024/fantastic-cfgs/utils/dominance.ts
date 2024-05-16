@@ -3,7 +3,7 @@ import {BlockDataFlowMachine, GenFunc, MergeFunc} from "./data-flow-machine";
 
 type DominanceDataType = string
 
-export function dominance(blocks: BasicBlock[]): BasicBlock[] {
+export function dominance(blocks: BasicBlock[], strict: boolean): BasicBlock[] {
   const genFunc: GenFunc<BlockNode, DominanceDataType> = (block) => {
     return [block.blockRef.label]
   }
@@ -20,11 +20,13 @@ export function dominance(blocks: BasicBlock[]): BasicBlock[] {
 
   machine.run()
 
-  machine.dataIn.forEach((data, index) => {
+  const data = strict ? machine.dataIn : machine.dataOut
+
+  data.forEach((data, index) => {
     const notes = (machine.graph.indexToNode.get(index)!.blockRef.notes ?? [])
     if (data.length > 0) {
       machine.graph.indexToNode.get(index)!.blockRef.notes = notes.concat(
-        'strictly dominated by: \n' + data.join(', ')
+        (strict ? 'strictly ' : '') + 'dominated by: \n' + data.join(', ')
       )
     }
   })

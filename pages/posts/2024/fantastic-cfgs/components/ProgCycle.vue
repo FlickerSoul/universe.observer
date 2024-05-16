@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const props = defineProps<{
-  progs: object[]
+  progs: object[],
+  names?: string[]
 }>()
 
 const index = ref(0)
@@ -31,7 +32,7 @@ const el = ref<HTMLDivElement | null>(null)
 
 function display(number: number) {
   index.value = number
-  el.value?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' })
+  el.value?.scrollIntoView({behavior: 'smooth', block: 'center', inline: 'center'})
   triggerFlicker()
 }
 
@@ -52,9 +53,10 @@ defineExpose({
       <div class="cursor-pointer" @click.stop="next">
         ➡️
       </div>
+      <span v-if="names !== undefined" :class="{ flicker: isFlickering }">{{ names[index] }}</span>
     </div>
     <div class="w-100%">
-      <component :is="prog" v-for="(prog, i) in progs" v-show="index === i" :key="i" />
+      <component :is="prog" v-for="(prog, i) in progs" v-show="index === i" :key="i"/>
     </div>
   </div>
 </template>

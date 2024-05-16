@@ -19,7 +19,9 @@ const simpleBrilProg = loadBril(prog)
 
 let blocks: FuncBlockMapping = groupBasicBlocks(simpleBrilProg)
 if (optionals?.sdom) {
-  blocks = Object.fromEntries(Object.entries(blocks).map(([name, blocks]) => [name, dominance(blocks)]))
+  blocks = Object.fromEntries(Object.entries(blocks).map(([name, blocks]) => [name, dominance(blocks, true)]))
+} else if (optionals?.dom) {
+  blocks = Object.fromEntries(Object.entries(blocks).map(([name, blocks]) => [name, dominance(blocks, false)]))
 }
 
 const fullProgMermaid = synthesizeMermaid(blocks)

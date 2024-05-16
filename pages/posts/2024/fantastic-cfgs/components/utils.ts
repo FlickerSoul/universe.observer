@@ -25,6 +25,7 @@ export interface OptionalDisplays {
   dce?: string[]
   lvn?: boolean
   sdom?: boolean
+  dom?: boolean
 }
 
 export function addDisplays(displays: ProgramDisplayType[], optionalDisplays: OptionalDisplays | undefined) {

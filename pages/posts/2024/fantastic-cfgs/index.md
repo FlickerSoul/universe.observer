@@ -188,7 +188,7 @@ Before defining what a natural loop is, we need to identify a couple relations:
 - `A`is post dominated by `B` (simplified as `A` PDOM `B`): iff all paths
   from `B` to the exit includes `A`.
 
-<Dominance />
+<DominanceExamples />
 
 ## Optimizations
 
