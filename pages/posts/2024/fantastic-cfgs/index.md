@@ -185,7 +185,8 @@ Before defining what a natural loop is, we need to identify a couple relations:
 - `A` immediately dominates `B` (simplified as `A` IDOM `B`): iff `A` SDOM `B`
   and `A` does not strictly dominate any node that strictly dominate `B`. In
   other words, `A` is a immediate ancestor of `B`.
-- `A`is post dominated by `B` (simplified as `A` PDOM `B`): iff ...
+- `A`is post dominated by `B` (simplified as `A` PDOM `B`): iff all paths
+  from `B` to the exit includes `A`.
 
 <Dominance />
 

@@ -1,4 +1,7 @@
 import type {Element} from "hast";
+import {Program} from "../../pages/posts/2024/fantastic-cfgs/utils/types";
+import {execSync} from "node:child_process";
+import {loadBril} from "../../pages/posts/2024/fantastic-cfgs/utils/tools";
 
 export const BRIL_FLOATING_VUE_THEME = 'bril'
 
@@ -37,4 +40,12 @@ export function generateId(lang: string, prefix: string, row: number, variable: 
 
 export function generateFlickerCallbackEffect(id: string) {
   return `flicker('${id}')`
+}
+
+export function codeStringToProgram(code: string): Program {
+
+  const cmd = execSync('bril2json -p', {input: code})
+  const json = cmd.toString()
+
+  return loadBril(JSON.parse(json))
 }

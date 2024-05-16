@@ -1,11 +1,10 @@
 import {addClassToHast, HighlighterGeneric, ShikiTransformer, type ThemedToken} from "shiki";
-import {execSync} from "node:child_process";
 import {type RDResult, rdWithMachine} from "../../pages/posts/2024/fantastic-cfgs/utils/rd";
-import {loadBril} from "../../pages/posts/2024/fantastic-cfgs/utils/tools";
 import {
   addIdToHast,
   BASIC_POPPER_PROPERTIES,
   calculateOffset,
+  codeStringToProgram,
   DEST_VARIABLE_SCOPE,
   generateFlickerCallbackEffect,
   generateId,
@@ -41,10 +40,7 @@ export function reachingDefinitionTransformer(highlighter: HighlighterGeneric<st
       })
       this.meta.codeLines = code.split('\n')
 
-      const cmd = execSync('bril2json -p', {input: code})
-      const json = cmd.toString()
-
-      this.meta.rdInfo = rdWithMachine(loadBril(JSON.parse(json)))
+      this.meta.rdInfo = rdWithMachine(codeStringToProgram(code))
 
       this.options.mergeWhitespaces = false
     },
