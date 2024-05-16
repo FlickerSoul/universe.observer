@@ -1,5 +1,6 @@
-import type { Program } from './types'
-import { InstrNode, blocksToPlainGraph, groupBasicBlocksForFun } from './group-basic-blocks'
+import type {Program} from './types'
+import {groupBasicBlocksForFun} from './group-basic-blocks'
+import {DataFlowMachine, Equals, GenFunc, KillFunc, MergeFunc} from "./data-flow-machine";
 
 type FuncName = string
 type VarName = string
@@ -82,70 +83,73 @@ function setEqual<T>(a: Set<T>, b: Set<T>): boolean {
   return true
 }
 
-export function reachingDefinition(prog: Program): RDResult {
+class RDData implements Equals {
+  variable: string
+  index: number
+
+  constructor(variable: string, index: number) {
+    this.variable = variable
+    this.index = index
+  }
+
+  equals(other: RDData): boolean {
+    return this.variable === other.variable && this.index === other.index
+  }
+}
+
+export function rdWithMachine(prog: Program): RDResult {
   return new Map(
     prog.functions.map((func) => {
       const blocks = groupBasicBlocksForFun(func)
-      const graph = blocksToPlainGraph(blocks)
-      const root = graph.root
-      const result: FuncRD = new Map<number, RDLine>()
+      const genFunc: GenFunc<RDData> = (node) => {
+        if ('dest' in node.instr)
+          return [new RDData(node.instr.dest, node.instrRow())]
+        return []
+      }
+      const mergeFunc: MergeFunc<RDData> = (...data) => {
+        return data.flat()
+      }
+      const killFunc: KillFunc<RDData> = (node, inData, _) => {
+        if ('dest' in node.instr) {
+          // kill those that's not defined in the current node
+          const dest = node.instr.dest
+          return inData.filter((rd) => (rd.variable === dest && rd.index !== node.instrRow()))
+        }
 
-      if (root === undefined) {
+        return []
+      }
+
+      const machine = new DataFlowMachine(genFunc, killFunc, mergeFunc).loadBlocks(blocks)
+
+      machine.init(
+        machine.graph.root.index(), (func.args ?? []).map((arg) => new RDData(arg.name, func.pos.row))
+      )
+
+      try {
+        machine.run()
+      } catch (e) {
+        console.log(e)
         return [
           func.name,
-          result,
+          new Map(),
         ]
       }
-      const preNode = new InstrNode({ op: 'noop', pos: func.pos ? { ...func.pos } : undefined })
-      preNode.next.push(root)
-      root.prev.push(preNode)
-      const preMap: RDLine = new Map()
-      for (const arg of func.args || [])
-        preMap.set(arg.name, new Set([func.pos.row]))
 
-      const rdOuts = new Map<InstrNode, RDLine>()
-      for (const node of graph.nodes.values())
-        rdOuts.set(node, new Map() as RDLine)
-      rdOuts.set(preNode, preMap)
 
-      const workList = new Deque<InstrNode>()
+      const result: FuncRD = new Map(Array.from(machine.dataIn.entries()).map(([index, data]) => {
 
-      for (const node of graph.nodes.values())
-        workList.pushBack(node)
-
-      while (!workList.isEmpty()) {
-        const node = workList.popFront()
-        const rdIn = node.prev.reduce((acc, node) => {
-          rdOuts.get(node).forEach((lineNums, varName) => {
-            if (acc.get(varName) === undefined)
-              acc.set(varName, new Set())
-
-            for (const lineNum of lineNums)
-              acc.get(varName)?.add(lineNum)
-          })
+        const lineResult = data.reduce((acc, rd) => {
+          if (acc.get(rd.variable) === undefined)
+            acc.set(rd.variable, new Set())
+          acc.get(rd.variable)?.add(rd.index)
           return acc
         }, new Map() as RDLine)
 
-        const instr = node.instr
-        result.set(node.instrRow(), rdIn)
+        return [index, lineResult]
+      }))
 
-        const rdOut: RDLine = new Map(rdIn)
 
-        if ('dest' in instr) {
-          const writeVar = instr.dest
-          rdOut.set(writeVar, new Set([node.instrRow()]))
-        }
-
-        if (!mapEqual(rdOut, rdOuts.get(node))) {
-          rdOuts.set(node, rdOut)
-          for (const succ of node.next)
-            workList.pushBack(succ)
-        }
-      }
-
-      return [
-        func.name,
-        result,
-      ]
-    })) as RDResult
+      return [func.name, result]
+    })
+  )
 }
