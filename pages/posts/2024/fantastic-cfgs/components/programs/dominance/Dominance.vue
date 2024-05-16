@@ -6,7 +6,7 @@ import ProgramCode from './Dominance.md'
 </script>
 
 <template>
-  <ProgDisplay :prog="Program" :init-view="ProgramDisplayType.CFG_BASIC_BLOCKS" :optionals="{dominance: true}">
+  <ProgDisplay :prog="Program" :init-view="ProgramDisplayType.CFG_BASIC_BLOCKS" :optionals="{sdom: true}">
     <ProgramCode/>
   </ProgDisplay>
 </template>
