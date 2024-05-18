@@ -39,7 +39,8 @@ work with in future analysis.
 Before defining what a natural loop is, we need to identify a couple relations:
 
 - `A` dominates `B` (simplified as `A` DOM `B`): if all paths leading to `B`
-  include `A`. It feels like something illustrated below:
+  include `A`. It feels like something illustrated below. You can see the
+  execution of `B` guarantees the execution of `A`.
 
   ```mermaid
   stateDiagram-v2

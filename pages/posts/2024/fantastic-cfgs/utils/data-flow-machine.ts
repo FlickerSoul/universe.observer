@@ -69,10 +69,12 @@ export class DataFlowMachine<
     const rootIndex = graph.root.index()
     if (rootIndex === undefined) throw new Error('Root index is undefined')
 
-    const workList: number[] = [rootIndex]
+    const workList: Set<number> = new Set([rootIndex])
 
-    while (workList.length > 0) {
-      const head = workList.shift()
+    while (workList.size > 0) {
+      const head = workList.values().next().value
+      workList.delete(head)
+
       const node = graph.indexToNode.get(head)!
       const prevIndices = node.prev.map(prev => prev.index())
       const prevIn =
@@ -92,10 +94,39 @@ export class DataFlowMachine<
 
       const out = this.filter(allIn, killed)
 
-      this.dataOut.set(head, out)
-
-      workList.push(...node.next.map(next => next.index()))
+      if (this.compareAndSet(head, out)) {
+        node.next
+          .map(next => next.index())
+          .forEach(index => workList.add(index))
+      }
     }
+  }
+
+  compareAndSet(index: number, newDatas: DataType[]): boolean {
+    const oldDatas = this.dataOut.get(index)
+    if (oldDatas === undefined || oldDatas.length !== newDatas.length) {
+      this.dataOut.set(index, newDatas)
+      return true
+    }
+
+    for (let i = 0; i < oldDatas.length; i++) {
+      const oldData = oldDatas[i]
+      let equal = false
+      for (let j = 0; j < newDatas.length; j++) {
+        const newData = newDatas[j]
+        equal =
+          typeof oldData === 'object'
+            ? oldData.equals(newData)
+            : oldData === newData
+        if (equal) break
+      }
+
+      if (!equal) {
+        this.dataOut.set(index, newDatas)
+        return true
+      }
+    }
+    return false
   }
 
   filter(a: DataType[], b: DataType[]): DataType[] {

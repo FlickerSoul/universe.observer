@@ -1,0 +1,299 @@
+{
+  "functions": [
+    {
+      "instrs": [
+        {
+          "dest": "one",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 2
+          },
+          "type": "int",
+          "value": 1
+        },
+        {
+          "dest": "two",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 3
+          },
+          "type": "int",
+          "value": 2
+        },
+        {
+          "dest": "a",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 4
+          },
+          "type": "int",
+          "value": 1
+        },
+        {
+          "dest": "b",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 5
+          },
+          "type": "int",
+          "value": 5
+        },
+        {
+          "dest": "result",
+          "op": "const",
+          "pos": {
+            "col": 5,
+            "row": 6
+          },
+          "type": "int",
+          "value": 0
+        },
+        {
+          "labels": [
+            "loop.cond"
+          ],
+          "op": "jmp",
+          "pos": {
+            "col": 5,
+            "row": 7
+          }
+        },
+        {
+          "label": "loop.bump",
+          "pos": {
+            "col": 1,
+            "row": 8
+          }
+        },
+        {
+          "args": [
+            "a",
+            "one"
+          ],
+          "dest": "a",
+          "op": "add",
+          "pos": {
+            "col": 5,
+            "row": 9
+          },
+          "type": "int"
+        },
+        {
+          "label": "loop.cond",
+          "pos": {
+            "col": 1,
+            "row": 10
+          }
+        },
+        {
+          "args": [
+            "a",
+            "b"
+          ],
+          "dest": "cond",
+          "op": "ge",
+          "pos": {
+            "col": 5,
+            "row": 11
+          },
+          "type": "bool"
+        },
+        {
+          "args": [
+            "cond"
+          ],
+          "labels": [
+            "end",
+            "body"
+          ],
+          "op": "br",
+          "pos": {
+            "col": 5,
+            "row": 12
+          }
+        },
+        {
+          "label": "body",
+          "pos": {
+            "col": 1,
+            "row": 13
+          }
+        },
+        {
+          "args": [
+            "a",
+            "two"
+          ],
+          "dest": "remainder",
+          "funcs": [
+            "mod"
+          ],
+          "op": "call",
+          "pos": {
+            "col": 5,
+            "row": 14
+          },
+          "type": "int"
+        },
+        {
+          "args": [
+            "remainder",
+            "one"
+          ],
+          "dest": "odd",
+          "op": "eq",
+          "pos": {
+            "col": 5,
+            "row": 15
+          },
+          "type": "bool"
+        },
+        {
+          "args": [
+            "odd"
+          ],
+          "labels": [
+            "then",
+            "endif"
+          ],
+          "op": "br",
+          "pos": {
+            "col": 5,
+            "row": 16
+          }
+        },
+        {
+          "label": "then",
+          "pos": {
+            "col": 1,
+            "row": 17
+          }
+        },
+        {
+          "args": [
+            "result",
+            "a"
+          ],
+          "dest": "result",
+          "op": "add",
+          "pos": {
+            "col": 5,
+            "row": 18
+          },
+          "type": "int"
+        },
+        {
+          "label": "endif",
+          "pos": {
+            "col": 1,
+            "row": 19
+          }
+        },
+        {
+          "labels": [
+            "loop.bump"
+          ],
+          "op": "jmp",
+          "pos": {
+            "col": 5,
+            "row": 20
+          }
+        },
+        {
+          "label": "end",
+          "pos": {
+            "col": 1,
+            "row": 21
+          }
+        },
+        {
+          "args": [
+            "result"
+          ],
+          "op": "print",
+          "pos": {
+            "col": 5,
+            "row": 22
+          }
+        }
+      ],
+      "name": "main",
+      "pos": {
+        "col": 1,
+        "row": 1
+      }
+    },
+    {
+      "args": [
+        {
+          "name": "a",
+          "type": "int"
+        },
+        {
+          "name": "b",
+          "type": "int"
+        }
+      ],
+      "instrs": [
+        {
+          "args": [
+            "a",
+            "b"
+          ],
+          "dest": "d",
+          "op": "div",
+          "pos": {
+            "col": 5,
+            "row": 26
+          },
+          "type": "int"
+        },
+        {
+          "args": [
+            "d",
+            "b"
+          ],
+          "dest": "dd",
+          "op": "mul",
+          "pos": {
+            "col": 5,
+            "row": 27
+          },
+          "type": "int"
+        },
+        {
+          "args": [
+            "a",
+            "dd"
+          ],
+          "dest": "r",
+          "op": "sub",
+          "pos": {
+            "col": 5,
+            "row": 28
+          },
+          "type": "int"
+        },
+        {
+          "args": [
+            "r"
+          ],
+          "op": "ret",
+          "pos": {
+            "col": 5,
+            "row": 29
+          }
+        }
+      ],
+      "name": "mod",
+      "pos": {
+        "col": 1,
+        "row": 25
+      }
+    }
+  ]
+}
