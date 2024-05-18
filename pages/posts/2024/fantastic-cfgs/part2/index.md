@@ -27,7 +27,7 @@ This post uses [Bril](https://capra.cs.cornell.edu/bril/intro.html),
 an compiler IR for learning. Part of the code used for this post was modified
 from Bril.
 
-## Natural Loops
+## Dominance
 
 As we have discussed in the [previous post](/posts/2024/fantastic-cfgs/part1/),
 cycles can be formed due to the loops in the program.
@@ -91,6 +91,11 @@ Before defining what a natural loop is, we need to identify a couple relations:
   from `B` to the exit includes `A`.
 
 <DominanceExamples />
+
+We can use the same data flow framework to find the dominance easily: when
+visiting a basic block on CFG, add the identity of the block to combined
+information flowed from its predecessors, and pass all to its predecessors; when
+combining information, take the intersection of the information from all paths.
 
 ## Optimizations
 
