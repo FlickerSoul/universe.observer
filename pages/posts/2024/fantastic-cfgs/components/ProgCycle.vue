@@ -46,16 +46,22 @@ defineExpose({
 
 <template>
   <div ref="el" class="my-4">
-    <div class="flex flex-row gap-2 justify-center mb-4">
-      <div class="cursor-pointer" @click.stop="prev">⬅️</div>
-      <div>
-        <span :class="{ flicker: isFlickering }">{{ index + 1 }}</span> /
-        {{ props.progs.length }}
+    <div class="mb-4 flex flex-col gap-1">
+      <div class="flex flex-row gap-2 justify-center">
+        <div class="cursor-pointer" @click.stop="prev">⬅️</div>
+        <div>
+          <span :class="{ flicker: isFlickering }">{{ index + 1 }}</span> /
+          {{ props.progs.length }}
+        </div>
+        <div class="cursor-pointer" @click.stop="next">➡️</div>
       </div>
-      <div class="cursor-pointer" @click.stop="next">➡️</div>
-      <span v-if="names !== undefined" :class="{ flicker: isFlickering }">{{
-        names[index]
-      }}</span>
+      <div
+        v-if="names !== undefined"
+        :class="{ flicker: isFlickering }"
+        class="text-center"
+      >
+        {{ names[index] }}
+      </div>
     </div>
     <div class="w-100%">
       <component
