@@ -64,6 +64,8 @@ const LINKS = {
     { name: '宇宙よりも遠い場所', url: 'https://kirainmoe.com/' },
     { name: '乌云压顶是吧', url: 'https://wyydsb.xin/' },
     { name: 'Anthony Fu', url: 'https://antfu.me' },
+    { name: 'Yixin He', url: 'https://yixinhe.me/index.html' },
+    { name: 'azdavis', url: 'https://azdavis.net/' },
   ],
 } as const
 
