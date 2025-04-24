@@ -34,33 +34,30 @@ This shall be the first of many posts
 where I share my experience of working on the unknown pits in swift, which I
 hope will help other people along the way to be less frustrated.
 
-Alright, back to the subject. I'm helping my company develop an closed-source
-SDK/library in Swift
-that will be shared only to a selected number of clients. This SDK will only be
-used on iOS and its source code is also internally in my company's iOS app. I
-need to figure out a way to automate
-building close source swift
-package into binaries (`.xcframework` in this case), and distribute them as a
-private repository. Since our company uses GitHub, I will need to use GitHub
-actions.
+Back to the subject.
 
-Suppose you're creating a library in Swift for
-other people to use. It's easy with Swift package: publish your package in
-a source control repository, specify the URL to the repository with a desired
-version range, and you're good to go, as described
+I was helping my company develop an closed-source,
+iOS-only SDK/library in Swift
+that will be shared only to a selected number of clients. I needed to figure out
+a way to automate building the closed-source swift
+package into binaries (`.xcframework` in this case), and distribute them as a
+private Swift package repository. Since our company uses GitHub, I used
+GitHub actions to automate this process, and host the binary in GitHub Releases.
+
+Distributing open-source Swift package is easy: publish your package in
+a source control repository, as described
 in [this official doc](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app)
 from apple.
 
-This works perfectly for a open source library. But what about close source
-libraries? We can first compile the libraries into
+For closed-source libraries, we can first compile the libraries into
 binaries,
 and [distribute binaries as swift package with some setup](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
 This means we will need to manage three entities, the repository of source of
 the private library, the binary of the private library, and another repository
 that publishes the binary.
 
-Let's work on a concrete example. You can find the source code and actions in
-these repositories:
+Let's work on a concrete example. You can find the source code and GitHub
+actions of the automation in these repositories:
 
 - [`MyPrivateLib`](https://github.com/FlickerSoul/MyPrivateLib)
 - [`MyPrivateLibRelease`](https://github.com/FlickerSoul/MyPrivateLibRelease)
@@ -69,7 +66,8 @@ these repositories:
 
 ## Private SDK Setup
 
-Suppose I'm developing a closed-source swift package, `MyPrivateLib`, which has
+Suppose we are developing a closed-source swift package, `MyPrivateLib`, which
+has
 a basic structure:
 
 ```text
@@ -82,7 +80,7 @@ a basic structure:
         └── MyPrivateLibTests.swift
 ```
 
-My library functionality is also basic:
+The library functionality is also basic:
 
 ```swift
 func mySecretFunction() -> Int {
@@ -113,8 +111,9 @@ a `.xcodeproj` for a swift package is by
    ![metadata](./images/create-proj-meta.png)
 4. copy the `.xcodeproj` to the actual package using something like
    `mv Temp/Temp.xcodeproj ./MyPrivateLib/MyPrivateLib.xcodeproj`.
-5. open the XCode project and add the actual sources, libraries, and even test
-   targets
+5. open the XCode project, replace the metadata (bundle ID, product name, etc.),
+   and add the actual sources, libraries, and even test targets; you may also
+   want to disable "Automatically manage signing"
 
    Before:
 
@@ -172,11 +171,11 @@ this (where `xcuserdata` folders are omitted):
 ```
 
 Using `.xcodeproj`, we can run `xcodebuild archive`, subsequently
-`xcodebuild -create-xcframework`. You can find the script that does
-`.xcframework` generation in `scripts/build-proj.sh` under the repository root.
-Below is the script I use to build and package the `.xcframework`, which you can
-also find in
-[the repository](https://github.com/FlickerSoul/MyPrivateLib/blob/main/scripts/build-proj.sh):
+`xcodebuild -create-xcframework`. Below is the script to build and package
+`.xcframework`, which can
+also be found [
+`scripts/build-proj.sh`](https://github.com/FlickerSoul/MyPrivateLib/blob/main/scripts/build-proj.sh)
+in the repository:
 
 ```bash
 #! /bin/bash
@@ -252,8 +251,8 @@ clients and installed in their application. The structure is as the following.
         └── MyPrivateLibRelease.swift
 ```
 
-In seems simple, the `Package.swift` is actually doing the magic, especially the
-highlighted area. You can find more
+The structure feels trivial, because the `Package.swift` is actually doing the
+magic, especially in the highlighted area. You can find more
 in [the official doc](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
 
 ```swift {13,21-25}
@@ -286,8 +285,8 @@ let package = Package(
 )
 ```
 
-We want to automatically update the `url` and `checksum` whenever a new release
-of our private lib is created.
+Whenever a new release of our closed-source library is created, we want to
+update the `url` and `checksum` to match the corresponding new release.
 
 ## GitHub Actions Automating Release Uploading
 
@@ -327,11 +326,12 @@ package containing the corresponding binary. Whenever a release is created in
 the source library (`MyPrivateLib` in this example), a new release will be
 automatically created in the binary Swift package.
 
-That is, say a `1.0.0` release is created in `MyPrivateLib`
+That is, say when a `1.0.0` release is created in `MyPrivateLib`,
 
 ![source release](./images/source-release.png)
 
-a new commit and a new release will be created in the `MyPrivateLibRelease` repo
+we can observe that a new commit and a new release will be created in the
+`MyPrivateLibRelease` repo, after the CI is run
 
 ![release commit](./images/release-commit.png)
 ![release page](./images/release-page.png)
@@ -339,7 +339,9 @@ a new commit and a new release will be created in the `MyPrivateLibRelease` repo
 You can notice that release `MyPrivateLibRelease` is a draft release. This is
 done on purpose to prevent accidental release or unchecked mistakes. You
 manually edit the release to publish it, or add
-`gh release edit <release_name> --draft=false` to publish it automatically.
+`gh release edit <release_name> --draft=false` to publish it automatically. Once
+the release is published, the user of this package can see this new version and
+use it.
 
 ## Use The Binary Swift Package
 
@@ -375,9 +377,9 @@ read-only `Content` permission.
 
 ![read only content pat](./images/private-read-pat.png)
 
-To let XCode know how to authenticate itself to access the private release
-repository, the client needs to create a `.netrc` under their home directory (
-that is, `~/.netrc`),
+To let XCode know how to authenticate itself to access the binary in the GitHub
+Release of the private repository, the client needs to create a `.netrc` under
+their home directory (that is, `~/.netrc`),
 with the following content, where `<username>` is the username from which the
 PAT is generated.
 
@@ -386,6 +388,9 @@ machine api.github.com
   login <username>
   password <PAT>
 ```
+
+For more information about why `.netrc` is needed,
+see [this post](https://forums.swift.org/t/spm-support-basic-auth-for-non-git-binary-dependency-hosts/37878).
 
 To access the `MyPrivateLibReleasePrivate` repo, you can try with the following
 the token
