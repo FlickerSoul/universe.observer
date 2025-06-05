@@ -83,7 +83,8 @@ this [GitHub repository](https://github.com/FlickerSoul/CoreDataProgressiveMigra
 
 ## Prerequisites
 
-You should know how to create a new version of CoreData model.
+You should know how to create a new version of CoreData model, and what a
+light-weight/heavy migration is.
 
 ## How it's done
 
@@ -475,6 +476,14 @@ struct CoreDataMigrationSwiftUIApp: App {
     // omitted...
 }
 ```
+
+Alternatively, you can use a publisher from `Combine` such as
+
+```swift
+nonisolated let isInitialized: CurrentValueSubject<Bool, Never> = .init(false)
+```
+
+and other parts of the application and listen and react to this publisher.
 
 ### Bonus: SwiftUI Preview Trait
 
