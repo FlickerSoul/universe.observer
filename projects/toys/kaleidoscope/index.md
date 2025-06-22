@@ -10,7 +10,7 @@ tags:
   - toy
   - lexer
   - LLVM
-  - swift
+  - Swift
 createdAt: 2023-12-07
 updatedAt: 2024-04-01
 #hidden: 
