@@ -29,10 +29,10 @@ Apple introduced C++ interoperation back in WWDC 2023 (wow that's two years ago
 already). C and objective C has been interoperable with Swift for a long time
 and this capability adds more to the game.
 
-I recently run into this feature
+I recently ran into this feature
 because I need to integrate a C package and some of my own C++ code into the
 existing iOS application to do audio processing. The C package is distributed as
-a static library with an couple of `.a` files and a set of header files. My goal
+a static library with a couple of `.a` files and a set of header files. My goal
 is to build interface with two C/++ functions:
 
 - takes two strings, one is the input file path, and the other is output file
@@ -54,7 +54,7 @@ find the following sources helpful:
 
 Side note: in WWDC 2025, Apple introduces safe interoperation using `Span` and
 `MutableSpan`. They are helpful in preventing access-after-free and
-access-out-of-bound memeory issues, which we will not touch much in this post (
+access-out-of-bound memory issues, which we will not touch much in this post (
 because I didn't get it working in the beta SDK...; I'll put my exploration at
 the end).
 
@@ -127,7 +127,7 @@ double complex_arg(double real, double imag) SWIFT_NAME(arg(r:i:));
 ```
 
 In reality, it might be not elegant or possible to copy the static library to
-the Swift package. From my limited testing, creating soft lin in the Swift
+the Swift package. From my limited testing, creating soft links in the Swift
 package pointing to the actual static libraries (which, for instance, can be in
 a git submodule in a different location) will also work. The `.a` files don't
 even need to be in the swift package directory, as we will see later, but I
@@ -138,7 +138,7 @@ package.
 
 To bridge the static libraries, we use the [
 `.systemLibrary`](https://developer.apple.com/documentation/packagedescription/target/systemlibrary(name:path:pkgconfig:providers:))
-to let swift package know where the static libraries are.
+to let Swift package know where the static libraries are.
 
 ```swift
 // swift-tools-version: 6.2
@@ -182,9 +182,9 @@ It's not enough to have the `.h` header files in the package, as you can see in
 the file tree structure. Two kinds of files were added: `module.modulemap` and
 `.pk` pkg config. Since standard C and C++ don't have the notion of module,
 `module.modulemap` helps Swift understand what modules this library has during
-import. The `.pk` configs help the compiler figuring where to find the header
+import. The `.pk` configs help the compiler figure where to find the header
 files, and seems mandatory for C libraries. You can also add `.pk` configs to
-the C++ libraries so minimize the linking configurations in `Package.swift`.
+the C++ libraries to minimize the linking configurations in `Package.swift`.
 
 ```text {6,7,13}
 │   ├── ExternalMathUtilsC
@@ -257,8 +257,8 @@ in our swift code. We have a Swift target `MathUtils`, which depends on the two
 external libraries (line 10).
 
 We explicitly set the interoperabilityMode to
-`.Cxx` because otherwise our C++ code wouldn't link, will result in some errors
-like
+`.Cxx` because otherwise our C++ code wouldn't link, and will result
+in some errors like the following
 
 - `error: could not build Objective-C module 'ExternalMathUtilsCxxWrapper'`
 - `Clang dependency scanner failure: While building module 'MathUtilsCxx' ...
@@ -319,7 +319,7 @@ from swift.org.
 ## Our Own C++ Library
 
 Suppose I'm using the external library and develop my own C/++ library that will
-be used in my Swift code. Unforetunately, Swift Package Manager doesn't allow
+be used in my Swift code. Unfortunately, Swift Package Manager doesn't allow
 you to mix languages in one target, so we will create a separate target just for
 our C/++ code. In this example, we create a `MathUtilsCxx` C++ target, and use
 them in our `MathUtils` Swift target.
@@ -421,16 +421,16 @@ public func batchEven(of data: [Int32]) -> [String] {
 
 In
 this [WWDC video about span](https://developer.apple.com/videos/play/wwdc2025/312)
-video (great session btw), Apple introduces `Span`, a data structure recording a
+(great session btw), Apple introduces `Span`, a data structure recording a
 piece of contiguous
 memory (a base pointer and a count) and its lifetime (via [
 `~Escapable`](https://github.com/swiftlang/swift-evolution/blob/main/proposals/0446-non-escapable.md)).
-The notion of a span helps us eliminating write-out-of-bound issue (because of
+The notion of a span helps us eliminating write-out-of-bound issues (because of
 awareness of a count) and use-after-free (because of its awareness of lifetime).
 
 In bridging with C/++ code, `Span` comes handy. We often see a pointer and a
 count combination in C/++ code, such as the `batch_even` in the previous
-example. Since a span safely provies information about the base pointer and a
+example. Since a span safely provides information about the base pointer and a
 count (size), it can replace these two parameters, as detailed
 in [this WWDC25 session](https://developer.apple.com/videos/play/wwdc2025/311).
 
@@ -439,8 +439,9 @@ std::vector<bool> batch_even(int* arr, size_t size);
 ```
 
 As discussed in the video, by adding `__counted_by` and `__noescape`
-annotations, as shown below, Swift can pass a span instead of the `int* arr` and
-`size_t size`. However, this doesn't work in my XCode beta.
+annotations from the `<lifetimebound.h>` header, as shown below, Swift can pass
+a span instead of the `int* arr` and
+`size_t size`. However, this doesn't work in my XCode26 beta.
 
 ```c++
 std::vector<bool> batch_even(int* __counted_by(size) arr __noescape, size_t size);
@@ -455,4 +456,4 @@ let data = Data()
 let span = data.bytes // Value of type 'Data' has no member 'bytes'
 ```
 
-So maybe this feature isn't shipped until future release? Let see then. :)
+So maybe this feature isn't shipped until future release? Let's see then. :)
