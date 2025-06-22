@@ -7,7 +7,7 @@ const toys: IToyInfo[] = [
   { name: 'Kaleidoscope', url: '/toys/kaleidoscope/' },
   { name: 'Soundscape', url: '/toys/soundscape/' },
 ]
-const TITLE = 'Toys %sep %site.name'
+const TITLE = 'Toys'
 const DESCRIPTION = 'Here is a list of toys I made!'
 useHead({
   title: TITLE,
@@ -21,9 +21,7 @@ useHead({
 
 <template>
   <div class="post-center">
-    <p>
-      Here is a list of toys I made myself or with peers :)
-    </p>
+    <p>Here is a list of toys I made myself or with peers :)</p>
     <div class="flex gap-4">
       <div v-for="(toy, i) in toys" :key="toy.name">
         <span>{{ i }}. </span>

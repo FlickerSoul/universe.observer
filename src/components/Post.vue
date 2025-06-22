@@ -120,7 +120,7 @@ const frontmatter = computed<IPostData>(() => {
 })
 
 useHead({
-  title: `${frontmatter.value.title} %sep %site.name`,
+  title: frontmatter.value.title ?? 'Post',
   meta: [
     { name: 'description', content: frontmatter.value.description },
     { name: 'og:description', content: frontmatter.value.description },

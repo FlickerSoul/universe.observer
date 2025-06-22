@@ -18,23 +18,29 @@ const TITLE = 'Universe Observer'
 const DESCRIPTION = "Larry Z's blog"
 const AUTHOR = 'Larry Zeng'
 
-useHead({
-  templateParams: {
-    sep: '|',
-    site: {
-      url: 'https://universe.observer',
-      name: TITLE,
-      author: AUTHOR,
+useHead(
+  {
+    titleTemplate: `%s | ${TITLE}`,
+    templateParams: {
+      separator: '|',
+      site: {
+        url: 'https://universe.observer',
+        name: TITLE,
+        author: AUTHOR,
+      },
     },
+    title: TITLE,
+    meta: [
+      { property: 'og:title', content: TITLE },
+      { property: 'og:type', content: 'website' },
+      { name: 'description', content: DESCRIPTION },
+      { property: 'og:description', content: DESCRIPTION },
+    ],
   },
-  title: TITLE,
-  meta: [
-    { property: 'og:title', content: TITLE },
-    { property: 'og:type', content: 'website' },
-    { name: 'description', content: DESCRIPTION },
-    { property: 'og:description', content: DESCRIPTION },
-  ],
-})
+  {
+    processTemplateParams: true,
+  },
+)
 
 useHead({
   meta: [

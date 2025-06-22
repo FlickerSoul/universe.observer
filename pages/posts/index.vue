@@ -4,7 +4,7 @@ import Post from '~/components/Post.vue'
 import PostList from '~/components/PostList.vue'
 import TagFilter from '~/components/TagFilter.vue'
 
-const TITLE = 'Posts %sep %site.name'
+const TITLE = 'Posts'
 const DESCRIPTION = 'Here is a list of posts I wrote!'
 useHead({
   title: TITLE,
