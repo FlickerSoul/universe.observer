@@ -1,4 +1,4 @@
-import { type HighlighterGeneric, getHighlighter } from 'shiki'
+import { getSingletonHighlighter, type HighlighterGeneric } from 'shiki'
 import brilJson from '../../scripts/bril-textmate.json?raw'
 import nordJson from '../../scripts/nord.json?raw'
 import rosePineDawnJson from '../../scripts/rose-pine-dawn.json?raw'
@@ -7,7 +7,7 @@ const bril = JSON.parse(brilJson)
 const nord = JSON.parse(nordJson)
 const rosePineDawn = JSON.parse(rosePineDawnJson)
 
-const highlighter = await getHighlighter({
+const highlighter = await getSingletonHighlighter({
   themes: [nord, rosePineDawn],
   langs: [
     'typescript',

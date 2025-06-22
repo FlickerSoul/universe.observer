@@ -1,5 +1,5 @@
 import type { ShikiTransformer } from 'shiki'
-import { getHighlighter } from 'shiki'
+import { getSingletonHighlighter } from 'shiki'
 import { reachingDefinitionTransformer } from './bril'
 
 export async function BrilTransformerFactory(
@@ -7,7 +7,7 @@ export async function BrilTransformerFactory(
   nord: any,
   rose: any,
 ): Promise<ShikiTransformer[]> {
-  const highlighter = await getHighlighter({
+  const highlighter = await getSingletonHighlighter({
     themes: [nord, rose],
     langs: [bril],
   })

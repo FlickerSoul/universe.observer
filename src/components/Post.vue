@@ -233,7 +233,7 @@ useHead({
 </style>
 
 <style scoped lang="sass">
-@use 'src/styles/variables' as v
+@use '~/styles/variables.sass' as v
 
 .post-wrapper
   .post-tag

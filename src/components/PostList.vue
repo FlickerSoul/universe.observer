@@ -73,7 +73,7 @@ function diffYear(a: Date | undefined, b: Date | undefined) {
 </template>
 
 <style scoped lang="sass">
-@use 'src/styles/global' as g
+@use '~/styles/global' as g
 ul.post-list
   list-style: none
 

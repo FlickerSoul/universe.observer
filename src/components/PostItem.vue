@@ -61,7 +61,7 @@ function handleClick(e: MouseEvent) {
 </template>
 
 <style lang="sass" scoped>
-@use 'src/styles/variables' as v
+@use '~/styles/variables.sass' as v
 
 .title-text
   font-size: 1.2em

@@ -30,7 +30,7 @@ const langDisplay = computed(() => {
 </template>
 
 <style lang="sass" scoped>
-@use 'src/styles/variables' as v
+@use '~/styles/variables.sass' as v
 span.lang-display
   min-width: v.$lang-indicator-width
 </style>
