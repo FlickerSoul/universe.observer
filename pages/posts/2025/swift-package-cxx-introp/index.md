@@ -45,12 +45,15 @@ to the writing of this blog, documenting how one can bundle C/++ code or static
 library along with Swift code into a swift package.
 
 You can find the complete example Swift
-package [here](https://github.com/FlickerSoul/SwiftPackageCxxCInterop). I also
-find the following sources helpful:
+package source
+code [here](https://github.com/FlickerSoul/SwiftPackageCxxCInterop).
+
+I also find the following sources helpful:
 
 - https://www.swift.org/documentation/cxx-interop/
 - https://developer.apple.com/videos/play/wwdc2023/10172/
 - https://www.youtube.com/watch?v=jcNxtM_yTfk
+- https://developer.apple.com/documentation/swift/mixinglanguagesinanxcodeproject
 
 Side note: in WWDC 2025, Apple introduces safe interoperation using `Span` and
 `MutableSpan`. They are helpful in preventing access-after-free and
