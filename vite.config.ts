@@ -207,6 +207,7 @@ export default defineConfig({
               'kotlin',
               'bash',
               'zsh',
+              'rust',
               bril,
             ],
             defaultColor: false,
