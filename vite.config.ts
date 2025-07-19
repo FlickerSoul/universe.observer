@@ -44,6 +44,7 @@ import {
 import wrapMagnifier from './scripts/markdown-img-wrapper'
 import ViteLoadString from './scripts/vite-load-string'
 import { BrilTransformerFactory } from './scripts/BrilTransformer'
+import { ShikiTransformer } from 'shiki'
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -153,6 +154,44 @@ export default defineConfig({
             fs.readFileSync('./scripts/rose-pine-dawn.json', 'utf8'),
           )
 
+          function transformNotationSwiftFocusFix(): ShikiTransformer {
+            return {
+              name: 'remove // from swift because of notation',
+              code(code) {
+                const lines = code.children.filter(i => i.type === 'element')
+                const linesToRemove = []
+
+                for (const line of lines) {
+                  if (line.type !== 'element') {
+                    continue
+                  }
+
+                  if (line.children.length !== 1) {
+                    continue
+                  }
+
+                  let span = line.children[0]
+                  if (span.type !== 'element' || span.children.length !== 1) {
+                    continue
+                  }
+                  const child = span.children[0]
+                  if (child.type === 'text' && child.value.trim() === '//') {
+                    linesToRemove.push(line)
+                  }
+                }
+
+                for (const line of linesToRemove) {
+                  const index = code.children.indexOf(line)
+                  const nextLine = code.children[index + 1]
+                  let removeLength = 1
+                  if (nextLine?.type === 'text' && nextLine?.value === '\n')
+                    removeLength = 2
+                  code.children.splice(index, removeLength)
+                }
+              },
+            }
+          }
+
           return MarkdownItShiki({
             themes: {
               dark: nord,
@@ -178,6 +217,7 @@ export default defineConfig({
               transformerNotationErrorLevel(),
               transformerNotationHighlight(),
               transformerNotationFocus(),
+              transformNotationSwiftFocusFix(),
               ...(await BrilTransformerFactory(bril, nord, rosePineDawn)),
             ],
           })

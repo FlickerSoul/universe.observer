@@ -255,7 +255,7 @@ The structure feels trivial, because the `Package.swift` is actually doing the
 magic, especially in the highlighted area. You can find more
 in [the official doc](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
 
-```swift {13,21-25}
+```swift {12,21-25}
 // swift-tools-version: 6.1
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
