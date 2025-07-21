@@ -43,6 +43,11 @@ const LINKS = {
       name: "Yihui's Blog",
       url: 'https://yihuiblog.top/',
     },
+    {
+      name: '灰猫咖啡厅 | GrayNeko Cafe',
+      url: 'https://graynekocafe.net/',
+      about: ['21世纪末的咖啡店', 'A café from the end of the 21st century'],
+    },
   ],
   interestingSites: [
     { name: 'Matrix67', url: 'http://www.matrix67.com/' },
@@ -72,7 +77,7 @@ const LINKS = {
 const frontmatter = {
   title: "Friends' Links",
   createdAt: '2023-04-12',
-  updatedAt: '2024-04-08',
+  updatedAt: '2025-07-21',
 } as const
 
 onMounted(() => {
