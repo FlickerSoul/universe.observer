@@ -70,7 +70,6 @@ struct BluetoothPacket {
     let payload: SignalPacket
 }
 
-@ParseStruct
 struct SignalPacket {
     // 1 byte, but suppose we need `UInt32` for compatibility with other code
     let level: UInt32
@@ -200,7 +199,8 @@ extension SignalPacket: BinaryParseKit.Parsable {
 ## Background
 
 I had several goals in mind when I started working on this project. They are
-minimal and often may not suit the need of complex deserialization scenarios.
+minimal for my use case but may not suit the need of general deserialization
+scenarios.
 
 - The deserialized object can have fundamental types (`UInt`, `Float`, etc.) as
   well as complex types (`struct`s, `class`es).
