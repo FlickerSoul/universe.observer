@@ -9,7 +9,7 @@ tags:
   - Build System
   - GitHub Actions
 createdAt: 2025-04-24
-updatedAt: 2025-04-24
+updatedAt: 2026-03-22
 #hidden:
 #hasComments:
 #wip: false
@@ -56,7 +56,12 @@ This means we will need to manage three entities, the repository of source of
 the private library, the binary of the private library, and another repository
 that publishes the binary.
 
-Let's work on a concrete example. You can find the source code and GitHub
+Let's work on a concrete example, where I'm trying to publish a `.xcframework` from a private library `MyPrivateLib`.
+There are two publishing destinations, `MyPrivateLibRelease` which is public, and `MyPrivateLibReleasePrivate` which is
+private. The former is a public repository that's accessible to all clients, and the latter is a private repository for
+clients that have access to the private repository via GitHub personal access token (PAT).
+
+You can find the source code and GitHub
 actions of the automation in these repositories:
 
 - [`MyPrivateLib`](https://github.com/FlickerSoul/MyPrivateLib)
@@ -97,146 +102,245 @@ public func myPublicFunction() -> Int {
 From my search on the internet, it's impossible to create a `.xcframework`
 without adding an additional `.xcodeproj` with a
 `Framework` target (__not__ `Library` target). The easiest way I found to create
-a `.xcodeproj` for a swift package is by
+a `.xcodeproj` for a swift package is by using [`tuist`](https://tuist.io).
 
-1. creating a new `.xcodeproj` with a `Framework` target,
-   is using `File -> New -> Project` in XCode
-2. selecting `Framework` under the
-   desired destination tab (`iOS` for example)
+1. install `tuist` via its [installation doc](https://docs.tuist.dev/en/guides/install-tuist).
+2. add a `Tuist.swift` file in the root of the repository to indicate we are using `tuist`:
+    ```swift
+    import ProjectDescription
 
-   ![select framework for new project](./images/create-xcodeproj.png)
-3. entering the information about the package, with the package name being
-   `Temp`, and then create
+    let config = Config(
+        project: .tuist(),
+    )
+    ```
+3. add a `Project.swift` like the following to generate a `.xcodeproj` with a `Framework` target from the main source
+   folder, `Sources/MyPrivateLib`. You can also add your `*.docc` to the `sources` argument if you have any
+   documentation.
 
-   ![metadata](./images/create-proj-meta.png)
-4. copy the `.xcodeproj` to the actual package using something like
-   `mv Temp/Temp.xcodeproj ./MyPrivateLib/MyPrivateLib.xcodeproj`.
-5. open the XCode project, replace the metadata (bundle ID, product name, etc.),
-   and add the actual sources, libraries, and even test targets; you may also
-   want to disable "Automatically manage signing"
+    ```swift
+    import ProjectDescription
 
-   Before:
+    let project = Project(
+        name: "MyPrivateLib",
+        targets: [
+            .target(
+                name: "MyPrivateLib",
+                destinations: .iOS,
+                product: .framework,
+                bundleId: "observer.universe.MyPrivateLib",
+                deploymentTargets: .iOS("13.0"),
+                sources: ["Sources/MyPrivateLib/**/*.swift"],
+                settings: .settings(base: [
+                    "SWIFT_VERSION": "6.0",
+                    "SKIP_INSTALL": "NO",
+                    "BUILD_LIBRARY_FOR_DISTRIBUTION": "YES",
+                    "CODE_SIGN_IDENTITY": "",
+                    "CODE_SIGN_STYLE": "Manual",
+                ]),
+            ),
+            .target(
+                name: "MyPrivateLibTests",
+                destinations: .iOS,
+                product: .unitTests,
+                bundleId: "observer.universe.MyPrivateLibTests",
+                deploymentTargets: .iOS("13.0"),
+                sources: ["Tests/MyPrivateLibTests/**/*.swift"],
+                dependencies: [
+                    .target(name: "MyPrivateLib"),
+                ],
+            ),
+        ],
+    )
+    ```
+4. run `tuist install` and `tuist generate` to generate the `.xcodeproj` file. You can add `--no-open` to prevent it
+   from opening the project in XCode, which is what we are going to use in our CI.
 
-   ![source before](./images/source-before.png)
+After running `tuist generate`, a `.xcodeproj` is created locally. The full repository structure should be as the
+following.
 
-   After:
-
-   ![meta after](./images/meta-after.png)
-   ![source after](./images/source-after.png)
-
-6. verify the project is setup correctly by using the `xcodebuild -list` command
-   ```bash
-   ❯ xcodebuild -list
-   Command line invocation:
-       /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -list
-
-   Information about project "MyPrivateLib":
-       Targets:
-           MyPrivateLib
-
-           Build Configurations:
-               Debug
-               Release
-
-           If no build configuration is specified and -scheme is not passed then "Release" is used.
-
-           Schemes:
-               MyPrivateLib
-   ```
-
-After creating a `.xcodeproj` . The project structure looks like
-this (where `xcuserdata` folders are omitted):
+Note that `MyPrivateLib.xcodeproj` is going to always be generated by `tuist`, so it should be added to
+`.gitignore`, and should not be committed to the repository.
 
 ```text
+.
 ├── MyPrivateLib.xcodeproj
-│   ├── project.pbxproj
-│   ├── project.xcworkspace
-│   │   ├── contents.xcworkspacedata
-│   │   └── xcshareddata
-│   │       └── swiftpm
-│   │           └── configuration
-│   ├── xcshareddata
-│   │   └── xcschemes
-│   │       └── MyPrivateLib.xcscheme
+│   ├── project.xcworkspace
+│   │   ├── xcshareddata
+│   │   │   └── swiftpm
+│   │   │       └── configuration
+│   │   └── xcuserdata
+│   │       └── flicker_soul.xcuserdatad
+│   │           ├── UserInterfaceState.xcuserstate
+│   │           └── xcschemes
+│   │               └── xcschememanagement.plist
+│   └── xcuserdata
+│       └── flicker_soul.xcuserdatad
+│           └── xcschemes
+│               ├── Temp.xcscheme
+│               └── xcschememanagement.plist
 ├── Package.swift
-├── scripts
-│   ├── build-proj.sh
-│   └── set-version.sh
+├── Project.swift
+├── README.md
 ├── Sources
-│   └── MyPrivateLib
-│       └── MyPrivateLib.swift
-└── Tests
-    └── MyPrivateLibTests
-        └── MyPrivateLibTests.swift
+│   └── MyPrivateLib
+│       └── MyPrivateLib.swift
+├── Tests
+│   └── MyPrivateLibTests
+│       └── MyPrivateLibTests.swift
+├── Tuist.swift
+└── VERSION
 ```
 
 Using `.xcodeproj`, we can run `xcodebuild archive`, subsequently
-`xcodebuild -create-xcframework`. Below is the script to build and package
-`.xcframework`, which can
-also be found [
-`scripts/build-proj.sh`](https://github.com/FlickerSoul/MyPrivateLib/blob/main/scripts/build-proj.sh)
+`xcodebuild -create-xcframework`. Below is the main python script that automates the process of building
+`.xcframework`. It and its helper support can be found here in the scripts folder [
+`scripts`](https://github.com/FlickerSoul/MyPrivateLib/blob/main/scripts/)
 in the repository:
 
-```bash
-#! /bin/bash
+```python
+#!/usr/bin/env python3
+"""Build the MyPrivateLib XCFramework."""
 
-set -e
+import os
+import shutil
+import subprocess
+import sys
 
-echo "Building XCFramework..."
+from sdk_tools import REPO_ROOT
+from sdk_tools.process import xcbeautify_piped_exit_on_failure
+from sdk_tools.version import get_sdk_version
 
-export PROJECT_PATH="MyPrivateLib.xcodeproj"
-export FRAMEWORK_NAME="MyPrivateLib"
-export SCHEME_NAME="MyPrivateLib"
-export ARCHIVE_PATH="./.build"
-export XCFRAMEWORK_OUTPUT="${ARCHIVE_PATH}/Product"
-export XCFRAMEWORK_PATH="${XCFRAMEWORK_OUTPUT}/${FRAMEWORK_NAME}.xcframework"
 
-PLATFORMS=("iOS" "iOS Simulator")
+def install_tuist() -> None:
+    print("Installing Tuist...")
+    for cmd in [
+        ["brew", "tap", "--quiet", "tuist/tuist"],
+        ["brew", "install", "--quiet", "--formula", "tuist"],
+    ]:
+        result = subprocess.run(cmd)
+        if result.returncode != 0:
+            print(f"Command {cmd} failed with exit code {result.returncode}")
+            sys.exit(result.returncode)
 
-rm -rf "${ARCHIVE_PATH}"
-mkdir -p "${ARCHIVE_PATH}"
 
-for PLATFORM in "${PLATFORMS[@]}"; do
-    # Replace spaces with hyphens for archive filenames
-    SAFE_NAME="${PLATFORM// /-}"
+def tuist_setup() -> None:
+    print("Installing dependencies via Tuist...")
+    for cmd, label in [
+        (["tuist", "install"], "tuist install"),
+        (["tuist", "generate", "--no-open"], "tuist generate"),
+    ]:
+        result = subprocess.Popen(cmd, cwd=REPO_ROOT)
+        result.wait()
+        if result.returncode != 0:
+            print(f"{label} failed with exit code {result.returncode}")
+            sys.exit(result.returncode)
 
-    DEST="generic/platform=${PLATFORM}"
-    OUT_ARCHIVE="${ARCHIVE_PATH}/${SAFE_NAME}.xcarchive"
 
-    echo "▸ Archiving for ${PLATFORM} → ${OUT_ARCHIVE}"
-    xcodebuild archive \
-      -project "${PROJECT_PATH}" \
-      -scheme "${SCHEME_NAME}" \
-      -configuration "${CONFIGURATION}" \
-      -destination "${DEST}" \
-      -archivePath "${OUT_ARCHIVE}" \
-      -skipPackagePluginValidation \
-      -skipMacroValidation \
-      SKIP_INSTALL=NO \
-      BUILD_LIBRARY_FOR_DISTRIBUTION=YES
-done
+def compute_checksum(zip_path: str) -> str:
+    result = subprocess.run(
+        ["xcrun", "swift", "package", "compute-checksum", zip_path],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        print(f"compute-checksum failed: {result.stderr}")
+        sys.exit(result.returncode)
+    checksum = result.stdout.strip()
+    print(f"Checksum: {checksum}")
+    return checksum
 
-echo "Building XCFramework Creation Args..."
-ARGS=()
-for PLATFORM in "${PLATFORMS[@]}"; do
-  SAFE_NAME="${PLATFORM// /-}"
-  ARCHIVE_FILE="${ARCHIVE_PATH}/${SAFE_NAME}.xcarchive"
-  ARGS+=(-archive "${ARCHIVE_FILE}" -framework "${FRAMEWORK_NAME}.framework")
-done
 
-echo "Creating XCFramework..."
-xcodebuild -create-xcframework \
-  "${ARGS[@]}" \
-  -output "${XCFRAMEWORK_PATH}"
+def main() -> None:
+    sdk_version = get_sdk_version()
+    print(f"Building XCFramework For Version '{sdk_version}'...")
 
-if [ "$GITHUB_ACTIONS" = "true" ]; then
-  # Export the variable for later steps in the workflow
-  echo "Export output path to GitHub"
-  echo "XCFRAMEWORK_OUTPUT=$(realpath "${XCFRAMEWORK_OUTPUT}")" >> "$GITHUB_ENV"
-  echo "XCFRAMEWORK_PATH=$(realpath "${XCFRAMEWORK_PATH}")" >> "$GITHUB_ENV"
-fi
+    framework_name = "MyPrivateLib"
+    scheme_name = "MyPrivateLib"
+    archive_path = REPO_ROOT / ".build"
+    product_output = archive_path / "Product"
+    xcframework_path = product_output / f"{framework_name}-{sdk_version}.xcframework"
 
-echo "XCFramework created successfully at ${XCFRAMEWORK_PATH}"
+    if archive_path.exists():
+        shutil.rmtree(archive_path)
+    archive_path.mkdir(parents=True)
+
+    install_tuist()
+    tuist_setup()
+
+    common_args = [
+        "-project", "MyPrivateLib.xcodeproj",
+        "-configuration", "Release",
+        "-scheme", scheme_name,
+        "-skipPackagePluginValidation",
+        "-skipMacroValidation",
+    ]
+
+    destinations = [
+        ("iOS", "generic/platform=iOS"),
+        ("iOS-Simulator", "generic/platform=iOS Simulator"),
+    ]
+
+    for archive_name, destination in destinations:
+        print(f"Archiving for {archive_name}...")
+        xcbeautify_piped_exit_on_failure([
+            "xcodebuild", "archive",
+            *common_args,
+            "-destination", destination,
+            "-archivePath", str(archive_path / f"{archive_name}.xcarchive"),
+        ])
+
+    print("Creating XCFramework...")
+    product_output.mkdir(parents=True, exist_ok=True)
+    xcframework_args = []
+    for archive_name, _ in destinations:
+        xcframework_args += [
+            "-archive", str(archive_path / f"{archive_name}.xcarchive"),
+            "-framework", f"{framework_name}.framework",
+        ]
+    xcbeautify_piped_exit_on_failure([
+        "xcodebuild", "-create-xcframework",
+        *xcframework_args,
+        "-output", str(xcframework_path),
+    ])
+
+    if keychain_path := os.environ.get("KEYCHAIN_PATH"):
+        print("Signing XCFramework...")
+        result = subprocess.run([
+            "codesign", "--timestamp",
+            "--keychain", keychain_path,
+            "-s", "Apple Distribution",
+            str(xcframework_path),
+        ])
+        if result.returncode != 0:
+            print(f"codesign failed with exit code {result.returncode}")
+            sys.exit(result.returncode)
+    else:
+        print("KEYCHAIN_PATH not set, skipping XCFramework signing.")
+
+    print("Zipping XCFramework...")
+    xcframework_zip_path = shutil.make_archive(
+        base_name=str(product_output / f"{framework_name}-{sdk_version}.xcframework"),
+        format="zip",
+        root_dir=str(product_output),
+        base_dir=xcframework_path.name,
+    )
+
+    xcframework_zip_checksum = compute_checksum(xcframework_zip_path)
+
+    if os.environ.get("GITHUB_ACTIONS") == "true":
+        print("Export output paths to GitHub")
+        github_env = os.environ["GITHUB_ENV"]
+        with open(github_env, "a") as f:
+            f.write(f"XCFRAMEWORK_PATH={xcframework_path}\n")
+            f.write(f"XCFRAMEWORK_ZIP_OUTPUT={xcframework_zip_path}\n")
+            f.write(f"XCFRAMEWORK_ZIP_CHECKSUM={xcframework_zip_checksum}\n")
+
+    print(f"XCFramework created successfully at {xcframework_path}")
+    print(f"XCFramework zip: {xcframework_zip_path}")
+
+
+if __name__ == "__main__":
+    main()
 ```
 
 ## Release Swift Package Setup
@@ -252,7 +356,7 @@ clients and installed in their application. The structure is as the following.
 ```
 
 The structure feels trivial, because the `Package.swift` is actually doing the
-magic, especially in the highlighted area. You can find more
+magic, especially in the following highlighted area. You can find more
 in [the official doc](https://developer.apple.com/documentation/xcode/distributing-binary-frameworks-as-swift-packages).
 
 ```swift {12,21-25}
@@ -278,8 +382,8 @@ let package = Package(
         ),
         .binaryTarget(
             name: "MyPrivateLib",
-            url: "",
-            checksum: ""
+            url: "https://example.com/framework-missing.zip",
+            checksum: "71e1fae8fc231fe8f85cc5db2ba9a78661897e461d376ce7582b2ae8c113b1a7"
         )
     ]
 )
@@ -287,6 +391,8 @@ let package = Package(
 
 Whenever a new release of our closed-source library is created, we want to
 update the `url` and `checksum` to match the corresponding new release.
+
+For now, we are using a placeholder url and checksum, which will be updated in the CI later.
 
 ## GitHub Actions Automating Release Uploading
 
@@ -297,7 +403,7 @@ found [here](https://github.com/FlickerSoul/MyPrivateLib/blob/main/.github/workf
 The flow essentially does the following steps:
 
 - Build project into `.xcframework` binary
-- Sign the binary (If you're not familar with signing, you can check
+- Sign the binary (If you're not familiar with signing, you can check
   out [this post](https://localazy.com/blog/how-to-automatically-sign-macos-apps-using-github-actions)
   and
   the [official document](https://developer.apple.com/documentation/xcode/creating-a-multi-platform-binary-framework-bundle#Sign-the-XCFramework-bundle))
@@ -310,6 +416,9 @@ The flow essentially does the following steps:
   calculated in the previous step, in the `Package.swift` in
   `MyPrivateLibRelease`
 
+The checksum calculation and the drafting a new release is done with the following python script, which can also be
+found in the scripts folder [here](https://github.com/FlickerSoul/MyPrivateLib/blob/main/scripts/).
+
 Note that, since we are uploading the binary from `MyPrivateLib` to
 `MyPrivateLibRelease`, a GitHub personal access token (PAT) is needed, and is
 referred as `secrets.BINARY_REPO_TOKEN` in the workflow. The PAT token needs
@@ -319,12 +428,160 @@ per [GitHub document](https://docs.github.com/en/rest/releases/releases?apiVersi
 ![pat](./images/gh-pat.png)
 ![secret setup](./images/gh-secret-setup.png)
 
+```python
+#!/usr/bin/env python3
+"""Create a draft release on the binary release repository and update Package.swift."""
+
+import json
+import os
+import subprocess
+import sys
+from pathlib import Path
+from typing import Optional
+
+from sdk_tools import REPO_ROOT
+
+
+BINARY_REPO_DIR = REPO_ROOT / "binary-repo"
+
+
+def run(cmd: list[str], cwd: Optional[Path] = None, capture_output: bool = False) -> subprocess.CompletedProcess:
+    result = subprocess.run(cmd, cwd=cwd, capture_output=capture_output, text=True)
+    if result.returncode != 0:
+        if capture_output:
+            print(result.stderr, file=sys.stderr)
+        sys.exit(result.returncode)
+    return result
+
+
+def create_draft_release(binary_repo: str, version: str, xcframework_zip: str, checksum: str) -> None:
+    print(f"Creating draft release {version} on {binary_repo}...")
+    run([
+        "gh", "release", "create", version,
+        xcframework_zip,
+        "--repo", binary_repo,
+        "--title", f"Release {version}",
+        "--notes", f"Release of version {version}.\n Checksum: `{checksum}`.",
+        "--draft",
+    ])
+
+
+def get_asset_url(binary_repo: str, version: str) -> str:
+    print("Fetching asset URL from draft release...")
+    result = run(
+        ["gh", "release", "view", version, "--repo", binary_repo, "--json", "assets"],
+        capture_output=True,
+    )
+    assets = json.loads(result.stdout)["assets"]
+    xcframework_asset = next((a for a in assets if a["name"].endswith(".xcframework.zip")), None)
+    if xcframework_asset is None:
+        names = [a["name"] for a in assets]
+        print(f"Error: no *.xcframework.zip asset found in release assets: {names}", file=sys.stderr)
+        sys.exit(1)
+    url = xcframework_asset["apiUrl"] + ".zip"
+    print(f"Asset URL: {url}")
+    return url
+
+
+TARGET_NAME = "MyPrivateLib"
+
+
+def update_package_swift(asset_url: str, checksum: str) -> None:
+    package_swift = BINARY_REPO_DIR / "Package.swift"
+    print(f"Updating {package_swift}...")
+
+    result = run(["swift", "package", "dump-package"], cwd=BINARY_REPO_DIR, capture_output=True)
+    package_json = json.loads(result.stdout)
+    target = next((t for t in package_json["targets"] if t["name"] == TARGET_NAME), None)
+    if target is None:
+        names = [t["name"] for t in package_json["targets"]]
+        print(f"Error: target '{TARGET_NAME}' not found in Package.swift. Found: {names}", file=sys.stderr)
+        sys.exit(1)
+
+    current_url: str = target["url"]
+    current_checksum: str = target["checksum"]
+
+    content = package_swift.read_text()
+    content = content.replace(current_url, asset_url)
+    content = content.replace(current_checksum, checksum)
+    package_swift.write_text(content)
+
+
+def commit_and_tag(version: str) -> str:
+    print("Committing Package.swift update...")
+    run(["git", "config", "user.email", "app@universe.observer"], cwd=BINARY_REPO_DIR)
+    run(["git", "config", "user.name", "MyPrivateLib App"], cwd=BINARY_REPO_DIR)
+    run(["git", "add", "Package.swift"], cwd=BINARY_REPO_DIR)
+    run(["git", "commit", "-m", f"Update Package.swift for release {version}"], cwd=BINARY_REPO_DIR)
+
+    print(f"Creating tag {version} and pushing...")
+    run(["git", "tag", version], cwd=BINARY_REPO_DIR)
+    run(["git", "push", "--set-upstream", "origin", "main"], cwd=BINARY_REPO_DIR)
+    run(["git", "push", "origin", "main"], cwd=BINARY_REPO_DIR)
+
+    result = run(["git", "rev-parse", "HEAD"], cwd=BINARY_REPO_DIR, capture_output=True)
+    return result.stdout.strip()
+
+
+def update_release_target(binary_repo: str, version: str, commit_sha: str) -> None:
+    print(f"Updating draft release target to commit {commit_sha}...")
+    run([
+        "gh", "release", "edit", version,
+        "--repo", binary_repo,
+        "--target", commit_sha,
+    ])
+
+
+def main() -> None:
+    binary_repo = os.environ.get("RELEASE_REPO")
+    version = os.environ.get("SDK_VERSION")
+    xcframework_zip = os.environ.get("XCFRAMEWORK_ZIP_OUTPUT")
+    checksum = os.environ.get("XCFRAMEWORK_ZIP_CHECKSUM")
+
+    missing = [
+        name for name, val in [
+            ("RELEASE_REPO", binary_repo),
+            ("SDK_VERSION", version),
+            ("XCFRAMEWORK_ZIP_OUTPUT", xcframework_zip),
+            ("XCFRAMEWORK_ZIP_CHECKSUM", checksum),
+        ] if not val
+    ]
+    if missing:
+        print(f"Error: missing required environment variables: {', '.join(missing)}", file=sys.stderr)
+        sys.exit(1)
+
+    errors: list[str] = []
+
+    xcframework_path = Path(xcframework_zip)
+    if not xcframework_path.name.endswith(".xcframework.zip"):
+        errors.append(f"XCFRAMEWORK_ZIP_OUTPUT filename must end with '.xcframework.zip', got '{xcframework_path.name}'")
+    if not xcframework_path.exists():
+        errors.append(f"XCFRAMEWORK_ZIP_OUTPUT does not exist: {xcframework_zip}")
+
+    if errors:
+        for error in errors:
+            print(f"Error: {error}", file=sys.stderr)
+        sys.exit(1)
+
+    create_draft_release(binary_repo, version, xcframework_zip, checksum)
+    asset_url = get_asset_url(binary_repo, version)
+    update_package_swift(asset_url, checksum)
+    commit_sha = commit_and_tag(version)
+    update_release_target(binary_repo, version, commit_sha)
+
+    print("Release upload complete.")
+
+
+if __name__ == "__main__":
+    main()
+```
+
 ## Try Creating A Release
 
 With this setup, you can then publish your closed-source library through a Swift
 package containing the corresponding binary. Whenever a release is created in
 the source library (`MyPrivateLib` in this example), a new release will be
-automatically created in the binary Swift package.
+automatically created in the binary Swift package (`MyPrivateLibRelease` in this case).
 
 That is, say when a `1.0.0` release is created in `MyPrivateLib`,
 
