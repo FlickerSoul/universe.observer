@@ -48,6 +48,11 @@ const LINKS = {
       url: 'https://graynekocafe.net/',
       about: ['21世纪末的咖啡店', 'A café from the end of the 21st century'],
     },
+    {
+      name: 'Yujing (Olivia) Xing',
+      url: 'https://yxing82.github.io/personal-website/',
+      about: "Urban explorations through a mathematician's eyes",
+    },
   ],
   interestingSites: [
     { name: 'Matrix67', url: 'http://www.matrix67.com/' },
